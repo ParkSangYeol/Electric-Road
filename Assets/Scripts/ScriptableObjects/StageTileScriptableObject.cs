@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Demos.RPGEditor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
+using Stage;
 using UnityEditor;
 using UnityEngine;
 
@@ -38,6 +39,21 @@ namespace ScriptableObjects.Stage
         [BoxGroup("Split/Answer")]
         [ReadOnly, LabelText("최단 비용")]
         public int ans;
+
+        public void MakeMapByStageTiles(StageTile[,] stageMatrix)
+        {
+            width = stageMatrix.GetLength(0);
+            height = stageMatrix.GetLength(1);
+
+            map = new TileStruct[width, height];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    map[x, y] = new TileStruct(stageMatrix[x, y]);
+                }
+            }
+        }
     }
     
     [Serializable]
@@ -57,6 +73,12 @@ namespace ScriptableObjects.Stage
             this.dir = Direction.UP;
             this.tile = null;
         }
+
+        public TileStruct(StageTile stageTile)
+        {
+            this.dir = stageTile.direction;
+            this.tile = stageTile.tile;
+        }
     }
     
     public enum Direction
@@ -64,6 +86,7 @@ namespace ScriptableObjects.Stage
         UP,
         DOWN,
         RIGHT,
-        LEFT
+        LEFT,
+        NONE
     }
 }

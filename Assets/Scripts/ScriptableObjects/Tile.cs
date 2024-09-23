@@ -11,6 +11,9 @@ namespace ScriptableObjects.Stage
         CORNER,
         DISTRIBUTOR,
         AMPLIFIER,
-        MODULATOR
+        MODULATOR,
+        OBSTACLE,
+        FACTORY,
+        GENERATOR
     }
 }

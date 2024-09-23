@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
   m_Name: 4.AmplifierTile
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  tileTypeName: "\uC99D\uD3ED\uAE30 \uD0C0\uC77C"
+  Icon: {fileID: 21300000, guid: 40a21b633cb87b74e913a697f12e7f04, type: 3}
   tileType: 4
+  cost: 40

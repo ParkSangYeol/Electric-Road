@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
   m_Name: 2.CornerTile
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  tileTypeName: "\uCF54\uB108 \uD0C0\uC77C"
+  Icon: {fileID: 21300000, guid: f66cd88b780de9f4ea94f3d4f99e4dba, type: 3}
   tileType: 2
+  cost: 15

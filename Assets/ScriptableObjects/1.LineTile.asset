@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
   m_Name: 1.LineTile
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  tileTypeName: "\uC9C1\uC120 \uD0C0\uC77C"
+  Icon: {fileID: 21300000, guid: 27bf5cafc2f025947b2663a8fc7ce1dd, type: 3}
   tileType: 1
+  cost: 10
