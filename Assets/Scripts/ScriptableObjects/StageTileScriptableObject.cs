@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Demos.RPGEditor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using Stage;
