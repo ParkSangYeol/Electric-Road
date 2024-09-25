@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Priority_Queue;
 using ScriptableObjects.Stage;
@@ -22,13 +23,11 @@ namespace StageBuilder
 
         [SerializeField] 
         private TMP_Text costText;
-        
-        [SerializeField] 
-        private TMP_InputField fileNameInputField;
 
         [SerializeField] 
         private StageEditor stageEditor;
-        
+
+        private TileStruct[,] beginStage;
         private Dictionary<Tile, TileScriptableObject> tileDict = new Dictionary<Tile, TileScriptableObject>();
         private readonly int[] dX = {0, 1, 0, -1};
         private readonly int[] dY = {1, 0, -1, 0};
@@ -38,6 +37,8 @@ namespace StageBuilder
             InitTileDict();
         }
 
+        #region Find Answer
+
         [Button]
         public void FindAnswer()
         {
@@ -45,13 +46,15 @@ namespace StageBuilder
             Vector2 generator = Vector2.zero;
             PathStruct[,,,] minPaths = null;
             StageTile[,] stageMatrix = MakeStageMatrix();
+            beginStage = MakeStageToTileStruct(ref stageMatrix);
+            
             InitMinPathMatrix(ref minPaths);
             FindGenAndFactories(ref factories, ref generator, ref stageMatrix);
             GetMinPaths(ref stageMatrix, ref minPaths);
             
             //PrintPaths(ref minPaths);
             PathStruct minPath = GetMinPath(generator, Tile.GENERATOR, factories, ref minPaths);
-             minPath = FindMinPath(generator, Tile.GENERATOR, factories, ref stageMatrix, ref minPaths, (int)minPath.cost);
+            minPath = FindMinPath(generator, Tile.GENERATOR, factories, ref stageMatrix, ref minPaths, (int)minPath.cost);
             if (minPath != null)
             {
                 Debug.Log(minPath);
@@ -61,42 +64,7 @@ namespace StageBuilder
             ApplyStage(minPath.path, ref stageMatrix);
         }
         
-        private StageTile[,] MakeStageMatrix()
-        {
-            int width = stageArea.width;
-            int height = stageArea.height;
 
-            StageTile[,] stageMat = new StageTile[width, height];
-            
-            for (int i = 0; i < height; i++)
-            {
-                for (int j = 0; j < width; j++)
-                {
-                    StageTile stageInstance = stageArea.transform.GetChild(i * width + j).GetComponent<StageTile>();
-                    stageMat[j, i] = stageInstance;
-                }
-            }
-
-            return stageMat;
-        }
-
-        public void LoadStageFile()
-        {
-            var paths = StandaloneFileBrowser.OpenFilePanel("Find Stage File", basePath, "asset", false);
-            if (paths.Length > 0) {
-                Debug.Log(paths[0]);
-                string relativePath = "Assets" + paths[0].Substring(Application.dataPath.Length);
-                relativePath = relativePath.Replace('\\', '/');
-                Debug.Log(relativePath);
-                StageTileScriptableObject stage = AssetDatabase.LoadAssetAtPath<StageTileScriptableObject>(relativePath);
-                if (stage != null)
-                {
-                    Debug.Log("stage loaded");
-                    stageEditor.CreateStageInScene(stage.map, true);
-                }
-            }
-        }
-        
         private void GetMinPaths(ref StageTile[,] stageMatrix, ref PathStruct[,,,] minPath)
         {
             int width = stageArea.width;
@@ -175,20 +143,6 @@ namespace StageBuilder
             }
         }
 
-        private void InitTileDict()
-        {
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(TileScriptableObject)}");
-            for (int i = 0; i < guids.Length; i++)
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                Debug.Log(assetPath);
-                TileScriptableObject tileData = AssetDatabase.LoadAssetAtPath<TileScriptableObject>(assetPath);
-                if (tileData != null)
-                {
-                    tileDict.Add(tileData.tileType, tileData);
-                }
-            }
-        }
         
         private PathStruct FindMinPath(Vector2 startPoint, Tile startTile, List<Vector2> factories, ref StageTile[,] stageMatrix, ref PathStruct[,,,] minPaths, int leastCost, bool dupCall = false)
         {
@@ -398,20 +352,91 @@ namespace StageBuilder
                 ApplyStage(next, ref stageMatrix);
             }
         }
+
+        #endregion
+        
+        #region Save And Load File
         
         public void MakeStageFile()
         {
-            StageTile[,] map = MakeStageMatrix();
-            StageTileScriptableObject stage = ScriptableObject.CreateInstance<StageTileScriptableObject>();
-            stage.stageName = fileNameInputField.text;
-            stage.MakeMapByStageTiles(map);
-            
 #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.CreateAsset(stage, basePath + stage.stageName + ".asset");
-            UnityEditor.AssetDatabase.SaveAssets();
+            var path = StandaloneFileBrowser.SaveFilePanel("Save Stage File", basePath, "sample", "asset");
+            if (path != "")
+            {
+                StageTile[,] map = MakeStageMatrix();
+                StageScriptableObject stage = ScriptableObject.CreateInstance<StageScriptableObject>();
+                stage.MakeMapByStageTiles(beginStage, MakeStageToTileStruct(ref map));
+                stage.stageName = Path.GetFileNameWithoutExtension(path);
+                
+                string relativePath = "Assets" + path.Substring(Application.dataPath.Length);
+                relativePath = relativePath.Replace('\\', '/');
+                UnityEditor.AssetDatabase.CreateAsset(stage, relativePath);
+                UnityEditor.AssetDatabase.SaveAssets();
+            }
 #endif
+            return;
         }
 
+        public void LoadStageFile()
+        {
+#if UNITY_EDITOR
+            var paths = StandaloneFileBrowser.OpenFilePanel("Find Stage File", basePath, "asset", false);
+            if (paths.Length > 0) {
+                Debug.Log(paths[0]);
+                string relativePath = "Assets" + paths[0].Substring(Application.dataPath.Length);
+                relativePath = relativePath.Replace('\\', '/');
+                Debug.Log(relativePath);
+                StageScriptableObject stage = AssetDatabase.LoadAssetAtPath<StageScriptableObject>(relativePath);
+                if (stage != null)
+                {
+                    stageEditor.CreateStageInScene(stage.map, true);
+                    beginStage = stage.map;
+                }
+            }
+#endif
+            return;
+        }
+        
+        private TileStruct[,] MakeStageToTileStruct(ref StageTile[,] stageMatrix)
+        {
+            int width = stageMatrix.GetLength(0);
+            int height = stageMatrix.GetLength(1);
+
+            TileStruct[,] map = new TileStruct[width, height];
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    map[x, y] = new TileStruct(stageMatrix[x, y]);
+                }
+            }
+
+            return map;
+        }
+        
+        #endregion
+
+        #region Tools and Initialize
+        
+        private StageTile[,] MakeStageMatrix()
+        {
+            int width = stageArea.width;
+            int height = stageArea.height;
+
+            StageTile[,] stageMat = new StageTile[width, height];
+            
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    StageTile stageInstance = stageArea.transform.GetChild(i * width + j).GetComponent<StageTile>();
+                    stageMat[j, i] = stageInstance;
+                }
+            }
+
+            return stageMat;
+        }
+        
         private void InitMinPathMatrix(ref PathStruct[,,,] minPath)
         {
             int width = stageArea.width;
@@ -437,6 +462,20 @@ namespace StageBuilder
             }
         }
 
+        private void InitTileDict()
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(TileScriptableObject)}");
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                TileScriptableObject tileData = AssetDatabase.LoadAssetAtPath<TileScriptableObject>(assetPath);
+                if (tileData != null)
+                {
+                    tileDict.Add(tileData.tileType, tileData);
+                }
+            }
+        }
+        
         private void PrintPaths(ref PathStruct[,,,] minPath)
         {
             int width = stageArea.width;
@@ -583,120 +622,8 @@ namespace StageBuilder
                 }
             }
         }
-
-        private class PathStruct
-        {
-            public TileNode path;
-            private TileNode last;
-            public float cost = float.MaxValue;
-
-            public TileNode GetLast()
-            {
-                if (last == null)
-                {
-                    last = path;
-                }
-
-                while (last.nexts.Count > 0)
-                {
-                    last = last.nexts[0];
-                }
-
-                return last;
-            }
-
-            public void AddFirst(PathStruct addingPath)
-            {
-                if (addingPath.path == null || path == null)
-                {
-                    return;
-                }
-                
-                path.nexts.Add(addingPath.path.Copy());
-            }
-            
-            public void AddLast(PathStruct addingPath)
-            {
-                if (addingPath.path == null || path == null)
-                {
-                    return;
-                }
-                
-                GetLast().nexts.Add(addingPath.path.Copy());
-            }
-            
-            public override string ToString()
-            {
-                string str = "" + cost + '\n';
-                PrintNodeInfo(path, ref str);
-                return str;
-            }
-
-            private void PrintNodeInfo(TileNode node, ref string str)
-            {
-                if (node == null)
-                {
-                    return;
-                }
-                str = str + (node.x + ", " + node.y + " | " +node.dir + ", " + node.tile + "\n");
-                foreach (var n in node.nexts)
-                {
-                    PrintNodeInfo(n, ref str);
-                }
-            }
-        }
-
-        private class TileNode
-        {
-            public Direction dir;
-            public Tile tile;
-            public int x, y;
-
-            public List<TileNode> nexts;
-
-            public TileNode(TileNode node)
-            {
-                dir = node.dir;
-                tile = node.tile;
-                x = node.x;
-                y = node.y;
-                
-                nexts = new List<TileNode>();
-            }
-
-            public TileNode(int x, int y, Direction dir, Tile tile)
-            {
-                this.x = x;
-                this.y = y;
-                this.dir = dir;
-                this.tile = tile;
-                
-                nexts = new List<TileNode>();
-            }
-
-            public TileNode Copy()
-            {
-                TileNode copyNode = new TileNode(this);
-                foreach (var next in this.nexts)
-                {
-                    if (next != null)
-                    {
-                        copyNode.nexts.Add(next.Copy());
-                    }
-                }
-
-                return copyNode;
-            }
-
-            public TileNode GetLast()
-            {
-                if (nexts.Count == 0)
-                {
-                    return this;
-                }
-
-                return nexts[0].GetLast();
-            }
-        }
+        
+        #endregion
+        
     }
 }

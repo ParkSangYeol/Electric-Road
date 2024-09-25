@@ -13,7 +13,7 @@ using UnityEngine;
 namespace ScriptableObjects.Stage
 {
     [CreateAssetMenu(menuName = "Assets/ScriptableObject/Stage")]
-    public class StageTileScriptableObject : SerializedScriptableObject
+    public class StageScriptableObject : SerializedScriptableObject
     {
         [VerticalGroup("Split")]
         [PropertySpace(0, 10)]
@@ -39,17 +39,20 @@ namespace ScriptableObjects.Stage
         [ReadOnly, LabelText("최단 비용")]
         public int ans;
 
-        public void MakeMapByStageTiles(StageTile[,] stageMatrix)
+        public void MakeMapByStageTiles(TileStruct[,] map, TileStruct[,] ansMap)
         {
-            width = stageMatrix.GetLength(0);
-            height = stageMatrix.GetLength(1);
+            width = map.GetLength(0);
+            height = map.GetLength(1);
 
-            map = new TileStruct[width, height];
+            this.map = map;
+            this.answerMap = ansMap;
+
+            ans = 0;
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    map[x, y] = new TileStruct(stageMatrix[x, y]);
+                    ans += (int)ansMap[x, y].tile.cost == 9999? 0 : (int)ansMap[x, y].tile.cost;
                 }
             }
         }
