@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Priority_Queue;
 using ScriptableObjects.Stage;
+using SFB;
 using Sirenix.OdinInspector;
 using Stage;
 using TMPro;
@@ -24,6 +25,9 @@ namespace StageBuilder
         
         [SerializeField] 
         private TMP_InputField fileNameInputField;
+
+        [SerializeField] 
+        private StageEditor stageEditor;
         
         private Dictionary<Tile, TileScriptableObject> tileDict = new Dictionary<Tile, TileScriptableObject>();
         private readonly int[] dX = {0, 1, 0, -1};
@@ -76,6 +80,23 @@ namespace StageBuilder
             return stageMat;
         }
 
+        public void LoadStageFile()
+        {
+            var paths = StandaloneFileBrowser.OpenFilePanel("Find Stage File", basePath, "asset", false);
+            if (paths.Length > 0) {
+                Debug.Log(paths[0]);
+                string relativePath = "Assets" + paths[0].Substring(Application.dataPath.Length);
+                relativePath = relativePath.Replace('\\', '/');
+                Debug.Log(relativePath);
+                StageTileScriptableObject stage = AssetDatabase.LoadAssetAtPath<StageTileScriptableObject>(relativePath);
+                if (stage != null)
+                {
+                    Debug.Log("stage loaded");
+                    stageEditor.CreateStageInScene(stage.map, true);
+                }
+            }
+        }
+        
         private void GetMinPaths(ref StageTile[,] stageMatrix, ref PathStruct[,,,] minPath)
         {
             int width = stageArea.width;
@@ -160,6 +181,7 @@ namespace StageBuilder
             for (int i = 0; i < guids.Length; i++)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                Debug.Log(assetPath);
                 TileScriptableObject tileData = AssetDatabase.LoadAssetAtPath<TileScriptableObject>(assetPath);
                 if (tileData != null)
                 {

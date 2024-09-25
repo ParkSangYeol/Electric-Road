@@ -73,21 +73,21 @@ namespace StageBuilder
             CreateStageInScene(tileMat);
         }
 
-        public void CreateStageInScene(TileStruct[,] tileMatrix)
+        public void CreateStageInScene(TileStruct[,] tileMatrix, bool editableAll = false)
         {
             StageArea areaComponent = stageArea.GetComponent<StageArea>();
             areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);;
             areaComponent.height = tileMatrix.GetLength(1);
             
-            for (int i = 0; i < tileMatrix.GetLength(0); i++)
+            for (int y = 0; y < tileMatrix.GetLength(1); y++)
             {
-                for (int j = 0; j < tileMatrix.GetLength(1); j++)
+                for (int x = 0; x < tileMatrix.GetLength(0); x++)
                 {
                     GameObject instantiateObject = Instantiate(tilePrefab, stageArea.transform);
                     StageTile tileComponent = instantiateObject.AddComponent<StageTile>();
-                    tileComponent.tile = tileMatrix[i, j].tile;
-                    tileComponent.direction = tileMatrix[i, j].dir;
-                    tileComponent.defaultTile = tileComponent.tile;
+                    tileComponent.tile = tileMatrix[x, y].tile;
+                    tileComponent.direction = tileMatrix[x, y].dir;
+                    tileComponent.defaultTile = editableAll? defaultTile : tileComponent.tile;
                     if (tileComponent.tile.tileType == Tile.NONE)
                     {
                         tileComponent.isEditAble = true;
