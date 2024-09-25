@@ -26,7 +26,8 @@ namespace ScriptableObjects.Stage
             {
                 Tile.NONE => "공백 타일",
                 Tile.LINE => "직선 타일",
-                Tile.CORNER => "코너 타일",
+                Tile.CORNER_LEFT => "왼쪽 90도 코너 타일",
+                Tile.CORNER_RIGHT => "오른쪽 90도 코너 타일",
                 Tile.DISTRIBUTOR => "분배기 타일",
                 Tile.AMPLIFIER => "증폭기 타일",
                 Tile.MODULATOR => "변환기 타일",

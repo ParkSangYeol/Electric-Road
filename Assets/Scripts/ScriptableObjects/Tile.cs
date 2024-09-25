@@ -8,7 +8,8 @@ namespace ScriptableObjects.Stage
     {
         NONE,
         LINE,
-        CORNER,
+        CORNER_LEFT,
+        CORNER_RIGHT,
         DISTRIBUTOR,
         AMPLIFIER,
         MODULATOR,

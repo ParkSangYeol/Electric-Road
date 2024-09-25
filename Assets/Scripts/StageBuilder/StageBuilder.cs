@@ -72,7 +72,7 @@ namespace StageBuilder
             {
                 for (int j = 0; j < width; j++)
                 {
-                    StageTile stageInstance = stageArea.transform.GetChild(i * height + j).GetComponent<StageTile>();
+                    StageTile stageInstance = stageArea.transform.GetChild(i * width + j).GetComponent<StageTile>();
                     stageMat[j, i] = stageInstance;
                 }
             }
@@ -133,7 +133,7 @@ namespace StageBuilder
                                     Node nNode = new Node(nX, nY, current.root);
                                     if (current.dir != Direction.NONE && nTile != Tile.NONE)
                                     {
-                                        TileNode node = new TileNode(current.x, current.y, current.dir, nTile);
+                                        TileNode node = new TileNode(current.x, current.y, nDir, nTile);
                                         nNode.AddLast(node);
                                     }
                                     nNode.dir = nDir;
@@ -475,25 +475,59 @@ namespace StageBuilder
             switch (lastDir)
             {
                 case Direction.UP:
+                    if (currentDir is Direction.UP or Direction.DOWN)
+                    {
+                        ret = Tile.LINE;
+                    }
+                    else if (currentDir is Direction.LEFT)
+                    {
+                        ret = Tile.CORNER_LEFT;
+                    }
+                    else if (currentDir is Direction.RIGHT)
+                    {
+                        ret = Tile.CORNER_RIGHT;
+                    }
+                    break;
                 case Direction.DOWN:
                     if (currentDir is Direction.UP or Direction.DOWN)
                     {
                         ret = Tile.LINE;
                     }
-                    else if (currentDir is Direction.LEFT or Direction.RIGHT)
+                    else if (currentDir is Direction.LEFT)
                     {
-                        ret = Tile.CORNER;
+                        ret = Tile.CORNER_RIGHT;
+                    }
+                    else if (currentDir is Direction.RIGHT)
+                    {
+                        ret = Tile.CORNER_LEFT;
                     }
                     break;
                 case Direction.LEFT:
-                case Direction.RIGHT:
-                    if (currentDir is Direction.UP or Direction.DOWN)
-                    {
-                        ret = Tile.CORNER;
-                    }
-                    else if (currentDir is Direction.LEFT or Direction.RIGHT)
+                    if (currentDir is Direction.LEFT or Direction.RIGHT)
                     {
                         ret = Tile.LINE;
+                    }
+                    else if (currentDir is Direction.DOWN)
+                    {
+                        ret = Tile.CORNER_LEFT;
+                    }
+                    else if (currentDir is Direction.UP)
+                    {
+                        ret = Tile.CORNER_RIGHT;
+                    }
+                    break;
+                case Direction.RIGHT:
+                    if (currentDir is Direction.LEFT or Direction.RIGHT)
+                    {
+                        ret = Tile.LINE;
+                    }
+                    else if (currentDir is Direction.DOWN)
+                    {
+                        ret = Tile.CORNER_RIGHT;
+                    }
+                    else if (currentDir is Direction.UP)
+                    {
+                        ret = Tile.CORNER_LEFT;
                     }
                     break;
                 case Direction.NONE:
