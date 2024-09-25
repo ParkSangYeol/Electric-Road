@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileTypeName: "\uC7A5\uC560\uBB3C \uD0C0\uC77C"
   Icon: {fileID: 21300000, guid: 092ae41a105ef8849b82c03598954776, type: 3}
-  tileType: 6
+  tileType: 7
   cost: 9999

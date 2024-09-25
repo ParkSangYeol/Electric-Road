@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
-  m_Name: 2.CornerTile
+  m_Name: 2.CornerRightTile
   m_EditorClassIdentifier: 
-  tileTypeName: "\uCF54\uB108 \uD0C0\uC77C"
-  Icon: {fileID: 21300000, guid: f66cd88b780de9f4ea94f3d4f99e4dba, type: 3}
-  tileType: 2
+  tileTypeName: "\uC624\uB978\uCABD 90\uB3C4 \uCF54\uB108 \uD0C0\uC77C"
+  Icon: {fileID: 21300000, guid: b9e124ee9ddb173428610219407f6858, type: 3}
+  tileType: 3
   cost: 15
