@@ -20,6 +20,10 @@ namespace ScriptableObjects.Stage
         [LabelText("스테이지 이름")]
         public string stageName;
 
+        [VerticalGroup("Split")]
+        [EnumToggleButtons] 
+        public StageType stageType;
+        
         [VerticalGroup("Split/Meta")]
         [ReadOnly, LabelText("가로")]
         public int width;
@@ -63,23 +67,27 @@ namespace ScriptableObjects.Stage
     {
         public Direction dir;
         public TileScriptableObject tile;
+        public int electricType;
 
         public TileStruct(Direction dir, TileScriptableObject tile)
         {
             this.dir = dir;
             this.tile = tile;
+            this.electricType = 0;
         }
 
         public TileStruct()
         {
             this.dir = Direction.UP;
             this.tile = null;
+            this.electricType = 0;
         }
 
         public TileStruct(StageTile stageTile)
         {
             this.dir = stageTile.direction;
             this.tile = stageTile.tile;
+            this.electricType = 0;
         }
     }
     
@@ -90,5 +98,14 @@ namespace ScriptableObjects.Stage
         RIGHT,
         LEFT,
         NONE
+    }
+
+    public enum StageType
+    {
+        DEFAULT,
+        AMPLIFIER,
+        MODULATOR,
+        AMP_MOD
+        
     }
 }

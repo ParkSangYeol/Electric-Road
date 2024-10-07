@@ -408,6 +408,7 @@ namespace StageBuilder
                 for (int y = 0; y < height; y++)
                 {
                     map[x, y] = new TileStruct(stageMatrix[x, y]);
+                    map[x, y].electricType = stageMatrix[x, y].electricType;
                 }
             }
 

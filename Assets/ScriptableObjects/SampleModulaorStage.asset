@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a86969ddabf7d4f4dab23b8154164a39, type: 3}
-  m_Name: SampleStage
+  m_Name: SampleModulaorStage
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -18,11 +18,9 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
     - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
-    - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
     - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
     - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
     - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
-    - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -33,10 +31,10 @@ MonoBehaviour:
       Data: 0|ScriptableObjects.Stage.TileStruct[,], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 100
+      Data: 64
     - Name: ranks
       Entry: 1
-      Data: 10|10
+      Data: 8|8
     - Name: 
       Entry: 7
       Data: 1|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
@@ -225,7 +223,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -288,7 +286,7 @@ MonoBehaviour:
       Data: 1
     - Name: electricType
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -525,7 +523,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -705,7 +703,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 2
     - Name: electricType
       Entry: 3
       Data: 0
@@ -998,20 +996,20 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 65|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
+      Entry: 13
+      Data: 
     - Name: 
       Entry: 8
       Data: 
+    - Name: answerMap
+      Entry: 7
+      Data: 65|ScriptableObjects.Stage.TileStruct[,], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 64
+    - Name: ranks
+      Entry: 1
+      Data: 8|8
     - Name: 
       Entry: 7
       Data: 66|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
@@ -1050,7 +1048,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1155,7 +1153,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1200,7 +1198,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 2
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1260,10 +1258,10 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 1
     - Name: electricType
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -1275,7 +1273,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1290,7 +1288,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1305,7 +1303,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1317,10 +1315,10 @@ MonoBehaviour:
       Data: 86|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 4
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1350,7 +1348,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1437,10 +1435,10 @@ MonoBehaviour:
       Data: 94|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 3
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1500,7 +1498,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 2
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1512,7 +1510,7 @@ MonoBehaviour:
       Data: 99|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: tile
       Entry: 10
       Data: 0
@@ -1530,7 +1528,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1538,29 +1536,29 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: answerMap
       Entry: 7
-      Data: 101|ScriptableObjects.Stage.TileStruct[,], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 100
-    - Name: ranks
-      Entry: 1
-      Data: 10|10
-    - Name: 
-      Entry: 7
-      Data: 102|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
+      Data: 101|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
       Data: 0
     - Name: tile
       Entry: 10
       Data: 0
+    - Name: electricType
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 102|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
+    - Name: dir
+      Entry: 3
+      Data: 3
+    - Name: tile
+      Entry: 10
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1677,10 +1675,10 @@ MonoBehaviour:
       Data: 110|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 4
     - Name: tile
       Entry: 10
-      Data: 0
+      Data: 2
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1800,7 +1798,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1947,10 +1945,10 @@ MonoBehaviour:
       Data: 128|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 0
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1973,1093 +1971,13 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 130|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 131|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 132|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 133|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 134|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 1
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 135|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 136|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 4
-    - Name: tile
-      Entry: 10
-      Data: 5
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 137|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 138|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 4
-    - Name: tile
-      Entry: 10
-      Data: 5
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 139|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 140|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 141|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 6
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 142|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 143|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 144|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 145|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 146|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 2
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 147|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 148|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 149|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 150|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 151|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 3
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 152|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 153|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 154|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 155|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 156|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 2
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 157|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 158|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 159|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 160|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 161|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 3
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 162|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 163|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 164|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 165|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 166|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 2
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 167|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 168|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 169|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 2
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 170|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 171|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 3
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 172|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 173|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 174|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 175|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 176|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 1
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 177|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 178|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 179|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 2
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 180|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 181|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 3
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 182|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 183|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 184|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 185|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 186|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 187|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 188|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 189|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 2
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 190|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 191|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 3
-    - Name: tile
-      Entry: 10
-      Data: 4
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 192|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 193|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 194|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 195|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 196|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 197|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 198|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 199|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 0
-    - Name: tile
-      Entry: 10
-      Data: 2
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 200|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 1
-    - Name: tile
-      Entry: 10
-      Data: 0
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 201|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
-    - Name: dir
-      Entry: 3
-      Data: 4
-    - Name: tile
-      Entry: 10
-      Data: 3
-    - Name: electricType
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
       Entry: 8
       Data: 
-  stageName: 
-  stageType: 1
-  width: 10
-  height: 10
-  ans: 205
+  stageName: SampleModulaorStage
+  stageType: 0
+  width: 8
+  height: 8
+  ans: 80

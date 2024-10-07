@@ -19,8 +19,10 @@ namespace Stage
         [SerializeField] 
         private GameObject palateSelectGameObject;
         [SerializeField] 
-        private GameObject stageTileSelectGameObject;
-
+        private GameObject stageTileSelectGameObject; 
+        [SerializeField] 
+        private GameObject modulatorGameObject;
+        
         [SerializeField] 
         private Button upButton;
         [SerializeField] 
@@ -31,6 +33,8 @@ namespace Stage
         private Button rightButton;
         [SerializeField] 
         private Button deleteButton;
+        [SerializeField] 
+        private Button modulatorDeleteButton;
 
         [SerializeField] 
         private GraphicRaycaster raycaster;
@@ -89,6 +93,11 @@ namespace Stage
 
         private void SetPalateTile(PalateTile tile)
         {
+            if (palateTileData == tile.tile)
+            {
+                palateSelectGameObject.transform.position = poolPosition;
+                palateTileData = null;
+            }
             palateTileData = tile.tile;
             
             // 선택 UI 표시
@@ -97,32 +106,70 @@ namespace Stage
 
         private void SetStageTile(StageTile tile, Direction dir)
         {
-            if (palateTileData == null)
+            if (palateTileData == null || !tile.isEditAble)
             {
                 return;
             }
             tile.tile = palateTileData;
             tile.direction = dir;
+            currentSelectTile = null;
 
             stageTileSelectGameObject.transform.position = poolPosition;
         }
 
+        public void SetModulator(int num)
+        {
+            if (palateTileData == null || !currentSelectTile.isEditAble)
+            {
+                return;
+            }
+
+            if (currentSelectTile.tile.tileType is not (ScriptableObjects.Stage.Tile.MODULATOR or ScriptableObjects.Stage.Tile.FACTORY))
+            {
+                return;
+            }
+            currentSelectTile.electricType = num;
+            currentSelectTile = null;
+            
+            modulatorGameObject.transform.position = poolPosition;    
+        }
+        
         private void SetDefaultStageTile(StageTile tile)
         {
             tile.tile = tile.defaultTile;
+            currentSelectTile = null;
             stageTileSelectGameObject.transform.position = poolPosition;
+            modulatorGameObject.transform.position = poolPosition;
         }
 
         private void SelectStageTile(StageTile tile)
         {
-            if (palateTileData == null)
+            if (palateTileData == null || !tile.isEditAble)
             {
                 return;
             }
-            
-            currentSelectTile = tile;
 
-            stageTileSelectGameObject.transform.position = tile.transform.position;
+            if (tile == currentSelectTile)
+            {
+                currentSelectTile = null;
+                stageTileSelectGameObject.transform.position = poolPosition;
+                modulatorGameObject.transform.position = poolPosition;
+                return;
+            }
+            stageTileSelectGameObject.transform.position = poolPosition;
+            modulatorGameObject.transform.position = poolPosition;
+
+            currentSelectTile = tile;
+            if (tile.tile.tileType == palateTileData.tileType 
+                && tile.tile.tileType is ScriptableObjects.Stage.Tile.FACTORY or ScriptableObjects.Stage.Tile.MODULATOR)
+            {
+                // 만약 선택한 타일과 타일 팔레트의 타일이 모두 변환기인 경우
+                modulatorGameObject.transform.position = tile.transform.position;
+            }
+            else
+            {
+                stageTileSelectGameObject.transform.position = tile.transform.position;
+            }
         }
 
         private void SetButton()
@@ -144,6 +191,10 @@ namespace Stage
                 SetStageTile(currentSelectTile, Direction.RIGHT);
             });
             deleteButton.onClick.AddListener(() =>
+            {
+                SetDefaultStageTile(currentSelectTile);
+            });
+            modulatorDeleteButton.onClick.AddListener(() =>
             {
                 SetDefaultStageTile(currentSelectTile);
             });
