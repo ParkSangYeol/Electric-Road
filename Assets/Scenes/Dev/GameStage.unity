@@ -526,8 +526,10 @@ GameObject:
   m_Component:
   - component: {fileID: 335320927}
   - component: {fileID: 335320925}
+  - component: {fileID: 335320929}
   - component: {fileID: 335320926}
   - component: {fileID: 335320928}
+  - component: {fileID: 335320930}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -583,6 +585,8 @@ MonoBehaviour:
   modulatorDeleteButton: {fileID: 1561080243}
   raycaster: {fileID: 1985017691}
   eventSystem: {fileID: 30284700}
+  wireTileHandler: {fileID: 335320929}
+  commandHistoryHandler: {fileID: 335320930}
 --- !u!224 &335320927
 RectTransform:
   m_ObjectHideFlags: 0
@@ -618,6 +622,41 @@ MonoBehaviour:
   stageData: {fileID: 11400000, guid: 0cce9e2e2095a1740aaa6eb0fb0f08d9, type: 2}
   stageArea: {fileID: 1069450710}
   maxElectric: 6
+--- !u!114 &335320929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335320923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed7da0ee4aa2fd48a34b41e4c8b564e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  canTracking: 0
+  eventSystem: {fileID: 30284700}
+  raycaster: {fileID: 1985017691}
+  commandHistoryHandler: {fileID: 335320930}
+  onStartTrack:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndTrack:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &335320930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335320923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aee494d828444b4999abb755ef64b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &416782715
 GameObject:
   m_ObjectHideFlags: 0
