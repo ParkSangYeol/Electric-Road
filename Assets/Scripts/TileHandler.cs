@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Command;
 using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -40,6 +41,11 @@ namespace Stage
         private GraphicRaycaster raycaster;
         [SerializeField]
         private EventSystem eventSystem;
+        [SerializeField]
+        private WireTileHandler wireTileHandler;
+        [SerializeField] 
+        private CommandHistoryHandler commandHistoryHandler;
+        
         private Vector3 poolPosition;
         
         void Start()
@@ -47,6 +53,11 @@ namespace Stage
             poolPosition = new Vector3(-1000, -1000, 0);
             palateSelectGameObject.transform.position = 
                 stageTileSelectGameObject.transform.position = poolPosition;
+            if (wireTileHandler == null)
+            {
+                wireTileHandler = GetComponent<WireTileHandler>();
+            }
+            wireTileHandler.canTracking = false;
             SetButton();
         }
 
@@ -100,6 +111,22 @@ namespace Stage
             }
             palateTileData = tile.tile;
             
+            // Stage Tile에 배치된 가이드들의 위치를 리셋
+            stageTileSelectGameObject.transform.position = poolPosition;
+            modulatorGameObject.transform.position = poolPosition;
+            currentSelectTile = null;
+            
+            // 전선일 경우 전용 생성기 사용
+            if (tile.tile.tileType is ScriptableObjects.Stage.Tile.LINE
+                or ScriptableObjects.Stage.Tile.CORNER_RIGHT or ScriptableObjects.Stage.Tile.CORNER_LEFT)
+            {
+                wireTileHandler.canTracking = true;
+            }
+            else
+            {
+                wireTileHandler.canTracking = false;
+            }
+            
             // 선택 UI 표시
             palateSelectGameObject.transform.position = tile.transform.position;
         }
@@ -110,8 +137,11 @@ namespace Stage
             {
                 return;
             }
-            tile.tile = palateTileData;
-            tile.direction = dir;
+
+            ICommand command = new TilePlaceCommand(tile, palateTileData, dir, tile.electricType);
+            command.Execute();
+            commandHistoryHandler.AddCommand(command);
+            
             currentSelectTile = null;
 
             stageTileSelectGameObject.transform.position = poolPosition;
@@ -128,7 +158,9 @@ namespace Stage
             {
                 return;
             }
-            currentSelectTile.electricType = num;
+            ICommand command = new TilePlaceCommand(currentSelectTile, currentSelectTile.tile, currentSelectTile.direction, num);
+            command.Execute();
+            commandHistoryHandler.AddCommand(command);
             currentSelectTile = null;
             
             modulatorGameObject.transform.position = poolPosition;    
@@ -136,7 +168,10 @@ namespace Stage
         
         private void SetDefaultStageTile(StageTile tile)
         {
-            tile.tile = tile.defaultTile;
+            ICommand command = new TileRemoveCommand(tile);
+            command.Execute();
+            commandHistoryHandler.AddCommand(command);
+            
             currentSelectTile = null;
             stageTileSelectGameObject.transform.position = poolPosition;
             modulatorGameObject.transform.position = poolPosition;
@@ -144,7 +179,9 @@ namespace Stage
 
         private void SelectStageTile(StageTile tile)
         {
-            if (palateTileData == null || !tile.isEditAble)
+            if (palateTileData == null || !tile.isEditAble || 
+                palateTileData.tileType is ScriptableObjects.Stage.Tile.LINE 
+                    or ScriptableObjects.Stage.Tile.CORNER_LEFT or ScriptableObjects.Stage.Tile.CORNER_RIGHT)
             {
                 return;
             }
