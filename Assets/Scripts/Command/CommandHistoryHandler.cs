@@ -23,6 +23,12 @@ namespace Command
             redoStack.Clear();
         }
 
+        public void ClearStack()
+        {
+            undoStack?.Clear();
+            redoStack?.Clear();
+        }
+        
         [Button]
         public void Undo()
         {
