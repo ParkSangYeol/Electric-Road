@@ -76,7 +76,7 @@ namespace StageBuilder
         public void CreateStageInScene(TileStruct[,] tileMatrix, bool editableAll = false)
         {
             StageArea areaComponent = stageArea.GetComponent<StageArea>();
-            areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);;
+            areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);
             areaComponent.height = tileMatrix.GetLength(1);
             
             for (int y = 0; y < tileMatrix.GetLength(1); y++)
@@ -88,6 +88,7 @@ namespace StageBuilder
                     tileComponent.tile = tileMatrix[x, y].tile;
                     tileComponent.direction = tileMatrix[x, y].dir;
                     tileComponent.defaultTile = editableAll? defaultTile : tileComponent.tile;
+                    tileComponent.electricType = tileMatrix[x, y].electricType;
                     if (tileComponent.tile.tileType == Tile.NONE)
                     {
                         tileComponent.isEditAble = true;
@@ -109,7 +110,7 @@ namespace StageBuilder
             }
         }
         
-        private void ClearStage()
+        public void ClearStage()
         {
             int tileNum = tiles.Count;
             for (int i = 0; i < tileNum; i++)

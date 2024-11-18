@@ -37,6 +37,8 @@ namespace Stage
         {
             onTileChange = new UnityEvent<TileScriptableObject>();
             onTileChange.AddListener(ChangeTileImage);
+            isEditAble = false;
+            
             if (image == null)
             {
                 image = GetComponent<Image>();

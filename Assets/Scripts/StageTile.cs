@@ -26,6 +26,7 @@ namespace Stage {
         }
         public UnityEvent<Direction> onChangeDirection;
         public TileScriptableObject defaultTile;
+        public int electricType;
         
         private void Awake()
         {
