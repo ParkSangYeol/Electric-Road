@@ -93,6 +93,7 @@ namespace Stage
                 {
                     Debug.Log("Find Factory, End Track.");
                     // 공장 타일에 도착. 조기 종료
+                    trackTiles.Add(stageTile.transform.position, stageTile);
                     PlaceTiles();
                     return;
                 }
@@ -164,6 +165,12 @@ namespace Stage
                 if (currentTile == null)
                 {
                     Debug.LogError("잘못된 값이 저장되었습니다. currentIdx: " + idx + ", 저장된 값: " + trackTiles[idx]);
+                }
+
+                if (idx == trackTiles.Count - 1 && currentTile.tile.tileType.Equals(ScriptableObjects.Stage.Tile.FACTORY))
+                {
+                    // 마지막 타일이 공장인 경우
+                    continue;
                 }
                 // 방향 설정
                 Direction dir;

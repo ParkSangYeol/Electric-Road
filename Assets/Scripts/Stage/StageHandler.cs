@@ -5,6 +5,7 @@ using System.Linq;
 using ScriptableObjects.Stage;
 using StageBuilder;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Stage
 {
@@ -20,6 +21,7 @@ namespace Stage
         private StageArea stageArea;
         
         public int maxElectric;
+        public UnityEvent onResetStage;
         
         private void Start()
         {
@@ -46,6 +48,8 @@ namespace Stage
             
             stageEditor.ClearStage();
             stageEditor.CreateStageInScene(stageData.map);
+            
+            onResetStage.Invoke();
         }
 
         public void CheckAnswer()
