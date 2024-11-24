@@ -41,7 +41,7 @@ namespace Stage
             
             if (image == null)
             {
-                image = GetComponent<Image>();
+                image = transform.GetChild(0).GetComponent<Image>();
             }
         }
 

@@ -20,18 +20,18 @@ namespace StageBuilder
 
         [SerializeField, SceneObjectsOnly] 
         private GridLayoutGroup stageArea;
-        [SerializeField, SceneObjectsOnly] 
-        private Transform tilePalateArea;
-        
-        [SerializeField, AssetsOnly] 
-        private GameObject tilePrefab;
-        
-        [SerializeField, AssetsOnly] 
-        private List<TileScriptableObject> tilePlateDatas;
         private List<GameObject> tilePlates;
         
         [SerializeField, AssetsOnly] 
+        private List<GameObject> tilePrefabs;
+        
+        [SerializeField, AssetsOnly] 
         private TileScriptableObject defaultTile;
+
+        [SerializeField] 
+        private Transform selectGuide;
+        [SerializeField] 
+        private Transform modulatorGuide;
         
         private List<GameObject> tiles; 
 
@@ -42,11 +42,6 @@ namespace StageBuilder
         {
             tiles = new List<GameObject>();
             tilePlates = new List<GameObject>();
-        }
-
-        private void Start()
-        {
-            CreateTilePalate();
         }
 
         public void CreateBlankStageInScene()
@@ -78,6 +73,24 @@ namespace StageBuilder
             StageArea areaComponent = stageArea.GetComponent<StageArea>();
             areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);
             areaComponent.height = tileMatrix.GetLength(1);
+            GameObject tilePrefab = null;
+            switch (areaComponent.width)
+            {
+                case 6:
+                    tilePrefab = tilePrefabs[0];
+                    selectGuide.localScale = modulatorGuide.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+                    break;
+                case 7:
+                    tilePrefab = tilePrefabs[1];
+                    selectGuide.localScale = modulatorGuide.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+                    break;
+                case 8:
+                default:
+                    tilePrefab = tilePrefabs[2];
+                    break;
+            }
+            
+            stageArea.cellSize = tilePrefab.GetComponent<RectTransform>().sizeDelta;
             
             for (int y = 0; y < tileMatrix.GetLength(1); y++)
             {
@@ -96,17 +109,6 @@ namespace StageBuilder
                     
                     tiles.Add(instantiateObject);
                 }
-            }
-        }
-
-        private void CreateTilePalate()
-        {
-            foreach (var tileData in tilePlateDatas)
-            {
-                GameObject instantiateObject = Instantiate(tilePrefab, tilePalateArea.transform);
-                PalateTile tileComponent = instantiateObject.AddComponent<PalateTile>();
-                tileComponent.tile = tileData;
-                tileComponent.isEditAble = false;
             }
         }
         

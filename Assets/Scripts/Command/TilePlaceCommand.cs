@@ -10,10 +10,10 @@ namespace Command
     {
         // 단일 타일을 배치하는 커맨드
         private readonly StageTile targetTile;
-        private readonly TileScriptableObject targetTileData;
+        public readonly TileScriptableObject targetTileData;
         private readonly Direction targetDirection;
         private readonly int targetElectricType;
-        private readonly TileScriptableObject beforeTileData;
+        public readonly TileScriptableObject beforeTileData;
         private readonly Direction beforeDirection;
         private readonly int beforeElectricType;
 

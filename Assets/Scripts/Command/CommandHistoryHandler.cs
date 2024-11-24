@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Command;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Command
 {
@@ -10,15 +11,19 @@ namespace Command
     {
         private Stack<ICommand> undoStack;
         private Stack<ICommand> redoStack;
-    
+
+        public UnityEvent<ICommand> onExecuteCommand;
+        public UnityEvent<ICommand> onUndoCommand;
         void Start()
         {
             undoStack = new Stack<ICommand>();
             redoStack = new Stack<ICommand>();
         }
 
-        public void AddCommand(ICommand command)
+        public void ExecuteCommand(ICommand command)
         {
+            command.Execute();
+            onExecuteCommand.Invoke(command);
             undoStack.Push(command);
             redoStack.Clear();
         }
@@ -39,7 +44,8 @@ namespace Command
         
             ICommand lastCommand = undoStack.Pop();
             lastCommand.Undo();
-        
+            onUndoCommand.Invoke(lastCommand);
+            
             redoStack.Push(lastCommand);
         }
 
@@ -53,6 +59,7 @@ namespace Command
         
             ICommand lastCommand = redoStack.Pop();
             lastCommand.Execute();
+            onExecuteCommand.Invoke(lastCommand);
         
             undoStack.Push(lastCommand);
         }

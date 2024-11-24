@@ -51,6 +51,19 @@ namespace Stage {
         public void EraseTile()
         {
             tile = defaultTile;
+            image.color = Color.white;
+        }
+
+        [Button]
+        public void ActiveTile()
+        {
+            image.color = electricType switch 
+            {
+                0 => Color.yellow,
+                1 => Color.cyan,
+                2 => Color.magenta,
+                3 => Color.green
+            };
         }
     }
 }

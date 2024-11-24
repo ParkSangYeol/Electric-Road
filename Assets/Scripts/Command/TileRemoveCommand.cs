@@ -10,7 +10,7 @@ namespace Command
     {
         // 단일 타일을 제거하는 커맨드
         private readonly StageTile targetTile;
-        private readonly TileScriptableObject beforeTileData;
+        public readonly TileScriptableObject beforeTileData;
         private readonly Direction beforeDirection;
         private readonly int beforeElectricType;
 

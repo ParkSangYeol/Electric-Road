@@ -16,7 +16,6 @@ namespace Stage
     public class WireTileHandler : MonoBehaviour
     {
         public PlaceState state;
-        public bool canTracking;
         
         [SerializeField] 
         private EventSystem eventSystem;
@@ -34,7 +33,6 @@ namespace Stage
         private void Awake()
         {
             state = PlaceState.IDLE;
-            canTracking = false;
         }
 
         private void Start()
@@ -45,12 +43,6 @@ namespace Stage
 
         private void Update()
         {
-            // TODO Change GetMouseButton to GetTouch.
-            if (!canTracking)
-            {
-                return;
-            }
-            
             if (state.Equals(PlaceState.IDLE) && Input.GetMouseButtonDown(0))
             {
                 var stageTile = GetStageTile(Input.mousePosition);
@@ -147,8 +139,7 @@ namespace Stage
             {
                 // 분배기로 변경
                 ICommand command = new TilePlaceCommand(firstElement, tileDict[ScriptableObjects.Stage.Tile.DISTRIBUTOR], Direction.NONE, firstElement.electricType);
-                command.Execute();
-                commandHistoryHandler.AddCommand(command);
+                commandHistoryHandler.ExecuteCommand(command);
             }
             else if (firstElement.tile.tileType.Equals(ScriptableObjects.Stage.Tile.NONE))
             {
@@ -208,8 +199,7 @@ namespace Stage
                 }
                 
                 ICommand command = new TilePlaceCommand(currentTile, tileData, dir, currentTile.electricType);
-                command.Execute();
-                commandHistoryHandler.AddCommand(command);
+                commandHistoryHandler.ExecuteCommand(command);
             }
 
             state = PlaceState.IDLE;

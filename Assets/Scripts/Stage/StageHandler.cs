@@ -2,27 +2,72 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Command;
 using ScriptableObjects.Stage;
+using Sirenix.OdinInspector;
+using Stage.UI;
 using StageBuilder;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Stage
 {
     public class StageHandler : MonoBehaviour
     {
-        [SerializeField]
-        private StageEditor stageEditor;
+        [SerializeField] private StageEditor stageEditor;
 
-        [SerializeField] 
-        private StageScriptableObject stageData;
+        public StageScriptableObject stageData;
+
+        [SerializeField] private StageArea stageArea;
+
+        [SerializeField] private EditModeHandler modeHandler;
+
+        [SerializeField] private StarterHandler starterHandler;
+
+        [SerializeField] private CommandHistoryHandler commandHistoryHandler;
+        
+        [SerializeField] private CostSlider costSlider;
         
         [SerializeField] 
-        private StageArea stageArea;
+        private Button backButton;
+        [SerializeField] 
+        private Button undoButton;
+        [SerializeField] 
+        private Button redoButton;
+        [SerializeField] 
+        private TMP_Text title;
+        
+        [SerializeField] 
+        private ResultPopup resultPopup;
         
         public int maxElectric;
         public UnityEvent onResetStage;
-        
+        public UnityEvent<float> onCostChange;
+        public List<int> thresholdAmounts;
+        private float _cost;
+        [ShowInInspector, ReadOnly]
+        public float cost
+        {
+            get => _cost;
+            set
+            {
+                if (_cost != value)
+                {
+                    onCostChange.Invoke(value);
+                    _cost = value;
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            _cost = 1;
+            // thresholdAmounts for test
+            thresholdAmounts = new List<int> { 250, 260, 270 };
+        }
+
         private void Start()
         {
             if (stageEditor == null)
@@ -34,6 +79,9 @@ namespace Stage
             {
                 maxElectric = 6;
             }
+            backButton.onClick.AddListener(GameManager.Instance.LoadStage);
+            commandHistoryHandler.onExecuteCommand.AddListener(SetCostAfterExecuteCommand);
+            commandHistoryHandler.onUndoCommand.AddListener(SetCostAfterUndoCommand);
 
             ResetStage();
         }
@@ -45,15 +93,62 @@ namespace Stage
                 Debug.LogError("Stage Data가 존재하지 않습니다!");
                 return;
             }
-            
+
             stageEditor.ClearStage();
             stageEditor.CreateStageInScene(stageData.map);
-            
+
             onResetStage.Invoke();
+            
+            thresholdAmounts = stageData.thresholds;
+            costSlider.SetThresholdAmount(thresholdAmounts);
+            cost = 0;
+
+            title.text = stageData.stageName;
         }
+
+        // 커맨드 히스토리 관련 함수 모음.
+        #region About CommandEvent Method
+
+        private void SetCostAfterExecuteCommand(ICommand command)
+        {
+            switch (command)
+            {
+                case TileRemoveCommand removeCommand:
+                    cost -= removeCommand.beforeTileData.cost;
+                    break;
+                case TilePlaceCommand placeCommand:
+                    cost -= placeCommand.beforeTileData.cost;
+                    cost += placeCommand.targetTileData.cost;
+                    break;
+            }
+        }
+
+        private void SetCostAfterUndoCommand(ICommand command)
+        {
+            switch (command)
+            {
+                case TileRemoveCommand removeCommand:
+                    cost += removeCommand.beforeTileData.cost;
+                    break;
+                case TilePlaceCommand placeCommand:
+                    cost += placeCommand.beforeTileData.cost;
+                    cost -= placeCommand.targetTileData.cost;
+                    break;
+            }
+        }
+
+        #endregion
+
+        // 정답 확인 관련 알고리즘 모음.
+        // *주의!* 코드가 상당히 긺.
+        #region About Check Answer
 
         public void CheckAnswer()
         {
+            // 편집 중단.
+            modeHandler.ChangeMode(EditMode.STOP);
+            undoButton.enabled = redoButton.enabled = false;
+            
             // 맵 정보를 가져오기
             StageTile[,] stageMatrix = MakeStageMatrix();
             TileStruct[,] map = MakeStageToTileStruct(ref stageMatrix);
@@ -68,20 +163,48 @@ namespace Stage
                 StageType.AMP_MOD => CheckAmpAndModMapAnswer(map),
                 _ => false
             };
-
-            // 정답이 맞을 경우 전체 비용 계산하기
-            if (!isSuccess) return;
             
-            int cost = (from StageTile stageTile in stageMatrix 
-                where stageTile.tile.tileType is not 
-                    (ScriptableObjects.Stage.Tile.FACTORY 
-                    or ScriptableObjects.Stage.Tile.OBSTACLE 
-                    or ScriptableObjects.Stage.Tile.GENERATOR)
-                select (int)stageTile.tile.cost).Sum();
+            int numOfStar = 0;
+            if (cost <= thresholdAmounts[0])
+            {
+                numOfStar = 3;
+            }
+            else if (cost <= thresholdAmounts[1])
+            {
+                
+                numOfStar = 2;
+            }
+            else if (cost <= thresholdAmounts[2])
+            {
+                
+                numOfStar = 1;
+            }
             
+            if (!isSuccess || numOfStar == 0)
+            {
+                // 실패
+                modeHandler.ChangeMode(EditMode.DRAW);
+                undoButton.enabled = redoButton.enabled = true;
+                StartCoroutine(starterHandler.ResetHandler());
+                return;
+            }
+            
+            // 정답
             Debug.Log("정답! 비용: " + cost);
+            StartCoroutine(resultPopup.Activate(numOfStar, (int)cost));
+            
+            // 데이터 갱신
+            if (PlayerPrefs.HasKey(stageData.name))
+            {
+                PlayerPrefs.SetInt(stageData.name, Mathf.Max(PlayerPrefs.GetInt(stageData.name), numOfStar));
+            }
+            else
+            {
+                PlayerPrefs.SetInt(stageData.name, numOfStar);
+            }
+            PlayerPrefs.Save();
         }
-
+        
         private bool CheckDefaultMapAnswer(in TileStruct[,] map)
         {
             Vector2Int startPoint = GetStartPoint(map);
@@ -449,6 +572,11 @@ namespace Stage
             return false;
         }
 
+        #endregion
+
+        // 정답 확인 등 다른 함수에서 사용하는 보조 함수 모음.
+        #region About Utility
+
         private int GetDirToInt(Direction dir)
         {
             return  dir switch
@@ -534,6 +662,8 @@ namespace Stage
 
             return map;
         }
+
+#endregion
     }
 
     public class TileSearchNode

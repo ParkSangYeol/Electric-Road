@@ -3917,6 +3917,8 @@ GameObject:
   - component: {fileID: 1715944719}
   - component: {fileID: 1715944720}
   - component: {fileID: 1715944721}
+  - component: {fileID: 1715944722}
+  - component: {fileID: 1715944723}
   m_Layer: 0
   m_Name: StageBuilder
   m_TagString: Untagged
@@ -3959,7 +3961,11 @@ MonoBehaviour:
   heightInputField: {fileID: 1328527789}
   stageArea: {fileID: 1362726284}
   tilePalateArea: {fileID: 2131034770}
-  tilePrefab: {fileID: 656751046117224516, guid: 84d5d4a1a13effd428828b8853dd2ac4, type: 3}
+  tilePrefabs:
+  - {fileID: 656751046117224516, guid: 84d5d4a1a13effd428828b8853dd2ac4, type: 3}
+  - {fileID: 656751046117224516, guid: e0e79ca8ea35ea54b896dab2519783aa, type: 3}
+  - {fileID: 656751046117224516, guid: fc28cf36d2155744784a64ffe1b187cb, type: 3}
+  tilePalatePrefab: {fileID: 656751046117224516, guid: 84d5d4a1a13effd428828b8853dd2ac4, type: 3}
   tilePlateDatas:
   - {fileID: 11400000, guid: 7eb27a1a9d5f1bb468f7f0919066dd59, type: 2}
   - {fileID: 11400000, guid: 440d405a393361647a5d9701bd2557cb, type: 2}
@@ -3990,6 +3996,8 @@ MonoBehaviour:
   modulatorDeleteButton: {fileID: 1452029899}
   raycaster: {fileID: 647221078}
   eventSystem: {fileID: 1154215036}
+  wireTileHandler: {fileID: 1715944722}
+  commandHistoryHandler: {fileID: 1715944723}
 --- !u!114 &1715944721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4005,6 +4013,41 @@ MonoBehaviour:
   stageArea: {fileID: 1362726285}
   costText: {fileID: 670351594}
   stageEditor: {fileID: 1715944719}
+--- !u!114 &1715944722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715944717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed7da0ee4aa2fd48a34b41e4c8b564e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  canTracking: 0
+  eventSystem: {fileID: 1154215036}
+  raycaster: {fileID: 647221078}
+  commandHistoryHandler: {fileID: 1715944723}
+  onStartTrack:
+    m_PersistentCalls:
+      m_Calls: []
+  onEndTrack:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1715944723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715944717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4aee494d828444b4999abb755ef64b1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1812580641
 GameObject:
   m_ObjectHideFlags: 0

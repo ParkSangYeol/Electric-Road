@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Command;
@@ -14,13 +15,39 @@ namespace Stage
         // 마우스, 터치를 이용한 타일 배치, 삭제 기능을 지원
         [ShowInInspector, ReadOnly]
         private TileScriptableObject palateTileData;
-        [ShowInInspector, ReadOnly] 
+        [ShowInInspector, ReadOnly]
         private StageTile currentSelectTile;
+        
+        [SerializeField] 
+        private GraphicRaycaster raycaster;
+        [SerializeField]
+        private EventSystem eventSystem;
+        [SerializeField] 
+        private CommandHistoryHandler commandHistoryHandler;
 
+        private bool _active;
+        
+        // Tile Palate 관련 변수들
+        [SerializeField, SceneObjectsOnly] 
+        private Transform tilePalateArea;
+        
+        [SerializeField, AssetsOnly] 
+        private GameObject tilePalatePrefab;
+        
+        [SerializeField, AssetsOnly] 
+        private List<TileScriptableObject> tilePlateDatas;
+
+        private List<PalateTile> palateTiles;
+        
+        // 가이드 관련 변수들
+        private Vector3 poolPosition;
+        
         [SerializeField] 
         private GameObject palateSelectGameObject;
+        
         [SerializeField] 
         private GameObject stageTileSelectGameObject; 
+        
         [SerializeField] 
         private GameObject modulatorGameObject;
         
@@ -32,37 +59,29 @@ namespace Stage
         private Button leftButton;
         [SerializeField] 
         private Button rightButton;
-        [SerializeField] 
-        private Button deleteButton;
-        [SerializeField] 
-        private Button modulatorDeleteButton;
 
-        [SerializeField] 
-        private GraphicRaycaster raycaster;
-        [SerializeField]
-        private EventSystem eventSystem;
-        [SerializeField]
-        private WireTileHandler wireTileHandler;
-        [SerializeField] 
-        private CommandHistoryHandler commandHistoryHandler;
-        
-        private Vector3 poolPosition;
-        
+        private void Awake()
+        {
+            palateTiles = new List<PalateTile>();
+            _active = true;
+        }
+
         void Start()
         {
             poolPosition = new Vector3(-1000, -1000, 0);
             palateSelectGameObject.transform.position = 
-                stageTileSelectGameObject.transform.position = poolPosition;
-            if (wireTileHandler == null)
-            {
-                wireTileHandler = GetComponent<WireTileHandler>();
-            }
-            wireTileHandler.canTracking = false;
+                stageTileSelectGameObject.transform.position = 
+                    modulatorGameObject.transform.position = poolPosition;
             SetButton();
+            CreateTilePalate();
         }
 
         void Update()
         {
+            if (!_active)
+            {
+                return;
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Mouse Down");
@@ -116,17 +135,6 @@ namespace Stage
             modulatorGameObject.transform.position = poolPosition;
             currentSelectTile = null;
             
-            // 전선일 경우 전용 생성기 사용
-            if (tile.tile.tileType is ScriptableObjects.Stage.Tile.LINE
-                or ScriptableObjects.Stage.Tile.CORNER_RIGHT or ScriptableObjects.Stage.Tile.CORNER_LEFT)
-            {
-                wireTileHandler.canTracking = true;
-            }
-            else
-            {
-                wireTileHandler.canTracking = false;
-            }
-            
             // 선택 UI 표시
             palateSelectGameObject.transform.position = tile.transform.position;
         }
@@ -139,8 +147,7 @@ namespace Stage
             }
 
             ICommand command = new TilePlaceCommand(tile, palateTileData, dir, tile.electricType);
-            command.Execute();
-            commandHistoryHandler.AddCommand(command);
+            commandHistoryHandler.ExecuteCommand(command);
             
             currentSelectTile = null;
 
@@ -159,29 +166,15 @@ namespace Stage
                 return;
             }
             ICommand command = new TilePlaceCommand(currentSelectTile, currentSelectTile.tile, currentSelectTile.direction, num);
-            command.Execute();
-            commandHistoryHandler.AddCommand(command);
+            commandHistoryHandler.ExecuteCommand(command);
             currentSelectTile = null;
             
             modulatorGameObject.transform.position = poolPosition;    
         }
-        
-        private void SetDefaultStageTile(StageTile tile)
-        {
-            ICommand command = new TileRemoveCommand(tile);
-            command.Execute();
-            commandHistoryHandler.AddCommand(command);
-            
-            currentSelectTile = null;
-            stageTileSelectGameObject.transform.position = poolPosition;
-            modulatorGameObject.transform.position = poolPosition;
-        }
 
         private void SelectStageTile(StageTile tile)
         {
-            if (palateTileData == null || !tile.isEditAble || 
-                palateTileData.tileType is ScriptableObjects.Stage.Tile.LINE 
-                    or ScriptableObjects.Stage.Tile.CORNER_LEFT or ScriptableObjects.Stage.Tile.CORNER_RIGHT)
+            if (palateTileData == null || !tile.isEditAble)
             {
                 return;
             }
@@ -209,6 +202,23 @@ namespace Stage
             }
         }
 
+        #region Init
+
+        private void CreateTilePalate()
+        {
+            palateTiles.Clear();
+            foreach (var tileData in tilePlateDatas)
+            {
+                GameObject instantiateObject = Instantiate(tilePalatePrefab, tilePalateArea.transform);
+                PalateTile tileComponent = instantiateObject.GetComponent<PalateTile>();
+                tileComponent.tile = tileData;
+                tileComponent.isEditAble = false;
+                tileComponent.Active(_active);
+                
+                palateTiles.Add(tileComponent);
+            }
+        }
+        
         private void SetButton()
         {
             upButton.onClick.AddListener(() =>
@@ -227,14 +237,40 @@ namespace Stage
             {
                 SetStageTile(currentSelectTile, Direction.RIGHT);
             });
-            deleteButton.onClick.AddListener(() =>
+        }
+
+        #endregion
+        
+        public void Active(bool active)
+        {
+            if (active == _active)
             {
-                SetDefaultStageTile(currentSelectTile);
-            });
-            modulatorDeleteButton.onClick.AddListener(() =>
+                return;
+            }
+            _active = active;
+            
+            if (active)
             {
-                SetDefaultStageTile(currentSelectTile);
-            });
+                // 활성화
+                foreach (var palateTile in palateTiles)
+                {
+                    palateTile.Active(true);
+                }
+            }
+            else
+            {
+                // 비활성화
+                foreach (var palateTile in palateTiles)
+                {
+                    palateTile.Active(false);
+                }
+
+                palateSelectGameObject.transform.position =
+                    stageTileSelectGameObject.transform.position =
+                        modulatorGameObject.transform.position = poolPosition;
+
+                currentSelectTile = null;
+            }
         }
     }
 }
