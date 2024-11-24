@@ -22,8 +22,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
     - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
     - {fileID: 11400000, guid: 5139d49a12f2f7f40ac306f96892f57e, type: 2}
-    - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
     - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
+    - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -226,7 +226,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 2
     - Name: electricType
       Entry: 3
       Data: 0
@@ -571,7 +571,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -646,7 +646,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -676,7 +676,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -691,7 +691,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -898,10 +898,10 @@ MonoBehaviour:
       Data: 58|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -928,7 +928,7 @@ MonoBehaviour:
       Data: 60|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 4
     - Name: tile
       Entry: 10
       Data: 6
@@ -973,10 +973,10 @@ MonoBehaviour:
       Data: 63|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -991,7 +991,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1003,10 +1003,10 @@ MonoBehaviour:
       Data: 65|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 6
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1018,10 +1018,10 @@ MonoBehaviour:
       Data: 66|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 5
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1033,10 +1033,10 @@ MonoBehaviour:
       Data: 67|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1081,7 +1081,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 2
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1123,10 +1123,10 @@ MonoBehaviour:
       Data: 73|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1138,10 +1138,10 @@ MonoBehaviour:
       Data: 74|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1228,10 +1228,10 @@ MonoBehaviour:
       Data: 80|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1243,10 +1243,10 @@ MonoBehaviour:
       Data: 81|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 7
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1258,10 +1258,10 @@ MonoBehaviour:
       Data: 82|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 5
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1321,7 +1321,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1336,7 +1336,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 6
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1363,10 +1363,10 @@ MonoBehaviour:
       Data: 89|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1396,7 +1396,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1426,7 +1426,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 3
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1438,10 +1438,10 @@ MonoBehaviour:
       Data: 94|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 4
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 7
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1453,7 +1453,7 @@ MonoBehaviour:
       Data: 95|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: tile
       Entry: 10
       Data: 4
@@ -1468,10 +1468,10 @@ MonoBehaviour:
       Data: 96|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 4
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 6
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1498,10 +1498,10 @@ MonoBehaviour:
       Data: 98|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 3
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 6
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1533,5 +1533,5 @@ MonoBehaviour:
   stageType: 1
   width: 7
   height: 7
-  ans: 210
-  thresholds: c8000000d2000000dc000000
+  ans: 195
+  thresholds: e6000000f500000004010000

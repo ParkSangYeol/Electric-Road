@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Persistent: 1
-  masterMixer: {fileID: 24100000, guid: 77a9b2ed3085ac84fb8ee4d64dfc6665, type: 2}
+  masterMixer: {fileID: 24100000, guid: 985a021d0d8148548a34413bd64ea5be, type: 2}
   allMasterVolume: 1
   bgmMasterVolume: 1
   sfxMasterVolume: 1
@@ -54,8 +54,8 @@ MonoBehaviour:
   sfxPlayerDic:
     keys: []
     values: []
-  sfxPlayerPrefab: {fileID: 1133932875261127371, guid: 258b94ba19e99274ebaba180b90f3e96,
-    type: 3}
+  sfxPlayerPrefab: {fileID: 1133932875261127371, guid: 258b94ba19e99274ebaba180b90f3e96, type: 3}
+  currentBGM: {fileID: 0}
 --- !u!82 &2223489818624362155
 AudioSource:
   m_ObjectHideFlags: 0
@@ -65,8 +65,7 @@ AudioSource:
   m_GameObject: {fileID: 2223489818624362158}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -7837207887845784022, guid: 985a021d0d8148548a34413bd64ea5be,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: -7837207887845784022, guid: 985a021d0d8148548a34413bd64ea5be, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
