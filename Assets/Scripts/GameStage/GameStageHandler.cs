@@ -18,6 +18,9 @@ namespace GameStage
         [SerializeField] 
         private List<PuzzleComponent> puzzleComponents;
 
+        [SerializeField] 
+        private AudioClip sfx;
+        
         public GameStageScriptableObject gameStageData;
 
         private void Start()
@@ -25,6 +28,10 @@ namespace GameStage
             backButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.LoadScene("StageSelectMenu");
+            });
+            backButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);
             });
         }
 
@@ -46,6 +53,7 @@ namespace GameStage
                     GameManager.Instance.LoadPuzzle(component.idx);
                 });
             }    
+            SoundManager.Instance.PlayBGM(gameStageData.bgm, 1f);
         }
     }
 }

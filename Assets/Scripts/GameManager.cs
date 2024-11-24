@@ -6,7 +6,6 @@ using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
 using Stage;
 using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,12 +17,20 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     private StageScriptableObject currentPuzzleData;
     [ShowInInspector, ReadOnly]
     private int puzzleIdx;
+
+    [SerializeField] 
+    private AudioClip mainBGM;
     
     private void Start()
     {
+        #if UNITY_STANDALONE_WIN
+        Screen.SetResolution(800, 375, FullScreenMode.Windowed);
+        #endif
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         SceneManager.sceneLoaded += SetupPuzzle;
         SceneManager.sceneLoaded += SetupStage;
+        
+        SoundManager.Instance.PlayBGM(mainBGM, 1f);
     }
 
     private void OnDestroy()
@@ -34,6 +41,10 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
 
     public void LoadScene(string sceneName)
     {
+        if (sceneName == "StageSelectMenu" && SoundManager.Instance.currentBGM != mainBGM)
+        {
+            SoundManager.Instance.PlayBGM(mainBGM, 1f);
+        }
         SceneManager.LoadScene(sceneName);
     }
 

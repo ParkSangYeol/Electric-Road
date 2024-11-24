@@ -19,6 +19,17 @@ namespace GameStage
         [ShowInInspector, ReadOnly]
         public int idx;
         
+        [SerializeField] 
+        private AudioClip sfx;
+
+        private void Start()
+        {
+            GetComponent<Button>().onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);
+            });
+        }
+
         public void SetStar(int numOfStar)
         {
             foreach (var star in stars)

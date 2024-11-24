@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,7 +16,18 @@ namespace UI
         
         [SerializeField] 
         private Image thumbnail;
-        
+
+        [SerializeField] 
+        private AudioClip sfx;
+
+        private void Start()
+        {
+            GetComponent<Button>().onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);
+            });
+        }
+
         public void SetComponent(GameStageScriptableObject data)
         {
             title.text = data.stageName;
@@ -25,7 +37,7 @@ namespace UI
             GetComponent<Button>().onClick.AddListener(() =>
             {
                 GameManager.Instance.LoadStage(gameStageData);
-            });            
+            });
         }
     }
 }

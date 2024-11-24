@@ -26,6 +26,9 @@ namespace Stage
         [SerializeField]
         private Button eraseButton;
 
+        [SerializeField] 
+        private AudioClip sfx;
+        
         private Vector3 poolPosition;
         private EditMode currentMode;
 
@@ -37,6 +40,18 @@ namespace Stage
         private void Start()
         {
             ChangeMode(EditMode.DRAW);
+            drawButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);   
+            });
+            selectButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);   
+            });
+            eraseButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);   
+            });
         }
         
         public void ChangeMode(int num)

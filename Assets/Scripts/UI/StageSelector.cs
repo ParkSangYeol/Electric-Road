@@ -15,6 +15,9 @@ namespace UI
         private List<GameStageScriptableObject> stageData;
 
         [SerializeField] 
+        private AudioClip sfx;
+        
+        [SerializeField] 
         private Button backButton;
         
         private void Start()
@@ -27,6 +30,10 @@ namespace UI
             backButton.onClick.AddListener(() =>
             {
                 GameManager.Instance.LoadScene("MainMenu");
+            });
+            backButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(sfx);
             });
         }
     }

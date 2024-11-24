@@ -12,6 +12,9 @@ namespace Command
         private Stack<ICommand> undoStack;
         private Stack<ICommand> redoStack;
 
+        [SerializeField] 
+        private AudioClip placeSFX;
+
         public UnityEvent<ICommand> onExecuteCommand;
         public UnityEvent<ICommand> onUndoCommand;
         void Start()
@@ -23,6 +26,7 @@ namespace Command
         public void ExecuteCommand(ICommand command)
         {
             command.Execute();
+            SoundManager.Instance.PlaySFX(placeSFX);
             onExecuteCommand.Invoke(command);
             undoStack.Push(command);
             redoStack.Clear();

@@ -60,6 +60,9 @@ namespace Stage
         [SerializeField] 
         private Button rightButton;
 
+        [SerializeField] 
+        private AudioClip buttonSFX;
+        
         private void Awake()
         {
             palateTiles = new List<PalateTile>();
@@ -123,6 +126,7 @@ namespace Stage
 
         private void SetPalateTile(PalateTile tile)
         {
+            SoundManager.Instance.PlaySFX(buttonSFX);
             if (palateTileData == tile.tile)
             {
                 palateSelectGameObject.transform.position = poolPosition;

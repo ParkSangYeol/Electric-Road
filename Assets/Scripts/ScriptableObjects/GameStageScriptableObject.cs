@@ -11,4 +11,5 @@ public class GameStageScriptableObject : SerializedScriptableObject
     public Sprite thumbnail;
     public string stageName;
     public List<StageScriptableObject> stageData;
+    public AudioClip bgm;
 }

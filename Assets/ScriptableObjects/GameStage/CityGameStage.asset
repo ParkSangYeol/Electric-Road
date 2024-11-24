@@ -23,4 +23,15 @@ MonoBehaviour:
     SerializationNodes: []
   thumbnail: {fileID: 21300000, guid: 2d43ed872c70e314ebf6b38bc8a1a5ea, type: 3}
   stageName: City
-  stageData: []
+  stageData:
+  - {fileID: 11400000, guid: 6ce48c3b49644414b9b5717875465954, type: 2}
+  - {fileID: 11400000, guid: 2302e6832527502418fd4ec2a33f32da, type: 2}
+  - {fileID: 11400000, guid: 459401346d1c63d4f96386410f6924bd, type: 2}
+  - {fileID: 11400000, guid: 19569a84fa1225e41a13686bb3c6465b, type: 2}
+  - {fileID: 11400000, guid: 3c106e9415e1afc47903e5ce6b28e854, type: 2}
+  - {fileID: 11400000, guid: a57b4725a90de8e4aa874292b43a4d0c, type: 2}
+  - {fileID: 11400000, guid: df24741959b16aa419893d460628bc63, type: 2}
+  - {fileID: 11400000, guid: bdb044818ba0bdc4fbe96bf8a45aae3f, type: 2}
+  - {fileID: 11400000, guid: 15115476f516e5e44b3d0c64a971aa86, type: 2}
+  - {fileID: 11400000, guid: 32e3394958e1b0d449ae2d63ecc4452f, type: 2}
+  bgm: {fileID: 8300000, guid: 46dc1f90ce089a74bb55c0fb84253879, type: 3}

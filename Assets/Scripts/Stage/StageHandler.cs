@@ -42,6 +42,11 @@ namespace Stage
         [SerializeField] 
         private ResultPopup resultPopup;
         
+        [SerializeField] 
+        private AudioClip backButtonSFX;
+        [SerializeField] 
+        private AudioClip buttonSFX;
+        
         public int maxElectric;
         public UnityEvent onResetStage;
         public UnityEvent<float> onCostChange;
@@ -80,6 +85,18 @@ namespace Stage
                 maxElectric = 6;
             }
             backButton.onClick.AddListener(GameManager.Instance.LoadStage);
+            backButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(backButtonSFX);
+            });
+            undoButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(buttonSFX);
+            });
+            redoButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(buttonSFX);
+            });
             commandHistoryHandler.onExecuteCommand.AddListener(SetCostAfterExecuteCommand);
             commandHistoryHandler.onUndoCommand.AddListener(SetCostAfterUndoCommand);
 

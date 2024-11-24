@@ -248,6 +248,7 @@ MonoBehaviour:
   - {fileID: 8130053745597318982}
   puzzleData: {fileID: 0}
   idx: 0
+  sfx: {fileID: 8300000, guid: 6fee74280eb5f744495ae25aa2e3d2fe, type: 3}
 --- !u!114 &6722128093182061705
 MonoBehaviour:
   m_ObjectHideFlags: 0

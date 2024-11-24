@@ -23,6 +23,15 @@ namespace Stage
         private GraphicRaycaster raycaster;
         [SerializeField] 
         private CommandHistoryHandler commandHistoryHandler;
+
+        [SerializeField] 
+        private TileScriptableObject lineTile;
+        [SerializeField] 
+        private TileScriptableObject cornerLeftTile;
+        [SerializeField] 
+        private TileScriptableObject cornerRightTile;
+        [SerializeField] 
+        private TileScriptableObject distributor;
         
         private OrderedDictionary trackTiles;
         private Dictionary<ScriptableObjects.Stage.Tile, TileScriptableObject> tileDict = new Dictionary<ScriptableObjects.Stage.Tile, TileScriptableObject>();
@@ -37,7 +46,14 @@ namespace Stage
 
         private void Start()
         {
+            #if UNITY_EDITOR
             InitTileDict();
+            #endif
+            tileDict = new Dictionary<ScriptableObjects.Stage.Tile, TileScriptableObject>();
+            tileDict.Add(ScriptableObjects.Stage.Tile.LINE, lineTile);
+            tileDict.Add(ScriptableObjects.Stage.Tile.CORNER_LEFT, cornerLeftTile);
+            tileDict.Add(ScriptableObjects.Stage.Tile.CORNER_RIGHT, cornerRightTile);
+            tileDict.Add(ScriptableObjects.Stage.Tile.DISTRIBUTOR, distributor);
             trackTiles = new OrderedDictionary();
         }
 
@@ -59,7 +75,7 @@ namespace Stage
             {
                 // 추적 종료
                 Debug.Log("End Track.");
-                PlaceTiles();
+                StartCoroutine(PlaceTiles());
             }
             else if (state.Equals(PlaceState.ON_TRACK))
             {
@@ -86,7 +102,7 @@ namespace Stage
                     Debug.Log("Find Factory, End Track.");
                     // 공장 타일에 도착. 조기 종료
                     trackTiles.Add(stageTile.transform.position, stageTile);
-                    PlaceTiles();
+                    StartCoroutine(PlaceTiles());
                     return;
                 }
                 
@@ -104,7 +120,8 @@ namespace Stage
                 trackTiles.Add(stageTile.transform.position, stageTile);
             }
         }
-        
+
+#if UNITY_EDITOR
         private void InitTileDict()
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(TileScriptableObject)}");
@@ -118,20 +135,20 @@ namespace Stage
                 }
             }
         }
-        
-        private void PlaceTiles()
+#endif
+        private IEnumerator PlaceTiles()
         {
             state = PlaceState.ON_PLACE;
             if (trackTiles == null || trackTiles.Count == 0)
             {
-                return;
+                yield break;
             }
 
             int idx = 1;
             var firstElement = trackTiles[0] as StageTile;
             if (firstElement == null)
             {
-                return;
+                yield break;
             }
             
             if (firstElement.tile.tileType is ScriptableObjects.Stage.Tile.LINE
@@ -146,6 +163,7 @@ namespace Stage
                 idx = 0;
             }
 
+            yield return new WaitForSeconds(0.1f);
             for (; idx < trackTiles.Count; idx++)
             {
                 // 타일 배치
@@ -200,6 +218,7 @@ namespace Stage
                 
                 ICommand command = new TilePlaceCommand(currentTile, tileData, dir, currentTile.electricType);
                 commandHistoryHandler.ExecuteCommand(command);
+                yield return new WaitForSeconds(0.1f);
             }
 
             state = PlaceState.IDLE;

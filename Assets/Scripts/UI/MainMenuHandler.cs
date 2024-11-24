@@ -21,6 +21,19 @@ namespace UI
             {
                 GameManager.Instance.LoadScene("StageSelectMenu");
             });
+            
+            exitButton.onClick.AddListener(() =>
+            {
+                #if UNITY_EDITOR
+                
+                    UnityEditor.EditorApplication.isPlaying = false;
+                
+                #else
+                
+                    Application.Quit();
+                
+                #endif
+            });
         }
     }
 }

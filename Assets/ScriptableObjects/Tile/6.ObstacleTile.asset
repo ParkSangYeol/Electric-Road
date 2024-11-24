@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 6.ObstacleTile
   m_EditorClassIdentifier: 
   tileTypeName: "\uC7A5\uC560\uBB3C \uD0C0\uC77C"
-  Icon: {fileID: 21300000, guid: 092ae41a105ef8849b82c03598954776, type: 3}
+  Icon: {fileID: 21300000, guid: 6c5a72b968bf5da4294c03a2e408a9d7, type: 3}
   tileType: 7
   cost: 9999

@@ -24,13 +24,14 @@ MonoBehaviour:
   thumbnail: {fileID: 21300000, guid: b271f0d544d60ff409f8bb1872baf2e8, type: 3}
   stageName: Village
   stageData:
-  - {fileID: 11400000, guid: cf3dba48e4decb7429bfd1021532262a, type: 2}
-  - {fileID: 11400000, guid: 4816fb1070dcdd34ea1e8ada826dc020, type: 2}
-  - {fileID: 11400000, guid: 10833c686cc190447ba55f7891a97754, type: 2}
-  - {fileID: 11400000, guid: 10833c686cc190447ba55f7891a97754, type: 2}
-  - {fileID: 11400000, guid: cf3dba48e4decb7429bfd1021532262a, type: 2}
-  - {fileID: 11400000, guid: 10833c686cc190447ba55f7891a97754, type: 2}
-  - {fileID: 11400000, guid: 4816fb1070dcdd34ea1e8ada826dc020, type: 2}
-  - {fileID: 11400000, guid: 4816fb1070dcdd34ea1e8ada826dc020, type: 2}
-  - {fileID: 11400000, guid: 4816fb1070dcdd34ea1e8ada826dc020, type: 2}
-  - {fileID: 11400000, guid: 4816fb1070dcdd34ea1e8ada826dc020, type: 2}
+  - {fileID: 11400000, guid: 94ef5837f99a6a343aaeefe5ecd59dd1, type: 2}
+  - {fileID: 11400000, guid: b87525ad112c695478a8e5fc315c3f51, type: 2}
+  - {fileID: 11400000, guid: 3cd3491d516ba2e4c8bd075e527c1a48, type: 2}
+  - {fileID: 11400000, guid: 23380b77953b69247bdbf1c45ae184b0, type: 2}
+  - {fileID: 11400000, guid: 548f3b4c6ddb1fe4e9476a3bdec38a2e, type: 2}
+  - {fileID: 11400000, guid: 5649eabbdf26d67449cbc2324e94fe61, type: 2}
+  - {fileID: 11400000, guid: 8fcff42d50b85e945acb5a59512ab76d, type: 2}
+  - {fileID: 11400000, guid: 830e0b83358cb894b96dcd05a75e55b5, type: 2}
+  - {fileID: 11400000, guid: 6a0c0feb838a9e445aa3e2e9700582a4, type: 2}
+  - {fileID: 11400000, guid: 6a8bbf2ea92898346896be823ae18144, type: 2}
+  bgm: {fileID: 8300000, guid: 5ab21412452c1ba46a55dae04d9ecc00, type: 3}

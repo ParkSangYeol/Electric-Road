@@ -23,6 +23,11 @@ namespace Stage.UI
         [SerializeField] 
         private Button continueButton;
 
+        [SerializeField] 
+        private AudioClip sfx;
+        [SerializeField] 
+        private AudioClip buttonSfx;
+        
         private void Start()
         {
             restartButton.enabled = menuButton.enabled = continueButton.enabled = false;
@@ -30,11 +35,25 @@ namespace Stage.UI
             restartButton.onClick.AddListener(GameManager.Instance.RestartPuzzle);
             menuButton.onClick.AddListener(GameManager.Instance.LoadStage);
             continueButton.onClick.AddListener(GameManager.Instance.LoadNextPuzzle);
+            
+            restartButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(buttonSfx);
+            });
+            menuButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(buttonSfx);
+            });
+            continueButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(buttonSfx);
+            });
         }
 
         public IEnumerator Activate(int numOfStar, int cost)
         {
             gameObject.SetActive(true);
+            SoundManager.Instance.PlaySFX(sfx);
             yield return new WaitForSeconds(0.5f);
             costText.DOText(cost.ToString(), 2f, true, ScrambleMode.Numerals);
             for (int i = 0; i < numOfStar; i++)

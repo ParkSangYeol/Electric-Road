@@ -23,6 +23,9 @@ namespace Stage.UI
         [SerializeField] private Image filledImage;
 
         [SerializeField] private float handleAutoMoveSpeed;
+
+        [SerializeField] 
+        private AudioClip sfx;
         
         [ShowInInspector]
         private HandleState state;
@@ -79,15 +82,11 @@ namespace Stage.UI
             {
                 case HandleState.IDLE:
                     // 입력이 존재하는지 확인 후 처리
-#if UNITY_STANDALONE_WIN
                     if (Input.GetMouseButtonDown(0) && CheckClick(Input.mousePosition))
                     {
                         state = HandleState.MOVEING;
                         offsetY = mainCamera.ScreenToWorldPoint(Input.mousePosition).y - transform.position.y;
                     }
-#elif UNITY_ANDROID
-                    
-#endif
                     break;
                 case HandleState.MOVEING:
                     {
@@ -102,9 +101,15 @@ namespace Stage.UI
                         
                         if (Input.GetMouseButtonUp(0))
                         {
-                            state = newPos.y > thresholdTransform.position.y
-                                ? HandleState.NOT_INTERACTABLE
-                                : HandleState.IDLE;
+                            if (newPos.y > thresholdTransform.position.y)
+                            {
+                                state = HandleState.NOT_INTERACTABLE;
+                                SoundManager.Instance.PlaySFX(sfx);
+                            }
+                            else
+                            {
+                                state = HandleState.IDLE;
+                            }
                         }
                     }
                     break;

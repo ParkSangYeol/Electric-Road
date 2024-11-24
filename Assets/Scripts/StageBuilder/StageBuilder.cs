@@ -14,6 +14,7 @@ using UnityEditor;
 using UnityEngine;
 using Tile = ScriptableObjects.Stage.Tile;
 
+#if UNITY_EDITOR
 namespace StageBuilder
 {
     public class StageBuilder : MonoBehaviour
@@ -628,3 +629,4 @@ namespace StageBuilder
         
     }
 }
+#endif
