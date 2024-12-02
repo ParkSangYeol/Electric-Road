@@ -4,13 +4,14 @@ using Command;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using Utility;
 
 namespace Command
 {
     public class CommandHistoryHandler : MonoBehaviour
     {
-        private Stack<ICommand> undoStack;
-        private Stack<ICommand> redoStack;
+        private FixedSizeStack<ICommand> undoStack;
+        private FixedSizeStack<ICommand> redoStack;
 
         [SerializeField] 
         private AudioClip placeSFX;
@@ -19,8 +20,8 @@ namespace Command
         public UnityEvent<ICommand> onUndoCommand;
         void Start()
         {
-            undoStack = new Stack<ICommand>();
-            redoStack = new Stack<ICommand>();
+            undoStack = new FixedSizeStack<ICommand>(200);
+            redoStack = new FixedSizeStack<ICommand>(200);
         }
 
         public void ExecuteCommand(ICommand command)
