@@ -43,7 +43,9 @@ namespace GameStage
                 PuzzleComponent component = puzzleComponents[i];
                 if (PlayerPrefs.HasKey(gameStageData.stageData[i].name))
                 {
-                    Debug.Log(i + "component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[i].name));
+#if UNITY_EDITOR
+                    Debug.Log(i + " component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[i].name));
+#endif
                     component.SetStar(PlayerPrefs.GetInt(gameStageData.stageData[i].name));
                 }
                 component.puzzleData = gameStageData.stageData[i];

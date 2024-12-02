@@ -74,7 +74,9 @@ namespace Stage
             else if (state.Equals(PlaceState.ON_TRACK) && Input.GetMouseButtonUp(0))
             {
                 // 추적 종료
+#if UNITY_EDITOR
                 Debug.Log("End Track.");
+#endif
                 StartCoroutine(PlaceTiles());
             }
             else if (state.Equals(PlaceState.ON_TRACK))
@@ -83,23 +85,31 @@ namespace Stage
                 var stageTile = GetStageTile(Input.mousePosition);
                 if (stageTile == null)
                 {
+#if UNITY_EDITOR
                     Debug.Log("Out of Range! Fail.");
+#endif
                     state = PlaceState.IDLE;
                     return;
                 }
                 
+#if UNITY_EDITOR
                 Debug.Log("Tracking Tile.");
+#endif
                 var lastElement = trackTiles[trackTiles.Count - 1] as StageTile; // ^1 사용시 null 나옴
                 if (trackTiles.Count > 0 && stageTile.Equals(lastElement))
                 {
                     // 같은 타일을 가리킨 경우 넘어감.
+#if UNITY_EDITOR
                     Debug.Log("Same Tile, continue.");
+#endif
                     return;
                 }
                 
                 if (stageTile.tile.tileType == ScriptableObjects.Stage.Tile.FACTORY)
                 {
+#if UNITY_EDITOR
                     Debug.Log("Find Factory, End Track.");
+#endif
                     // 공장 타일에 도착. 조기 종료
                     trackTiles.Add(stageTile.transform.position, stageTile);
                     StartCoroutine(PlaceTiles());
@@ -110,13 +120,17 @@ namespace Stage
                     || trackTiles.Contains(stageTile.transform.position))
                 {
                     // 다른 타일에 부딪힘. 실패 처리 후 조기 종료.
+#if UNITY_EDITOR
                     Debug.Log("Tile Dup, Fail.");
+#endif
                     state = PlaceState.IDLE;
                     return;
                 }
                 
                 // 빈 공간에 도착. 처리 진행.
+#if UNITY_EDITOR
                 Debug.Log("Add Tile.");
+#endif
                 trackTiles.Add(stageTile.transform.position, stageTile);
             }
         }
