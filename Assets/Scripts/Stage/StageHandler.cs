@@ -85,10 +85,6 @@ namespace Stage
                 maxElectric = 6;
             }
             backButton.onClick.AddListener(GameManager.Instance.LoadStage);
-            backButton.onClick.AddListener(() =>
-            {
-                SoundManager.Instance.PlaySFX(backButtonSFX);
-            });
             undoButton.onClick.AddListener(() =>
             {
                 SoundManager.Instance.PlaySFX(buttonSFX);
