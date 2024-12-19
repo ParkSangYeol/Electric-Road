@@ -70,6 +70,7 @@ namespace Stage
                 Debug.Log("Start Track.");
                 state = PlaceState.ON_TRACK;
                 trackTiles = new OrderedDictionary { { stageTile.transform.position, stageTile } };
+                stageTile.SetHighlight(true);
             }
             else if (state.Equals(PlaceState.ON_TRACK) && Input.GetMouseButtonUp(0))
             {
@@ -89,6 +90,7 @@ namespace Stage
                     Debug.Log("Out of Range! Fail.");
 #endif
                     state = PlaceState.IDLE;
+                    ResetHighlight();
                     return;
                 }
                 
@@ -124,6 +126,7 @@ namespace Stage
                     Debug.Log("Tile Dup, Fail.");
 #endif
                     state = PlaceState.IDLE;
+                    ResetHighlight();
                     return;
                 }
                 
@@ -132,6 +135,7 @@ namespace Stage
                 Debug.Log("Add Tile.");
 #endif
                 trackTiles.Add(stageTile.transform.position, stageTile);
+                stageTile.SetHighlight(true);
             }
         }
 
@@ -152,6 +156,7 @@ namespace Stage
 #endif
         private IEnumerator PlaceTiles()
         {
+            ResetHighlight();
             state = PlaceState.ON_PLACE;
             if (trackTiles == null || trackTiles.Count == 0)
             {
@@ -270,7 +275,7 @@ namespace Stage
         
         private ScriptableObjects.Stage.Tile GetNextTile(Direction lastDir, Direction currentDir)
         {
-            ScriptableObjects.Stage.Tile ret = ScriptableObjects.Stage.Tile.NONE;
+            ScriptableObjects.Stage.Tile ret = ScriptableObjects.Stage.Tile.LINE;
             switch (lastDir)
             {
                 case Direction.UP:
@@ -361,6 +366,16 @@ namespace Stage
             }
             
             return returnTile;
+        }
+
+        private void ResetHighlight()
+        {
+            for (int i = 0; i < trackTiles.Count; i++)
+            {
+                
+                var tile = trackTiles[i] as StageTile;
+                tile.SetHighlight(false);
+            }
         }
     }
 

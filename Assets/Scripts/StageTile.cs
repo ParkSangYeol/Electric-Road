@@ -6,11 +6,13 @@ using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Stage {
     public class StageTile : Stage.Tile
     {
         private Direction _direction;
+        private Image backgroundImage;
         [ShowInInspector, ReadOnly]
         public Direction direction
         {
@@ -31,6 +33,7 @@ namespace Stage {
         private void Awake()
         {
             base.Awake();
+            backgroundImage = gameObject.GetComponentInParent<Image>();
             
             onChangeDirection = new UnityEvent<Direction>();
             onChangeDirection.AddListener(ChangeTileDirection);
@@ -64,6 +67,20 @@ namespace Stage {
                 2 => Color.magenta,
                 3 => Color.green
             };
+        }
+
+        public void SetHighlight(bool highlight)
+        {
+            if (highlight)
+            {
+                // 하이라이트
+                image.color = backgroundImage.color = Color.yellow;
+            }
+            else
+            {
+                // 하이라이트 취소
+                image.color = backgroundImage.color = Color.white;
+            }
         }
     }
 }
