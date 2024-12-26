@@ -304,6 +304,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495846583878862473, guid: 25b1f73c1382b70499f6b60b34327e31, type: 3}
+      propertyPath: min_max.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495846583878862473, guid: 25b1f73c1382b70499f6b60b34327e31, type: 3}
       propertyPath: playerPrefKey
       value: BGMVolumeSetting
       objectReference: {fileID: 0}
@@ -422,6 +426,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5554732480726812105, guid: 25b1f73c1382b70499f6b60b34327e31, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495846583878862473, guid: 25b1f73c1382b70499f6b60b34327e31, type: 3}
+      propertyPath: min_max.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6495846583878862473, guid: 25b1f73c1382b70499f6b60b34327e31, type: 3}
