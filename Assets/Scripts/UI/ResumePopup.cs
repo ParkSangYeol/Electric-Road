@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,9 @@ namespace Stage.UI
         [SerializeField] 
         private Button quitBtn;
 
+        [SerializeField] 
+        private DOTweenAnimation popupAnim;
+        
         private void Start()
         {
             // InitSFX();
@@ -52,6 +56,11 @@ namespace Stage.UI
         private void InitBtnEvent()
         {
             quitBtn.onClick.AddListener(GameManager.Instance.LoadStage);
+        }
+
+        private void OnEnable()
+        {
+            popupAnim.DORestart();
         }
     }
 }
