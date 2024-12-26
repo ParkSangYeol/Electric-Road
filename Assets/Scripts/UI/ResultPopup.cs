@@ -53,6 +53,11 @@ namespace Stage.UI
 
         public IEnumerator Activate(int numOfStar, int cost)
         {
+            yield return null;
+            while (Time.timeScale == 0)
+            {
+                yield return null;
+            }
             gameObject.SetActive(true);
             SoundManager.Instance.PlaySFX(sfx);
             yield return new WaitForSeconds(0.5f);
