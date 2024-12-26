@@ -61,6 +61,7 @@ namespace Stage
                 0 => EditMode.DRAW,
                 1 => EditMode.SELECT,
                 2 => EditMode.ERASE,
+                3 => EditMode.STOP,
                 _=> EditMode.DRAW
             };
             ChangeMode(targetMode);
@@ -104,6 +105,6 @@ namespace Stage
         DRAW = 0,
         SELECT = 1,
         ERASE = 2,
-        STOP
+        STOP = 3
     }
 }

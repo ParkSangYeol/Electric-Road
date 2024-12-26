@@ -31,8 +31,6 @@ namespace Stage
         [SerializeField] private CostSlider costSlider;
         
         [SerializeField] 
-        private Button backButton;
-        [SerializeField] 
         private Button undoButton;
         [SerializeField] 
         private Button redoButton;
@@ -41,6 +39,9 @@ namespace Stage
         
         [SerializeField] 
         private ResultPopup resultPopup;
+
+        [SerializeField] 
+        private ResumePopup resumePopup;
         
         [SerializeField] 
         private AudioClip backButtonSFX;
@@ -84,7 +85,7 @@ namespace Stage
             {
                 maxElectric = 6;
             }
-            backButton.onClick.AddListener(GameManager.Instance.LoadStage);
+            
             undoButton.onClick.AddListener(() =>
             {
                 SoundManager.Instance.PlaySFX(buttonSFX);
@@ -95,7 +96,7 @@ namespace Stage
             });
             commandHistoryHandler.onExecuteCommand.AddListener(SetCostAfterExecuteCommand);
             commandHistoryHandler.onUndoCommand.AddListener(SetCostAfterUndoCommand);
-
+            
             ResetStage();
         }
 
@@ -117,6 +118,7 @@ namespace Stage
             cost = 0;
 
             title.text = stageData.stageName;
+            resumePopup.SetTitle(title.text);
         }
 
         // 커맨드 히스토리 관련 함수 모음.
