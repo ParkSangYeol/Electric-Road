@@ -13,6 +13,9 @@ namespace Stage {
     {
         private Direction _direction;
         private Image backgroundImage;
+        [ShowInInspector] 
+        private Color highlightColor;
+        
         [ShowInInspector, ReadOnly]
         public Direction direction
         {
@@ -37,6 +40,11 @@ namespace Stage {
             
             onChangeDirection = new UnityEvent<Direction>();
             onChangeDirection.AddListener(ChangeTileDirection);
+        }
+
+        private void Start()
+        {
+            highlightColor = new Color(0.72f, 0.72f, 0.72f);
         }
 
         private void ChangeTileDirection(Direction dir)
@@ -74,7 +82,7 @@ namespace Stage {
             if (highlight)
             {
                 // 하이라이트
-                image.color = backgroundImage.color = Color.yellow;
+                image.color = backgroundImage.color = highlightColor;
             }
             else
             {
