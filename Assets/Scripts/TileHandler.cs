@@ -36,7 +36,7 @@ namespace Stage
         
         [SerializeField, AssetsOnly] 
         private List<TileScriptableObject> tilePlateDatas;
-
+        private Dictionary<TileScriptableObject, PalateTile> palateTileDict;
         private List<PalateTile> palateTiles;
         
         // 가이드 관련 변수들
@@ -66,6 +66,7 @@ namespace Stage
         private void Awake()
         {
             palateTiles = new List<PalateTile>();
+            palateTileDict = new Dictionary<TileScriptableObject, PalateTile>();
             _active = true;
         }
 
@@ -77,6 +78,8 @@ namespace Stage
                     modulatorGameObject.transform.position = poolPosition;
             SetButton();
             CreateTilePalate();
+            commandHistoryHandler.onExecuteCommand.AddListener(SetPalateEvent);
+            commandHistoryHandler.onUndoCommand.AddListener(SetPalateEvent);
         }
 
         void Update()
@@ -211,6 +214,7 @@ namespace Stage
         private void CreateTilePalate()
         {
             palateTiles.Clear();
+            palateTileDict.Clear();
             foreach (var tileData in tilePlateDatas)
             {
                 GameObject instantiateObject = Instantiate(tilePalatePrefab, tilePalateArea.transform);
@@ -220,6 +224,33 @@ namespace Stage
                 tileComponent.Active(_active);
                 
                 palateTiles.Add(tileComponent);
+                palateTileDict.Add(tileData, tileComponent);
+            }
+        }
+
+        private void SetPalateEvent(ICommand command)
+        {
+            switch (command)
+            {
+                case TilePlaceCommand placeCommand:
+                {
+                    if (palateTileDict.TryGetValue(placeCommand.beforeTileData, out var before))
+                    {
+                        before.ChangeNumOfTile(-1);
+                    }
+
+                    if (palateTileDict.TryGetValue(placeCommand.targetTileData, out var target))
+                    {
+                        target.ChangeNumOfTile(+1);
+                    }
+                    break;
+                }
+                case TileRemoveCommand removeCommand:
+                {
+                    if (!palateTileDict.TryGetValue(removeCommand.beforeTileData, out var before)) return;
+                    before.ChangeNumOfTile(-1);
+                    break;
+                }
             }
         }
         
