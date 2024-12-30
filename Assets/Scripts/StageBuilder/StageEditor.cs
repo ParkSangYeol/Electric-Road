@@ -74,7 +74,7 @@ namespace StageBuilder
             areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);
             areaComponent.height = tileMatrix.GetLength(1);
             GameObject tilePrefab = null;
-            switch (areaComponent.width)
+            switch (areaComponent.height)
             {
                 case 6:
                     tilePrefab = tilePrefabs[0];
@@ -85,8 +85,11 @@ namespace StageBuilder
                     selectGuide.localScale = modulatorGuide.localScale = new Vector3(1.25f, 1.25f, 1.25f);
                     break;
                 case 8:
-                default:
                     tilePrefab = tilePrefabs[2];
+                    break;
+                default:
+                    tilePrefab = tilePrefabs[3];
+                    selectGuide.localScale = modulatorGuide.localScale = new Vector3(1.1f, 1.1f, 1.1f);
                     break;
             }
             

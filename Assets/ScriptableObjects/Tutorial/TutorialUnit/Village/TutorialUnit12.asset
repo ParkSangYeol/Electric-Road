@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e041aeb6eb50774daa22942a924c952, type: 3}
+  m_Name: TutorialUnit12
+  m_EditorClassIdentifier: 
+  tutorialKey: Rule2
+  isChangeMap: 1
+  mapData: {fileID: 11400000, guid: 030dd6d1d0e99264c8efb27f36d0b9c7, type: 2}
+  isClearAble: 0
+  animPrefab: {fileID: 1497936935750490374, guid: 9640e208579260a45884c8f6046f70e2, type: 3}

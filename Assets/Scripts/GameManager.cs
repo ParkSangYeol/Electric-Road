@@ -5,6 +5,7 @@ using GameStage;
 using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
 using Stage;
+using Tutorial;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,6 +30,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         SceneManager.sceneLoaded += SetupPuzzle;
         SceneManager.sceneLoaded += SetupStage;
+        SceneManager.sceneLoaded += SetupTutorial;
         
         SoundManager.Instance.PlayBGM(mainBGM, 1f);
     }
@@ -80,6 +82,16 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         LoadPuzzle(currentPuzzleData);
     }
 
+    public void LoadTutorialPuzzle()
+    {
+        if (!currentStageData.hasTutorial)
+        {
+            return;
+        }
+        puzzleIdx = -1;
+        SceneManager.LoadScene("TutorialScene");
+    }
+
     #endregion
 
     #region About Stage
@@ -122,6 +134,17 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         GameStageHandler gameStageHandler = GameObject.Find("GameStageManager").GetComponent<GameStageHandler>();
         gameStageHandler.gameStageData = currentStageData;
         gameStageHandler.SetupData();
+    }
+
+    private void SetupTutorial(Scene scene, LoadSceneMode sceneMode)
+    {
+        if (scene.name != "TutorialScene")
+        {
+            return;
+        }
+
+        TutorialHandler tutorialHandler = GameObject.Find("TutorialHandler").GetComponent<TutorialHandler>();
+        tutorialHandler.SetTutorial(currentStageData.tutorial);
     }
 
     #endregion

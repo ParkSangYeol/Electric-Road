@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7b555e3612770469255e65936ba422, type: 3}
+  m_Name: TutorialData
+  m_EditorClassIdentifier: 
+  stageName: Village
+  tutorialData:
+  - {fileID: 11400000, guid: 922f1bdd374a1944f9eb4620984588ea, type: 2}
+  - {fileID: 11400000, guid: 8b8a453d2320af64e8859246e88830ed, type: 2}
+  - {fileID: 11400000, guid: ace66537d52b9144b8772cb687d57ffd, type: 2}
+  - {fileID: 11400000, guid: f4672db9615c5a74b9ac9294d948cddd, type: 2}
+  - {fileID: 11400000, guid: e32b85fb34535cb4981a978b976f8400, type: 2}
+  - {fileID: 11400000, guid: 18795b4996c0b9441908e2148d89e18d, type: 2}
+  - {fileID: 11400000, guid: ef0aa74efbae0384f9213bf40451d5e7, type: 2}
+  - {fileID: 11400000, guid: 969f617158572614595ca735f3999f46, type: 2}
+  - {fileID: 11400000, guid: d32936904dbce2a4cb581f5f36803eac, type: 2}
+  - {fileID: 11400000, guid: 756f7a27d17c3174895232c9c32bb888, type: 2}
+  - {fileID: 11400000, guid: 0addb3a3f2a3d1843ba9fb9477f9f5ac, type: 2}
+  - {fileID: 11400000, guid: 4e8f8e1d487ae13409e247c334ecf28d, type: 2}
+  - {fileID: 11400000, guid: 55fcd0fd1e8d6a1469a498a72c1148be, type: 2}
+  - {fileID: 11400000, guid: b926fde8895a9404cac7e3a1db4701ae, type: 2}

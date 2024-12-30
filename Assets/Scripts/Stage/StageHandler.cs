@@ -53,6 +53,8 @@ namespace Stage
         public UnityEvent<float> onCostChange;
         public List<int> thresholdAmounts;
         private float _cost;
+        private bool canCheckAns;
+        
         [ShowInInspector, ReadOnly]
         public float cost
         {
@@ -70,6 +72,7 @@ namespace Stage
         private void Awake()
         {
             _cost = 1;
+            canCheckAns = true;
             // thresholdAmounts for test
             thresholdAmounts = new List<int> { 250, 260, 270 };
         }
@@ -96,12 +99,12 @@ namespace Stage
             });
             commandHistoryHandler.onExecuteCommand.AddListener(SetCostAfterExecuteCommand);
             commandHistoryHandler.onUndoCommand.AddListener(SetCostAfterUndoCommand);
-            
-            ResetStage();
         }
 
-        public void ResetStage()
+        [Button]
+        public void ResetStage(bool canCheckAnswer = true)
         {
+            canCheckAns = canCheckAnswer;
             if (stageData == null)
             {
                 Debug.LogError("Stage Data가 존재하지 않습니다!");
@@ -195,7 +198,7 @@ namespace Stage
                 numOfStar = 1;
             }
             
-            if (!isSuccess || numOfStar == 0)
+            if (!canCheckAns || !isSuccess || numOfStar == 0)
             {
                 // 실패
                 modeHandler.ChangeMode(EditMode.DRAW);

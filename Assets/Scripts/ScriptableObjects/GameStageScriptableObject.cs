@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
+using Tutorial;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Assets/ScriptableObject/GameStage")]
@@ -12,4 +13,7 @@ public class GameStageScriptableObject : SerializedScriptableObject
     public string stageName;
     public List<StageScriptableObject> stageData;
     public AudioClip bgm;
+    public bool hasTutorial;
+    [ShowIf("hasTutorial")] 
+    public TutorialScriptableObject tutorial;
 }

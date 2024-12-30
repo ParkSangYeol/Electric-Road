@@ -30,22 +30,34 @@ namespace GameStage
         public void SetupData()
         {
             title.text = gameStageData.stageName;
+            int stageIdx = 0;
             for (int i = 0; i < puzzleComponents.Count; i++)
             {
                 PuzzleComponent component = puzzleComponents[i];
-                if (PlayerPrefs.HasKey(gameStageData.stageData[i].name))
+                if (i == 0 && !gameStageData.stageName.Equals("Town"))
                 {
-#if UNITY_EDITOR
-                    Debug.Log(i + " component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[i].name));
-#endif
-                    component.SetStar(PlayerPrefs.GetInt(gameStageData.stageData[i].name));
+                    component.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        GameManager.Instance.LoadTutorialPuzzle();
+                    });
                 }
-                component.puzzleData = gameStageData.stageData[i];
-                component.idx = i;
-                component.GetComponent<Button>().onClick.AddListener(() =>
+                else
                 {
-                    GameManager.Instance.LoadPuzzle(component.idx);
-                });
+                    if (PlayerPrefs.HasKey(gameStageData.stageData[stageIdx].name))
+                    {
+#if UNITY_EDITOR
+                        Debug.Log(i + " component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
+#endif
+                        component.SetStar(PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
+                    }
+                    component.puzzleData = gameStageData.stageData[stageIdx];
+                    component.idx = stageIdx;
+                    stageIdx++;
+                    component.GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        GameManager.Instance.LoadPuzzle(component.idx);
+                    }); 
+                }
             }    
             SoundManager.Instance.PlayBGM(gameStageData.bgm, 1f);
         }
