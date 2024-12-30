@@ -17,4 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Build/PuzzleScene.unity
     guid: 84b3c9acb2814b3499f4bf2c9d49d419
-  m_configObjects: {}
+  - enabled: 1
+    path: Assets/Scenes/Build/TutorialScene.unity
+    guid: 3fda16660edd9db4d95af4c1e6cfee29
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 330b7ca081d0f0e44810d33d12961180, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: fd02df0dae7a76f4aabcf6d2ed5b99e8, type: 2}

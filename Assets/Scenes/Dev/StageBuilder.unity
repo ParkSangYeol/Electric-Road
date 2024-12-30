@@ -1194,7 +1194,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &647221080
 Canvas:
   m_ObjectHideFlags: 0
@@ -4020,6 +4020,7 @@ MonoBehaviour:
   - {fileID: 656751046117224516, guid: fc28cf36d2155744784a64ffe1b187cb, type: 3}
   - {fileID: 656751046117224516, guid: e0e79ca8ea35ea54b896dab2519783aa, type: 3}
   - {fileID: 656751046117224516, guid: 84d5d4a1a13effd428828b8853dd2ac4, type: 3}
+  - {fileID: 656751046117224516, guid: 0d77cddac773d32418a52e011983363c, type: 3}
   defaultTile: {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
   selectGuide: {fileID: 252570441}
   modulatorGuide: {fileID: 1945565292}
@@ -4044,6 +4045,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
   - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
   - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
+  - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
+  - {fileID: 11400000, guid: 5139d49a12f2f7f40ac306f96892f57e, type: 2}
   palateSelectGameObject: {fileID: 1943883188}
   stageTileSelectGameObject: {fileID: 252570440}
   modulatorGameObject: {fileID: 1945565291}
