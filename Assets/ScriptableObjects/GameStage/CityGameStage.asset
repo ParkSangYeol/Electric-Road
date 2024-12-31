@@ -35,3 +35,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 15115476f516e5e44b3d0c64a971aa86, type: 2}
   - {fileID: 11400000, guid: 32e3394958e1b0d449ae2d63ecc4452f, type: 2}
   bgm: {fileID: 8300000, guid: 46dc1f90ce089a74bb55c0fb84253879, type: 3}
+  hasTutorial: 1
+  tutorial: {fileID: 11400000, guid: 274726258051b4040b839500807d7310, type: 2}

@@ -4047,6 +4047,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
   - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
   - {fileID: 11400000, guid: 5139d49a12f2f7f40ac306f96892f57e, type: 2}
+  - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
+  - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
+  - {fileID: 11400000, guid: 7eb27a1a9d5f1bb468f7f0919066dd59, type: 2}
   palateSelectGameObject: {fileID: 1943883188}
   stageTileSelectGameObject: {fileID: 252570440}
   modulatorGameObject: {fileID: 1945565291}

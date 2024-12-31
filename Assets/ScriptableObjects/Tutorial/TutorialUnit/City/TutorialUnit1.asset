@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e041aeb6eb50774daa22942a924c952, type: 3}
+  m_Name: TutorialUnit1
+  m_EditorClassIdentifier: 
+  tutorialKey: Amplifier1
+  isChangeMap: 1
+  mapData: {fileID: 11400000, guid: ba9f11d28d6544d4ab1b692012e1a432, type: 2}
+  isClearAble: 0
+  animPrefab: {fileID: 8235251803251819235, guid: c665705cbb174e44daf3e85655f74d3d, type: 3}

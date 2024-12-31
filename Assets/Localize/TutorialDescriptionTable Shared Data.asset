@@ -71,6 +71,22 @@ MonoBehaviour:
     m_Key: Rule4
     m_Metadata:
       m_Items: []
+  - m_Id: 446598091784192
+    m_Key: Amplifier1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446630362759168
+    m_Key: Amplifier2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446641284726784
+    m_Key: Amplifier3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446651451719680
+    m_Key: Amplifier4
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

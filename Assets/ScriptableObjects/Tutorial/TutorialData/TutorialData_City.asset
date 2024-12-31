@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7b555e3612770469255e65936ba422, type: 3}
+  m_Name: TutorialData_City
+  m_EditorClassIdentifier: 
+  stageName: City
+  tutorialData:
+  - {fileID: 11400000, guid: 1af351ed4c2f34f4c845c6a80007b7bc, type: 2}
+  - {fileID: 11400000, guid: cabda4867b7270b4eb135c47f1b5926f, type: 2}
+  - {fileID: 11400000, guid: 11c2ddc9b26d3944aae55d512f4fe441, type: 2}
+  - {fileID: 11400000, guid: e0e568cfa7523db43a26f60a586a4fc7, type: 2}
+  - {fileID: 11400000, guid: 04e5394a67fb9e844bcc3fc400412f0e, type: 2}
