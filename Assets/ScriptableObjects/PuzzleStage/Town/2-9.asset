@@ -1979,10 +1979,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  stageName: 2-9
+  stageName: Town-9
   stageType: 0
   width: 8
   height: 8
   ans: 265
-  numOfPalate: 0
+  numOfPalate: 4
   thresholds: 090100000e01000018010000
