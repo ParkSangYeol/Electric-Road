@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 1.LineTile
   m_EditorClassIdentifier: 
   tileTypeName: "\uC9C1\uC120 \uD0C0\uC77C"
-  Icon: {fileID: 21300000, guid: 141d1093ef111d74aa552ef9c94eb4f0, type: 3}
+  Icon: {fileID: 21300000, guid: a818639dfb8c2be49970b61984d60b53, type: 3}
   tileType: 1
   cost: 10

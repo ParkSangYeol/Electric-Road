@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 2.CornerLeftTile
   m_EditorClassIdentifier: 
   tileTypeName: "\uC67C\uCABD 90\uB3C4 \uCF54\uB108 \uD0C0\uC77C"
-  Icon: {fileID: 21300000, guid: 44e0f4bd05520c44cb524198c964fc8d, type: 3}
+  Icon: {fileID: 21300000, guid: 79299f2c2abe15d43a1bccfa2a91100a, type: 3}
   tileType: 2
   cost: 15
