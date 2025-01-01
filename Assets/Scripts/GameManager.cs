@@ -19,14 +19,23 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     [ShowInInspector, ReadOnly]
     private int puzzleIdx;
 
+#if UNITY_STANDALONE_WIN
+    private float targetAspectRatio;
+    private int lastWidth;
+    private int lastHeight;
+#endif
+    
     [SerializeField] 
     private AudioClip mainBGM;
     
     private void Start()
     {
-        #if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN
         Screen.SetResolution(800, 375, FullScreenMode.Windowed);
-        #endif
+        targetAspectRatio = (float)800 / 375;
+        lastWidth = Screen.width;
+        lastHeight = Screen.height;
+#endif
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         SceneManager.sceneLoaded += SetupPuzzle;
         SceneManager.sceneLoaded += SetupStage;
@@ -35,6 +44,25 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         SoundManager.Instance.PlayBGM(mainBGM, 1f);
     }
 
+#if UNITY_STANDALONE_WIN
+    private void Update()
+    {
+        if (Screen.width != lastWidth || Screen.height != lastHeight)
+        {
+            float currentAspect = (float)Screen.width / Screen.height;
+            
+            if (Mathf.Abs(currentAspect - targetAspectRatio) > 0.01f)
+            {
+                // 현재 너비를 기준으로 높이를 조정
+                int newHeight = Mathf.RoundToInt(Screen.width / targetAspectRatio);
+                Screen.SetResolution(Screen.width, newHeight, false);
+            }
+
+            lastWidth = Screen.width;
+            lastHeight = Screen.height;
+        }
+    }
+#endif
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= SetupPuzzle;
