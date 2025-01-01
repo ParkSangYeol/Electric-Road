@@ -22,6 +22,16 @@ namespace GameStage
         [SerializeField] 
         private AudioClip sfx;
 
+        [SerializeField] 
+        private Image lockImage;
+
+        private Button buttonComponent;
+
+        private void Awake()
+        {
+            buttonComponent = GetComponent<Button>();
+        }
+
         private void Start()
         {
             GetComponent<Button>().onClick.AddListener(() =>
@@ -36,6 +46,12 @@ namespace GameStage
             {
                 star.SetStar(numOfStar-- > 0);
             }
+        }
+
+        public void SetLock(bool locked)
+        {
+            lockImage.gameObject.SetActive(locked);
+            buttonComponent.enabled = !locked;
         }
     }
 }

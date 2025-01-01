@@ -31,10 +31,11 @@ namespace GameStage
         {
             title.text = gameStageData.stageName;
             int stageIdx = 0;
+            bool isUnLocklastComponent = true;
             for (int i = 0; i < puzzleComponents.Count; i++)
             {
                 PuzzleComponent component = puzzleComponents[i];
-                if (i == 0 && !gameStageData.stageName.Equals("Town"))
+                if (i == 0 && gameStageData.hasTutorial)
                 {
                     component.GetComponent<Button>().onClick.AddListener(() =>
                     {
@@ -43,12 +44,25 @@ namespace GameStage
                 }
                 else
                 {
+                    var buttonComponent = component.GetComponent<Button>();
                     if (PlayerPrefs.HasKey(gameStageData.stageData[stageIdx].name))
                     {
+                        // 클리어 기록 있음
 #if UNITY_EDITOR
                         Debug.Log(i + " component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
 #endif
                         component.SetStar(PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
+                        isUnLocklastComponent = true;
+                    }
+                    else if (isUnLocklastComponent)
+                    {
+                        // 클리어 기록 없음, 이전 항목은 락이 없음
+                        isUnLocklastComponent = false;
+                    }
+                    else
+                    {
+                        // 클리어 기록 없음, 이전 항목 락이 되어있음.
+                        component.SetLock(true);
                     }
                     component.puzzleData = gameStageData.stageData[stageIdx];
                     component.idx = stageIdx;
