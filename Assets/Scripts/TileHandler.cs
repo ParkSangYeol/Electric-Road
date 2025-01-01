@@ -80,8 +80,8 @@ namespace Stage
                     modulatorGameObject.transform.position = poolPosition;
             SetButton();
             CreateTilePalate();
-            commandHistoryHandler.onExecuteCommand.AddListener(SetPalateEvent);
-            commandHistoryHandler.onUndoCommand.AddListener(SetPalateEvent);
+            commandHistoryHandler.onExecuteCommand.AddListener(ExecutePalateEvent);
+            commandHistoryHandler.onUndoCommand.AddListener(UndoPalateEvent);
         }
 
         void Update()
@@ -245,7 +245,7 @@ namespace Stage
             }
         }
 
-        private void SetPalateEvent(ICommand command)
+        private void ExecutePalateEvent(ICommand command)
         {
             switch (command)
             {
@@ -266,6 +266,32 @@ namespace Stage
                 {
                     if (!palateTileDict.TryGetValue(removeCommand.beforeTileData, out var before)) return;
                     before.ChangeNumOfTile(-1);
+                    break;
+                }
+            }
+        }
+        
+        private void UndoPalateEvent(ICommand command)
+        {
+            switch (command)
+            {
+                case TilePlaceCommand placeCommand:
+                {
+                    if (palateTileDict.TryGetValue(placeCommand.beforeTileData, out var before))
+                    {
+                        before.ChangeNumOfTile(+1);
+                    }
+
+                    if (palateTileDict.TryGetValue(placeCommand.targetTileData, out var target))
+                    {
+                        target.ChangeNumOfTile(-1);
+                    }
+                    break;
+                }
+                case TileRemoveCommand removeCommand:
+                {
+                    if (!palateTileDict.TryGetValue(removeCommand.beforeTileData, out var before)) return;
+                    before.ChangeNumOfTile(+1);
                     break;
                 }
             }
