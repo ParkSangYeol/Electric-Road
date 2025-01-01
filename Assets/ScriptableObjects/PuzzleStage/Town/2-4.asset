@@ -18,7 +18,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
     - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
-    - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
+    - {fileID: 11400000, guid: 5a555cb5a77569a4d945c93bb6a79757, type: 2}
     - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
     - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
     - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
@@ -1139,10 +1139,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  stageName: Town-4
+  stageName: 2-4
   stageType: 0
   width: 6
   height: 6
   ans: 160
-  numOfPalate: 4
+  numOfPalate: 0
   thresholds: a0000000a5000000aa000000

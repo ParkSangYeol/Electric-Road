@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
-  m_Name: 5.ModulatorTile
+  m_Name: 7.FactoryTile-Village
   m_EditorClassIdentifier: 
-  tileTypeName: "\uBCC0\uD658\uAE30 \uD0C0\uC77C"
-  Icon: {fileID: 21300000, guid: f13f49468c765cb4f844925d866c9975, type: 3}
-  tileType: 6
-  cost: 30
+  tileTypeName: "\uACF5\uC7A5 \uD0C0\uC77C"
+  Icon: {fileID: 21300000, guid: 8ff1b3956660f0341b31332925c8100b, type: 3}
+  tileType: 8
+  cost: 9999

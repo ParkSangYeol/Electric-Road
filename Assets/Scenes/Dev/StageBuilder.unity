@@ -1413,7 +1413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 200, y: -490}
+  m_AnchoredPosition: {x: 200, y: -382}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &684402624
@@ -4043,13 +4043,15 @@ MonoBehaviour:
   tilePalatePrefab: {fileID: 5252481197316661820, guid: d741d68e54485654b948ca4fac1448e6, type: 3}
   tilePlateDatas:
   - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
-  - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
   - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
   - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
   - {fileID: 11400000, guid: 5139d49a12f2f7f40ac306f96892f57e, type: 2}
   - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
   - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
   - {fileID: 11400000, guid: 7eb27a1a9d5f1bb468f7f0919066dd59, type: 2}
+  - {fileID: 11400000, guid: 5a555cb5a77569a4d945c93bb6a79757, type: 2}
+  - {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
+  numActivePalate: 10
   palateSelectGameObject: {fileID: 1943883188}
   stageTileSelectGameObject: {fileID: 252570440}
   modulatorGameObject: {fileID: 1945565291}
@@ -4073,6 +4075,17 @@ MonoBehaviour:
   stageArea: {fileID: 1362726285}
   costText: {fileID: 670351594}
   stageEditor: {fileID: 1715944719}
+  tileList:
+  - {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
+  - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
+  - {fileID: 11400000, guid: 5139d49a12f2f7f40ac306f96892f57e, type: 2}
+  - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
+  - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
+  - {fileID: 11400000, guid: 7eb27a1a9d5f1bb468f7f0919066dd59, type: 2}
+  - {fileID: 11400000, guid: 440d405a393361647a5d9701bd2557cb, type: 2}
+  - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
+  - {fileID: 11400000, guid: 5a555cb5a77569a4d945c93bb6a79757, type: 2}
+  - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
 --- !u!114 &1715944723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4665,7 +4678,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 200, y: -600}
+  m_AnchoredPosition: {x: 200, y: -492}
   m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2010758711
@@ -4795,8 +4808,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6, y: -4}
-  m_SizeDelta: {x: 5, y: 1}
+  m_AnchoredPosition: {x: 6, y: -3.3}
+  m_SizeDelta: {x: 6, y: 2.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2131034771
 MonoBehaviour:
@@ -4807,7 +4820,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131034769}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -4815,15 +4828,13 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 1.25, y: 1.25}
+  m_Spacing: {x: 0.1, y: 0.1}
+  m_Constraint: 1
+  m_ConstraintCount: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

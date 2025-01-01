@@ -46,9 +46,6 @@ namespace Stage
 
         private void Start()
         {
-            #if UNITY_EDITOR
-            InitTileDict();
-            #endif
             tileDict = new Dictionary<ScriptableObjects.Stage.Tile, TileScriptableObject>();
             tileDict.Add(ScriptableObjects.Stage.Tile.LINE, lineTile);
             tileDict.Add(ScriptableObjects.Stage.Tile.CORNER_LEFT, cornerLeftTile);
@@ -139,21 +136,6 @@ namespace Stage
             }
         }
 
-#if UNITY_EDITOR
-        private void InitTileDict()
-        {
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(TileScriptableObject)}");
-            for (int i = 0; i < guids.Length; i++)
-            {
-                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                TileScriptableObject tileData = AssetDatabase.LoadAssetAtPath<TileScriptableObject>(assetPath);
-                if (tileData != null)
-                {
-                    tileDict.Add(tileData.tileType, tileData);
-                }
-            }
-        }
-#endif
         private IEnumerator PlaceTiles()
         {
             ResetHighlight();

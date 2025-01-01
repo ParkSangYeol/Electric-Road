@@ -29,6 +29,9 @@ namespace StageBuilder
         private StageEditor stageEditor;
 
         private TileStruct[,] beginStage;
+
+        [SerializeField] 
+        private List<TileScriptableObject> tileList;
         private Dictionary<Tile, TileScriptableObject> tileDict = new Dictionary<Tile, TileScriptableObject>();
         private readonly int[] dX = {0, 1, 0, -1};
         private readonly int[] dY = {1, 0, -1, 0};
@@ -466,15 +469,9 @@ namespace StageBuilder
 
         private void InitTileDict()
         {
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(TileScriptableObject)}");
-            for (int i = 0; i < guids.Length; i++)
+            foreach (var tileScriptableObject in tileList)
             {
-                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                TileScriptableObject tileData = AssetDatabase.LoadAssetAtPath<TileScriptableObject>(assetPath);
-                if (tileData != null)
-                {
-                    tileDict.Add(tileData.tileType, tileData);
-                }
+                tileDict.Add(tileScriptableObject.tileType, tileScriptableObject);
             }
         }
         

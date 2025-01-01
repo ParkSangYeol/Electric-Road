@@ -14,7 +14,7 @@ namespace ScriptableObjects.Stage
 {
     public class TileScriptableObject : UnityEngine.ScriptableObject
     {
-        [HideLabel, ReadOnly]
+        [HideLabel]
         public string tileTypeName;
         [HideLabel, PreviewField(55)]
         public Sprite Icon;

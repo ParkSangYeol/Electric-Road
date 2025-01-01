@@ -19,7 +19,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 0798bf1e9ca93494dbf7bee6eed53053, type: 2}
     - {fileID: 11400000, guid: 979766346e5decd4eb946eb97770e00b, type: 2}
     - {fileID: 11400000, guid: fd67df962691d014fb1e90f4713b54a3, type: 2}
-    - {fileID: 11400000, guid: d32cf1001d6220e4390b719bbc16322f, type: 2}
+    - {fileID: 11400000, guid: 5a555cb5a77569a4d945c93bb6a79757, type: 2}
     - {fileID: 11400000, guid: 790f3897f39620744a7cf1b36a72bcd7, type: 2}
     - {fileID: 11400000, guid: c92b6ac290d40f94d9cba847c58b1bbf, type: 2}
     - {fileID: 11400000, guid: 4ccc52591e24bfd4e99e35c250d52b58, type: 2}
@@ -1139,10 +1139,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  stageName: Town-2
+  stageName: 2-2
   stageType: 0
   width: 6
   height: 6
   ans: 180
-  numOfPalate: 4
+  numOfPalate: 0
   thresholds: b4000000be000000c8000000

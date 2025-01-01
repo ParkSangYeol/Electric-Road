@@ -79,6 +79,7 @@ namespace Stage
                 stageTileSelectGameObject.transform.position = 
                     modulatorGameObject.transform.position = poolPosition;
             SetButton();
+            CreateTilePalate();
             commandHistoryHandler.onExecuteCommand.AddListener(SetPalateEvent);
             commandHistoryHandler.onUndoCommand.AddListener(SetPalateEvent);
         }

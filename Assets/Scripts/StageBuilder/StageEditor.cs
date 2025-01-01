@@ -70,6 +70,7 @@ namespace StageBuilder
 
         public void CreateStageInScene(TileStruct[,] tileMatrix, bool editableAll = false)
         {
+            ClearStage();
             StageArea areaComponent = stageArea.GetComponent<StageArea>();
             areaComponent.width = stageArea.constraintCount = tileMatrix.GetLength(0);
             areaComponent.height = tileMatrix.GetLength(1);
@@ -108,6 +109,10 @@ namespace StageBuilder
                     if (tileComponent.tile.tileType == Tile.NONE)
                     {
                         tileComponent.isEditAble = true;
+                    }
+                    else
+                    {
+                        tileComponent.isEditAble = editableAll;
                     }
                     
                     tiles.Add(instantiateObject);
