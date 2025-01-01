@@ -19,6 +19,11 @@ namespace Stage
         [SerializeField] 
         private EraseHandler eraseHandler;
 
+        public WireTileHandler WireTileHandler => wireTileHandler;
+        public TileHandler TileHandler => tileHandler;
+        public EraseHandler EraseHandler => eraseHandler;
+        
+        
         [SerializeField] 
         private Button drawButton;
         [SerializeField]

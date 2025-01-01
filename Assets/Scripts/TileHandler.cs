@@ -39,6 +39,8 @@ namespace Stage
         private Dictionary<TileScriptableObject, PalateTile> palateTileDict;
         private List<PalateTile> palateTiles;
         
+        public int numActivePalate;
+        
         // 가이드 관련 변수들
         private Vector3 poolPosition;
         
@@ -77,7 +79,6 @@ namespace Stage
                 stageTileSelectGameObject.transform.position = 
                     modulatorGameObject.transform.position = poolPosition;
             SetButton();
-            CreateTilePalate();
             commandHistoryHandler.onExecuteCommand.AddListener(SetPalateEvent);
             commandHistoryHandler.onUndoCommand.AddListener(SetPalateEvent);
         }
@@ -129,6 +130,11 @@ namespace Stage
 
         private void SetPalateTile(PalateTile tile)
         {
+            if (tile.locked)
+            {
+                return;
+            }
+            
             SoundManager.Instance.PlaySFX(buttonSFX);
             if (palateTileData == tile.tile)
             {
@@ -211,10 +217,16 @@ namespace Stage
 
         #region Init
 
-        private void CreateTilePalate()
+        public void CreateTilePalate()
         {
+            for (int i = 0; i < palateTiles.Count; i++)
+            {
+                Destroy(palateTiles[i].gameObject);
+            }
             palateTiles.Clear();
             palateTileDict.Clear();
+
+            int palateNum = 1;
             foreach (var tileData in tilePlateDatas)
             {
                 GameObject instantiateObject = Instantiate(tilePalatePrefab, tilePalateArea.transform);
@@ -222,6 +234,10 @@ namespace Stage
                 tileComponent.tile = tileData;
                 tileComponent.isEditAble = false;
                 tileComponent.Active(_active);
+                if (palateNum++ > numActivePalate)
+                {
+                    tileComponent.Lock(true);
+                }
                 
                 palateTiles.Add(tileComponent);
                 palateTileDict.Add(tileData, tileComponent);

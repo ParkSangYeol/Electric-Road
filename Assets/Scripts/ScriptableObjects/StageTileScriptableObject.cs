@@ -41,6 +41,8 @@ namespace ScriptableObjects.Stage
         [BoxGroup("Split/Answer")]
         [ReadOnly, LabelText("최단 비용")]
         public int ans;
+        [LabelText("팔레트 타일 수")]
+        public int numOfPalate;
         
         [LabelText("스타별 한계 비용")]
         public List<int> thresholds = new List<int>() {260, 270, 280};

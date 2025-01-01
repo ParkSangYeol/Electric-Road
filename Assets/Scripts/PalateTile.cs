@@ -16,7 +16,13 @@ namespace Stage
         [SerializeField]
         private TMP_Text numText;
 
+        [SerializeField] 
+        private Image lockImage;
+        
         private int numOfTile;
+
+        private bool _locked;
+        public bool locked => _locked;
         
         private void Awake()
         {
@@ -59,6 +65,12 @@ namespace Stage
                 // 비활성화
                 background.color = image.color = Color.grey;
             }
+        }
+
+        public void Lock(bool locked)
+        {
+            _locked = locked;
+            lockImage.gameObject.SetActive(locked);
         }
     }
 }

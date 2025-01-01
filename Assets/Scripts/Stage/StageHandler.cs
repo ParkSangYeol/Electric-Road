@@ -114,6 +114,7 @@ namespace Stage
             stageEditor.ClearStage();
             stageEditor.CreateStageInScene(stageData.map);
 
+            modeHandler.TileHandler.numActivePalate = stageData.numOfPalate;
             onResetStage.Invoke();
             
             thresholdAmounts = stageData.thresholds;

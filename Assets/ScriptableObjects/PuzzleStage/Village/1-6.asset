@@ -1144,4 +1144,5 @@ MonoBehaviour:
   width: 6
   height: 6
   ans: 120
+  numOfPalate: 4
   thresholds: 780000007d00000082000000
