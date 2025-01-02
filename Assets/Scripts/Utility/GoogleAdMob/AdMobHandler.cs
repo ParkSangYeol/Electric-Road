@@ -14,7 +14,7 @@ namespace Utility
         private string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
 #elif UNITY_ANDROID
         // Change when build
-        private string _adUnitId = "unused"; 
+        private string _adUnitId = "ca-app-pub-7232320709496558/2900549019"; 
 #elif UNITY_IPHONE
         // Change when build
         private string _adUnitId = "unused";

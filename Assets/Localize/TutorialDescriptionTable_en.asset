@@ -17,7 +17,95 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 640bdaafcbaf47b4681a66ec6263dea4, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 55496818688
+    m_Localized: "You need to connect the power plant to all the houses using power
+      lines.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112619044864
+    m_Localized: "There are two ways to place power lines. First, press the \"Brush\"
+      button and drag from the power plant to the house.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339849658368
+    m_Localized: "You cannot place power lines on obstacles. Use the \"Eraser\" button
+      to delete tiles. Try removing the recently drawn path using the eraser button.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 354458419200
+    m_Localized: "Next to the \"Draw\" button, click the \"Direct Placement\" button,
+      select a tile, and click the desired location to place it.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 365749485568
+    m_Localized: "You can use the \"Arrow\" buttons to undo or redo tile placement.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 383621414912
+    m_Localized: "There are various types of tiles, each with different costs\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 395986223104
+    m_Localized: "Straight tiles cost 10 gold, Grid tiles cost 15 gold, and Splitters
+      cost 30 gold. You can check the price of each tile in the tile selection menu.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 407579279360
+    m_Localized: "A splitter divides a single power line into multiple directions.
+      It can send electricity in up to three directions.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 426235543552
+    m_Localized: "To clear the stage, you must connect all the houses with power
+      lines while staying within a certain budget.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444493348864
+    m_Localized: "Based on your placement cost, you can earn 3 stars, 2 stars, or
+      1 star. The required costs for each star level are displayed on the gauge on
+      the right, listed in order from lowest to highest.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 456258371584
+    m_Localized: "You can branch the power lines from the power plant into multiple
+      directions, but you cannot place power lines through houses.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 468157612032
+    m_Localized: "You can branch the power lines from the power plant into multiple
+      directions, but you cannot place power lines through houses.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 478563680256
+    m_Localized: "Once you've finished placing the tiles, flip the switch on the
+      far right to complete the circuit.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1912856264704
+    m_Localized: "In the tutorial stage, try clearing the stage based on these instructions.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446598091784192
+    m_Localized: "From the \"City\" stage onward, the electricity signal from the
+      power plant can only travel up to 5 tiles.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446630362759168
+    m_Localized: "To extend the signal, place an amplifier either right after or
+      before the 5th tile. This will make the next 5 tiles valid for signal transmission.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446641284726784
+    m_Localized: "An amplifier can replace grid tiles, but it cannot split power
+      lines like a splitter. Additionally, amplifiers cannot transmit electricity
+      backward against the flow.\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 446651451719680
+    m_Localized: "Using this tutorial as a guide, clear the stage now.\r"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

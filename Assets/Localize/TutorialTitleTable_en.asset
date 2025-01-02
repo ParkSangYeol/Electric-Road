@@ -17,7 +17,79 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 0b771bc2456043d49b5c8f14a7b49b8e, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 48228089856
+    m_Localized: "Connecting Power Lines\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 689516199936
+    m_Localized: "Tile Placement\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 788208173056
+    m_Localized: "Tile Placement\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 971235016704
+    m_Localized: "Tile Placement\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1273724026880
+    m_Localized: "Tile Placement\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1299057623040
+    m_Localized: "Tile Types and Costs\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1383061143552
+    m_Localized: "Tile Types and Costs\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1469635772416
+    m_Localized: "Clear Conditions\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1744819863552
+    m_Localized: "Clear Conditions\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1781700378624
+    m_Localized: "Special Rules\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1863418003456
+    m_Localized: "Special Rules\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1927951564800
+    m_Localized: "Special Rules\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1939146162176
+    m_Localized: "Special Rules\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3571984515072
+    m_Localized: "Special Rules\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 448056237375488
+    m_Localized: "Amplifiers\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 448255806554112
+    m_Localized: "Amplifiers\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 448327042613248
+    m_Localized: "Amplifiers\r="
+    m_Metadata:
+      m_Items: []
+  - m_Id: 448593326391296
+    m_Localized: "Amplifiers\r"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

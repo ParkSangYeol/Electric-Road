@@ -14,7 +14,12 @@ namespace UI
         private Button settingButton;
         [SerializeField] 
         private Button exitButton;
+        [SerializeField] 
+        private Button creditButton;
 
+        [SerializeField] 
+        private AudioClip clickSFX;
+        
         private void Start()
         {
             startButton.onClick.AddListener(() =>
@@ -33,6 +38,11 @@ namespace UI
                     Application.Quit();
                 
                 #endif
+            });
+            
+            creditButton.onClick.AddListener(() =>
+            {
+                SoundManager.Instance.PlaySFX(clickSFX);
             });
         }
     }
