@@ -871,7 +871,7 @@ MonoBehaviour:
       Data: 0
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1453,10 +1453,10 @@ MonoBehaviour:
       Data: 95|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 7
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1468,10 +1468,10 @@ MonoBehaviour:
       Data: 96|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 1
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1483,10 +1483,10 @@ MonoBehaviour:
       Data: 97|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 5
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1603,10 +1603,10 @@ MonoBehaviour:
       Data: 105|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1648,10 +1648,10 @@ MonoBehaviour:
       Data: 108|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 4
     - Name: tile
       Entry: 10
-      Data: 5
+      Data: 6
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1723,10 +1723,10 @@ MonoBehaviour:
       Data: 113|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1768,10 +1768,10 @@ MonoBehaviour:
       Data: 116|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 2
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1843,10 +1843,10 @@ MonoBehaviour:
       Data: 121|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 2
+      Data: 0
     - Name: tile
       Entry: 10
-      Data: 4
+      Data: 3
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1888,10 +1888,10 @@ MonoBehaviour:
       Data: 124|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 7
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1903,10 +1903,10 @@ MonoBehaviour:
       Data: 125|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1918,10 +1918,10 @@ MonoBehaviour:
       Data: 126|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1933,10 +1933,10 @@ MonoBehaviour:
       Data: 127|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1948,10 +1948,10 @@ MonoBehaviour:
       Data: 128|ScriptableObjects.Stage.TileStruct, Assembly-CSharp
     - Name: dir
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: tile
       Entry: 10
-      Data: 1
+      Data: 4
     - Name: electricType
       Entry: 3
       Data: 0
@@ -1979,10 +1979,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  stageName: City-6
+  stageName: 3-6
   stageType: 1
   width: 8
   height: 8
-  ans: 200
-  numOfPalate: 5
-  thresholds: 090100001801000022010000
+  ans: 210
+  numOfPalate: 0
+  thresholds: ff0000000e0100001d010000
