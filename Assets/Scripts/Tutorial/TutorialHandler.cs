@@ -106,8 +106,10 @@ namespace Tutorial
             if (tutorialData.tutorialData[idx].isChangeMap)
             {
                 stageHandler.stageData = tutorialData.tutorialData[idx].mapData;
-                stageHandler.ResetStage(tutorialData.tutorialData[idx].isClearAble);
             }
+            
+            // 정답 확인 처리를 마지막 항목에서만 진행하도록 설정
+            stageHandler.ResetStage(tutorialData.tutorialData.Count - 1 == idx);
             
             // 인덱스 업데이트
             currentIdx = idx;
