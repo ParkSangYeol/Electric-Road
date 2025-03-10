@@ -107,7 +107,15 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     }
     public void RestartPuzzle()
     {
-        LoadPuzzle(currentPuzzleData);
+        if (puzzleIdx == -1)
+        {
+            // 튜토리얼 퍼즐인 경우
+            LoadTutorialPuzzle();
+        }
+        else
+        {
+            LoadPuzzle(currentPuzzleData);
+        }
     }
 
     public void LoadTutorialPuzzle()
