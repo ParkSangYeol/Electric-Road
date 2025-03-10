@@ -34,4 +34,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f9bc7366cca42e04784a640e4a9eab54, type: 2}
   - {fileID: 11400000, guid: 3878a6fc05e186c4fb29d6a1f3f32e04, type: 2}
   - {fileID: 11400000, guid: e776af11510333e40967466584dc09a9, type: 2}
+  puzzleComponentsPrefab: {fileID: 6694558333187350908, guid: 28376622098d4154bb5d8cab9b7fa948, type: 3}
   bgm: {fileID: 8300000, guid: 46dc1f90ce089a74bb55c0fb84253879, type: 3}
+  hasTutorial: 0
+  tutorial: {fileID: 0}

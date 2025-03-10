@@ -12,6 +12,8 @@ public class GameStageScriptableObject : SerializedScriptableObject
     public Sprite thumbnail;
     public string stageName;
     public List<StageScriptableObject> stageData;
+    [AssetsOnly]
+    public GameObject puzzleComponentsPrefab;
     public AudioClip bgm;
     public bool hasTutorial;
     [ShowIf("hasTutorial")] 

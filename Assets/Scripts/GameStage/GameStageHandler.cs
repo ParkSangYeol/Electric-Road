@@ -14,6 +14,9 @@ namespace GameStage
         
         [SerializeField] 
         private Button backButton;
+
+        [SerializeField] 
+        private Transform canvasTransform;
         
         [SerializeField] 
         private List<PuzzleComponent> puzzleComponents;
@@ -32,6 +35,8 @@ namespace GameStage
             title.text = gameStageData.stageName;
             int stageIdx = 0;
             bool isUnLocklastComponent = true;
+            CreatePuzzleComponents();
+            
             for (int i = 0; i < puzzleComponents.Count; i++)
             {
                 PuzzleComponent component = puzzleComponents[i];
@@ -74,6 +79,19 @@ namespace GameStage
                 }
             }    
             SoundManager.Instance.PlayBGM(gameStageData.bgm, 1f);
+        }
+
+        private void CreatePuzzleComponents()
+        {
+            // 퍼즐 Components 생성
+            GameObject puzzleComponentsObject = Instantiate(gameStageData.puzzleComponentsPrefab, canvasTransform);
+            
+            // 퍼즐 Component 변수 설정
+            puzzleComponents = new List<PuzzleComponent>();
+            foreach (var puzzleComponent in puzzleComponentsObject.GetComponentsInChildren<PuzzleComponent>())
+            {
+                puzzleComponents.Add(puzzleComponent);
+            }
         }
     }
 }
