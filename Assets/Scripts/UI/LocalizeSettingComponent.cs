@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class StringSettingComponent : MonoBehaviour
+    public class LocalizeSettingComponent : MonoBehaviour
     {
         [SerializeField] 
         private Button leftButton;
@@ -23,9 +23,6 @@ namespace UI
 
         [SerializeField] 
         private List<string> components;
-
-        [SerializeField] 
-        private string playerPrefKey;
         
         private int idx;
 
@@ -36,15 +33,13 @@ namespace UI
             onValueChange.AddListener((idx) =>
             {
                 valueText.text = components[idx];
-                PlayerPrefs.SetInt(playerPrefKey, idx);
-                PlayerPrefs.Save();
             });
             onValueChange.AddListener((idx) =>
             {
                 LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[idx];
             });
-            int currIdx = PlayerPrefs.GetInt(playerPrefKey, 0);
-            valueText.text = components[currIdx];
+            idx = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
+            valueText.text = components[idx];
         }
 
         public void OnClickLeftButton()
