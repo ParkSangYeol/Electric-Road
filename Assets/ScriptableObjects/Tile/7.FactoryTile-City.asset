@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47e50d09e9ff6b34baeba1859c24c1d9, type: 3}
-  m_Name: 7.FactoryTile -City
+  m_Name: 7.FactoryTile-City
   m_EditorClassIdentifier: 
   tileTypeName: "\uACF5\uC7A5 \uD0C0\uC77C"
   Icon: {fileID: 21300000, guid: f54b05c9d29b2aa47bce14b2b488a925, type: 3}
