@@ -30,6 +30,7 @@ namespace Stage.UI
         {
             // InitSFX();
             InitBtnEvent();
+            gameObject.SetActive(false);
         }
 
         public void SetTitle(string title)
