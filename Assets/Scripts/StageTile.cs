@@ -66,15 +66,17 @@ namespace Stage {
         }
 
         [Button]
-        public void ActiveTile()
+        public void SetActiveTile(bool isActive)
         {
-            image.color = electricType switch 
-            {
-                0 => Color.yellow,
-                1 => Color.cyan,
-                2 => Color.magenta,
-                3 => Color.green
-            };
+            backgroundImage.color = isActive
+                ? electricType switch
+                {
+                    0 => Color.yellow,
+                    1 => Color.cyan,
+                    2 => Color.magenta,
+                    3 => Color.green
+                }
+                : Color.white;
         }
 
         public void SetHighlight(bool highlight)

@@ -29,6 +29,15 @@ namespace ScriptableObjects.Stage
         [VerticalGroup("Split/Meta")]
         [ReadOnly, LabelText("세로")]
         public int height;
+
+        [VerticalGroup("Split/Meta")]
+        // [ReadOnly, LabelText("발전소 위치")] 
+        public Vector2Int generatorPos;
+
+        [VerticalGroup("Split/Meta")] 
+        // [ReadOnly, LabelText("공장 수")]
+        public int numOfFactories;
+        
         
         [TabGroup("Split/Map","스테이지 구성", SdfIconType.Map)] 
         [ReadOnly, TableMatrix(SquareCells = true)]
@@ -54,6 +63,7 @@ namespace ScriptableObjects.Stage
 
             this.map = map;
             this.answerMap = ansMap;
+            this.numOfFactories = 0;
 
             ans = 0;
             for (int x = 0; x < width; x++)
@@ -61,6 +71,14 @@ namespace ScriptableObjects.Stage
                 for (int y = 0; y < height; y++)
                 {
                     ans += (int)ansMap[x, y].tile.cost == 9999? 0 : (int)ansMap[x, y].tile.cost;
+                    if (ansMap[x, y].tile.tileType == Tile.GENERATOR)
+                    {
+                        generatorPos = new Vector2Int(x, y);
+                    }
+                    else if (ansMap[x, y].tile.tileType == Tile.FACTORY)
+                    {
+                        numOfFactories++;
+                    }
                 }
             }
         }

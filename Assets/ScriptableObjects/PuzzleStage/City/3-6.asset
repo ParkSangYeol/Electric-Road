@@ -1983,6 +1983,8 @@ MonoBehaviour:
   stageType: 1
   width: 8
   height: 8
+  generatorPos: {x: 2, y: 5}
+  numOfFactories: 3
   ans: 210
-  numOfPalate: 0
+  numOfPalate: 5
   thresholds: ff0000000e0100001d010000

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Command;
 using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
@@ -49,6 +50,7 @@ namespace Stage
         private AudioClip buttonSFX;
         
         public int maxElectric;
+        public float trackTileDelay; // 정답 체크시, 각 타일에 머무는 시간
         public UnityEvent onResetStage;
         public UnityEvent<float> onCostChange;
         public List<int> thresholdAmounts;
@@ -162,8 +164,15 @@ namespace Stage
         // *주의!* 코드가 상당히 긺.
         #region About Check Answer
 
-        public void CheckAnswer()
+        public async void CheckAnswer()
         {
+            // 정답 체크 가능 여부 확인
+            if (!canCheckAns)
+            {
+                StartCoroutine(starterHandler.ResetHandler());
+                return;
+            }
+            
             // 편집 중단.
             modeHandler.ChangeMode(EditMode.STOP);
             undoButton.enabled = redoButton.enabled = false;
@@ -176,10 +185,10 @@ namespace Stage
             // 정답 여부 확인하기
             bool isSuccess = stageData.stageType switch
             {
-                StageType.DEFAULT => CheckDefaultMapAnswer(map),
-                StageType.AMPLIFIER => CheckAmplifierMapAnswer(map),
-                StageType.MODULATOR => CheckModulatorMapAnswer(map),
-                StageType.AMP_MOD => CheckAmpAndModMapAnswer(map),
+                StageType.DEFAULT => await CheckDefaultMapAnswer(),
+                StageType.AMPLIFIER => await CheckAmplifierMapAnswer(),
+                StageType.MODULATOR => await CheckModulatorMapAnswer(),
+                StageType.AMP_MOD => await CheckAmpAndModMapAnswer(),
                 _ => false
             };
             
@@ -199,9 +208,15 @@ namespace Stage
                 numOfStar = 1;
             }
             
+            // 광고 출력
+#if UNITY_ANDROID|| UNITY_EDITOR
+            AdManager.Instance.CheckAd();
+#endif
+
             if (!canCheckAns || !isSuccess || numOfStar == 0)
             {
                 // 실패
+                ResetTilesColor();
                 modeHandler.ChangeMode(EditMode.DRAW);
                 undoButton.enabled = redoButton.enabled = true;
                 StartCoroutine(starterHandler.ResetHandler());
@@ -223,11 +238,28 @@ namespace Stage
             }
             PlayerPrefs.Save();
         }
-        
-        private bool CheckDefaultMapAnswer(in TileStruct[,] map)
+
+        private void ResetTilesColor()
         {
-            Vector2Int startPoint = GetStartPoint(map);
-            int numOfFactories = GetFactoriesCount(map);
+            foreach (var stageTile in stageArea.GetComponentsInChildren<StageTile>())
+            {
+                   stageTile.SetActiveTile(false);
+            }
+        }
+
+        private void SetActiveTileColor(in StageTile stageTile)
+        {
+            stageTile.SetActiveTile(true);
+            // TODO Add Sound
+            // SoundManager.Instance.PlaySFX();
+        }
+        
+        private async Task<bool> CheckDefaultMapAnswer()
+        {
+            StageTile[,] stageMatrix = MakeStageMatrix();
+
+            Vector2Int startPoint = stageData.generatorPos;
+            int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
             
@@ -241,19 +273,22 @@ namespace Stage
                 return false;
             }
 
-            Queue<Vector2Int> queue = new Queue<Vector2Int>();
-            queue.Enqueue(startPoint);
+            Stack<Vector2Int> stack = new Stack<Vector2Int>();
+            stack.Push(startPoint);
             visit[startPoint.x, startPoint.y] = true;
             
-            while (queue.Count > 0)
+            // DFS
+            while (stack.Count > 0)
             {
-                Vector2Int curr = queue.Dequeue();
-                Debug.Log("현재 위치: " + curr + ", 타일 종류: " + map[curr.x,curr.y].tile.tileType + ", 타일 방향: " + map[curr.x, curr.y].dir);
+                Vector2Int curr = stack.Pop();
                 int nX, nY;
-                switch (map[curr.x, curr.y].tile.tileType) 
+                
+                // Debug.Log("Checking Answer. current position is: " + curr);
+                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
                 {
                     case ScriptableObjects.Stage.Tile.FACTORY:
                         numOfFactories--;
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         break;
                     case ScriptableObjects.Stage.Tile.GENERATOR:
                     case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
@@ -265,37 +300,41 @@ namespace Stage
                             {
                                 continue;
                             }
-                            if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                                 or ScriptableObjects.Stage.Tile.OBSTACLE
                                 or ScriptableObjects.Stage.Tile.GENERATOR)
                             {
                                 continue;
                             }
-                            queue.Enqueue(new Vector2Int(nX, nY));
+                            stack.Push(new Vector2Int(nX, nY));
                             visit[nX, nY] = true;
                         }
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         break;    
                     case ScriptableObjects.Stage.Tile.OBSTACLE:
                         break;
                     default:
-                        int dir = GetDirToInt(map[curr.x, curr.y].dir);
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
                         nX = curr.x + dX[dir];
                         nY = curr.y + dY[dir];
                         if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
                         {
                             Debug.Log("범위 밖 " + width + ", " + height);
-                            continue;
+                            break;
                         }
-                        if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                             or ScriptableObjects.Stage.Tile.OBSTACLE
                             or ScriptableObjects.Stage.Tile.GENERATOR)
                         {
-                            continue;
+                            break;
                         }
-                        queue.Enqueue(new Vector2Int(nX, nY));
+                        stack.Push(new Vector2Int(nX, nY));
                         visit[nX, nY] = true;
                         break;
                 }
+
+                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
             }
             
             if (numOfFactories == 0)
@@ -308,11 +347,12 @@ namespace Stage
             return false;
         }
         
-        private bool CheckAmplifierMapAnswer(in TileStruct[,] map)
+        private async Task<bool> CheckAmplifierMapAnswer()
         {
-            Debug.Log("증폭기 문제 풀이여부 확인 시작!");
-            Vector2Int startPoint = GetStartPoint(map);
-            int numOfFactories = GetFactoriesCount(map);
+            StageTile[,] stageMatrix = MakeStageMatrix();
+            
+            Vector2Int startPoint = stageData.generatorPos;
+            int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
             
@@ -326,24 +366,26 @@ namespace Stage
                 return false;
             }
 
-            Queue<TileSearchNode> queue = new Queue<TileSearchNode>();
-            queue.Enqueue(new TileSearchNode(startPoint, maxElectric, 0));
+            Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+            stack.Push(new TileSearchNode(startPoint, maxElectric, 0));
             visit[startPoint.x, startPoint.y] = true;
             
-            while (queue.Count > 0)
+            // DFS
+            while (stack.Count > 0)
             {
-                TileSearchNode curr = queue.Dequeue();
-                Debug.Log("현재 위치: " + curr + ", 타일 종류: " + map[curr.x,curr.y].tile.tileType + ", 타일 방향: " + map[curr.x, curr.y].dir + " 남은 전기량: " + curr.remainElectric);
+                TileSearchNode curr = stack.Pop();
+                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 남은 전기량: " + curr.remainElectric);
                 if (curr.remainElectric < 0)
                 {
                     continue;
                 }
 
                 int nX, nY;
-                switch (map[curr.x, curr.y].tile.tileType) 
+                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
                 {
                     case ScriptableObjects.Stage.Tile.FACTORY:
                         numOfFactories--;
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         break;
                     case ScriptableObjects.Stage.Tile.GENERATOR:
                     case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
@@ -355,41 +397,44 @@ namespace Stage
                             {
                                 continue;
                             }
-                            if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                                 or ScriptableObjects.Stage.Tile.OBSTACLE
                                 or ScriptableObjects.Stage.Tile.GENERATOR)
                             {
                                 continue;
                             }
-                            queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                            stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                             visit[nX, nY] = true;
                         }
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         break;    
                     case ScriptableObjects.Stage.Tile.OBSTACLE:
                         break;
                     default:
-                        if (map[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
                         {
                             curr.remainElectric = maxElectric;
                         }
-                        int dir = GetDirToInt(map[curr.x, curr.y].dir);
+                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
                         nX = curr.x + dX[dir];
                         nY = curr.y + dY[dir];
                         if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
                         {
                             Debug.Log("범위 밖 " + width + ", " + height);
-                            continue;
+                            break;
                         }
-                        if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                             or ScriptableObjects.Stage.Tile.OBSTACLE
                             or ScriptableObjects.Stage.Tile.GENERATOR)
                         {
-                            continue;
+                            break;
                         }
-                        queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                        stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                         visit[nX, nY] = true;
                         break;
                 }
+                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
             }
             
             if (numOfFactories == 0)
@@ -402,11 +447,13 @@ namespace Stage
             return false;
         }
         
-        private bool CheckModulatorMapAnswer(in TileStruct[,] map)
+        private async Task<bool> CheckModulatorMapAnswer()
         {
-            Debug.Log("변환기 문제 풀이여부 확인 시작!");
-            Vector2Int startPoint = GetStartPoint(map);
-            int numOfFactories = GetFactoriesCount(map);
+            // Debug.Log("변환기 문제 풀이여부 확인 시작!");
+            StageTile[,] stageMatrix = MakeStageMatrix();
+
+            Vector2Int startPoint = stageData.generatorPos;
+            int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
             
@@ -420,21 +467,22 @@ namespace Stage
                 return false;
             }
 
-            Queue<TileSearchNode> queue = new Queue<TileSearchNode>();
-            queue.Enqueue(new TileSearchNode(startPoint, 0, 0));
+            Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+            stack.Push(new TileSearchNode(startPoint, 0, 0));
             visit[startPoint.x, startPoint.y] = true;
             
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                TileSearchNode curr = queue.Dequeue();
-                Debug.Log("현재 위치: " + curr + ", 타일 종류: " + map[curr.x,curr.y].tile.tileType + ", 타일 방향: " + map[curr.x, curr.y].dir + " 현재 전기 종류: " + curr.electricType);
+                TileSearchNode curr = stack.Pop();
+                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 현재 전기 종류: " + curr.electricType);
 
                 int nX, nY;
-                switch (map[curr.x, curr.y].tile.tileType) 
+                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
                 {
                     case ScriptableObjects.Stage.Tile.FACTORY:
-                        if (map[curr.x, curr.y].electricType == curr.electricType)
+                        if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
                         {
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                             numOfFactories--;
                         }
                         break;
@@ -448,41 +496,45 @@ namespace Stage
                             {
                                 continue;
                             }
-                            if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                                 or ScriptableObjects.Stage.Tile.OBSTACLE
                                 or ScriptableObjects.Stage.Tile.GENERATOR)
                             {
                                 continue;
                             }
-                            queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
+                            stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
                             visit[nX, nY] = true;
                         }
-                        break;    
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        break;
                     case ScriptableObjects.Stage.Tile.OBSTACLE:
                         break;
                     default:
-                        if (map[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
                         {
-                            curr.electricType = map[curr.x, curr.y].electricType;
+                            curr.electricType = stageMatrix[curr.x, curr.y].electricType;
                         }
-                        int dir = GetDirToInt(map[curr.x, curr.y].dir);
+                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
                         nX = curr.x + dX[dir];
                         nY = curr.y + dY[dir];
                         if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
                         {
                             Debug.Log("범위 밖 " + width + ", " + height);
-                            continue;
+                            break;
                         }
-                        if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                             or ScriptableObjects.Stage.Tile.OBSTACLE
                             or ScriptableObjects.Stage.Tile.GENERATOR)
                         {
-                            continue;
+                            break;
                         }
-                        queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
+                        stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
                         visit[nX, nY] = true;
                         break;
                 }
+
+                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
             }
             
             if (numOfFactories == 0)
@@ -495,11 +547,13 @@ namespace Stage
             return false;
         }
         
-        private bool CheckAmpAndModMapAnswer(in TileStruct[,] map)
+        private async Task<bool> CheckAmpAndModMapAnswer()
         {
             Debug.Log("증폭기, 변환기 문제 풀이여부 확인 시작!");
-            Vector2Int startPoint = GetStartPoint(map);
-            int numOfFactories = GetFactoriesCount(map);
+            StageTile[,] stageMatrix = MakeStageMatrix();
+
+            Vector2Int startPoint = stageData.generatorPos;
+            int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
             
@@ -520,14 +574,15 @@ namespace Stage
             while (queue.Count > 0)
             {
                 TileSearchNode curr = queue.Dequeue();
-                Debug.Log("현재 위치: " + curr + ", 타일 종류: " + map[curr.x,curr.y].tile.tileType + ", 타일 방향: " + map[curr.x, curr.y].dir + " 현재 전기 종류: " + curr.electricType);
+                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 현재 전기 종류: " + curr.electricType);
                 int nX, nY;
-                switch (map[curr.x, curr.y].tile.tileType)
+                switch (stageMatrix[curr.x, curr.y].tile.tileType)
                 {
                     case ScriptableObjects.Stage.Tile.FACTORY:
-                        if (map[curr.x, curr.y].electricType == curr.electricType)
+                        if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
                         {
                             numOfFactories--;
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         }
                         break;
                     case ScriptableObjects.Stage.Tile.GENERATOR:
@@ -540,7 +595,7 @@ namespace Stage
                             {
                                 continue;
                             }
-                            if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                                 or ScriptableObjects.Stage.Tile.OBSTACLE
                                 or ScriptableObjects.Stage.Tile.GENERATOR)
                             {
@@ -549,36 +604,40 @@ namespace Stage
                             queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                             visit[nX, nY] = true;
                         }
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                         break;    
                     case ScriptableObjects.Stage.Tile.OBSTACLE:
                         break;
                     default:
-                        if (map[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
                         {
                             curr.remainElectric = maxElectric;
                         }
-                        if (map[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
+                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
                         {
-                            curr.electricType = map[curr.x, curr.y].electricType;
+                            curr.electricType = stageMatrix[curr.x, curr.y].electricType;
                         }
-                        int dir = GetDirToInt(map[curr.x, curr.y].dir);
+                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
                         nX = curr.x + dX[dir];
                         nY = curr.y + dY[dir];
                         if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
                         {
                             Debug.Log("범위 밖 " + width + ", " + height);
-                            continue;
+                            break;
                         }
-                        if (map[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
                             or ScriptableObjects.Stage.Tile.OBSTACLE
                             or ScriptableObjects.Stage.Tile.GENERATOR)
                         {
-                            continue;
+                            break;
                         }
                         queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                         visit[nX, nY] = true;
                         break;
                 }
+
+                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
             }
             
             if (numOfFactories == 0)
@@ -605,45 +664,6 @@ namespace Stage
                 Direction.DOWN => 0,
                 Direction.LEFT => 3
             };
-        }
-        private Vector2Int GetStartPoint(in TileStruct[,] map)
-        {
-            int width = stageArea.width;
-            int height = stageArea.height;
-            Vector2Int startPoint = new Vector2Int();
-            
-            
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    if (map[x, y].tile.tileType != ScriptableObjects.Stage.Tile.GENERATOR) 
-                        continue;
-                    return  new Vector2Int(x, y);
-                }
-            }
-
-            return new Vector2Int(-1, -1);
-        }
-
-        private int GetFactoriesCount(in TileStruct[,] map)
-        {
-            int width = stageArea.width;
-            int height = stageArea.height;
-            int numOfFactories = 0;
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    if (map[x, y].tile.tileType == ScriptableObjects.Stage.Tile.FACTORY)
-                    {
-                        numOfFactories++;
-                    } 
-                        
-                }
-            }
-
-            return numOfFactories;
         }
         private StageTile[,] MakeStageMatrix()
         {

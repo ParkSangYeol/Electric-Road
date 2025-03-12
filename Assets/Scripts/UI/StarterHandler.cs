@@ -41,7 +41,6 @@ namespace Stage.UI
             defaultPos = transform.position;
             diffY = activeTransform.position.y - defaultPos.y;
             isActivate = false;
-            onActivate.AddListener(AdManager.Instance.CheckAd);
         }
 
         void Update()
