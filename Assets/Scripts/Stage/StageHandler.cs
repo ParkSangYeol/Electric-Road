@@ -48,6 +48,8 @@ namespace Stage
         private AudioClip backButtonSFX;
         [SerializeField] 
         private AudioClip buttonSFX;
+        [SerializeField] 
+        private AudioClip answerCheckSFX;
         
         public int maxElectric;
         public float trackTileDelay; // 정답 체크시, 각 타일에 머무는 시간
@@ -250,8 +252,7 @@ namespace Stage
         private void SetActiveTileColor(in StageTile stageTile)
         {
             stageTile.SetActiveTile(true);
-            // TODO Add Sound
-            // SoundManager.Instance.PlaySFX();
+            SoundManager.Instance.PlaySFX(answerCheckSFX);
         }
         
         private async Task<bool> CheckDefaultMapAnswer()

@@ -32,6 +32,7 @@ namespace Stage {
         public UnityEvent<Direction> onChangeDirection;
         public TileScriptableObject defaultTile;
         public int electricType;
+        private Color[] colorByElectricType;
         
         private void Awake()
         {
@@ -40,6 +41,14 @@ namespace Stage {
             
             onChangeDirection = new UnityEvent<Direction>();
             onChangeDirection.AddListener(ChangeTileDirection);
+
+            colorByElectricType = new[]
+            {
+                new Color(1f, 0.89f, 0.29f),
+                Color.cyan,
+                Color.magenta,
+                Color.green
+            };
         }
 
         private void Start()
@@ -69,14 +78,7 @@ namespace Stage {
         public void SetActiveTile(bool isActive)
         {
             backgroundImage.color = isActive
-                ? electricType switch
-                {
-                    0 => Color.yellow,
-                    1 => Color.cyan,
-                    2 => Color.magenta,
-                    3 => Color.green
-                }
-                : Color.white;
+                ? colorByElectricType[electricType] : Color.white;
         }
 
         public void SetHighlight(bool highlight)
