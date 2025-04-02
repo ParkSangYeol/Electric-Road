@@ -1147,3 +1147,5 @@ MonoBehaviour:
   ans: 135
   numOfPalate: 5
   thresholds: a5000000aa000000b9000000
+  isAchievement: 0
+  achievementKey: 

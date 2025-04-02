@@ -239,6 +239,28 @@ namespace Stage
                 PlayerPrefs.SetInt(stageData.name, numOfStar);
             }
             PlayerPrefs.Save();
+            
+            // 도전과제 갱신
+#if !DISABLESTEAMWORKS
+            if (stageData.isAchievement)
+            {
+                if (stageData.isCheapestClearType)
+                {
+                    if (cost <= stageData.cheapestCost)
+                    {
+                        // 달성
+                        SteamAchievement.Instance.Achieve(stageData.achievementKey);
+                    }
+                }
+                else
+                {
+                    // 달성
+                    SteamAchievement.Instance.Achieve(stageData.achievementKey);
+                }
+            }
+            
+            GameManager.Instance.CheckStageClearAchievement();
+#endif
         }
 
         private void ResetTilesColor()

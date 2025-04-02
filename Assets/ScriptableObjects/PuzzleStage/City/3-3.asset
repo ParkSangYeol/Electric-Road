@@ -1148,3 +1148,7 @@ MonoBehaviour:
   ans: 155
   numOfPalate: 5
   thresholds: c3000000c8000000d2000000
+  isAchievement: 1
+  achievementKey: 'ACHIEVEMENT_CLEAR_CITY9_LESS '
+  isCheapestClearType: 1
+  cheapestCost: 190

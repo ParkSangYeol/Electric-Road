@@ -18,6 +18,8 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     private StageScriptableObject currentPuzzleData;
     [ShowInInspector, ReadOnly]
     private int puzzleIdx;
+    [SerializeField] 
+    private GameStageDataScriptableObject gameData;
 
 #if UNITY_STANDALONE_WIN
     private float targetAspectRatio;
@@ -184,5 +186,59 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     }
 
     #endregion
-    
+
+    #if !DISABLESTEAMWORKS
+    #region Steam Achivement
+
+    /// <summary>
+    /// 스테이지 클리어에 대한 스팀 Achievement를 확인 후 갱신
+    /// </summary>
+    public void CheckStageClearAchievement()
+    {
+        if (currentStageData == null)
+        {
+            return;
+        }
+
+        if (!SteamAchievement.Instance.IsAchieved(currentStageData.ClearAchievementKey))
+        {
+            return;
+        }
+
+        // 스테이지 전체를 클리어했는지 검사
+        bool isPerfectClear = true;
+        foreach (var puzzleData in currentStageData.stageData)
+        {
+            int stars = PlayerPrefs.GetInt(puzzleData.name, 0);
+            if (stars == 0)
+            {
+                return;
+            }
+
+            if (stars != 3)
+            {
+                isPerfectClear = false;
+            }
+        }
+        
+        SteamAchievement.Instance.Achieve(currentStageData.ClearAchievementKey);
+        if (isPerfectClear)
+        {
+            SteamAchievement.Instance.Achieve(currentStageData.PerfectClearAchievementKey);
+        }
+        
+        // 다른 모든 스테이지도 클리어했는지 확인.
+        foreach (var stageData in gameData.gameStageList)
+        {
+            if (!SteamAchievement.Instance.IsAchieved(stageData.PerfectClearAchievementKey))
+            {
+                return;
+            }
+        }
+        
+        SteamAchievement.Instance.Achieve(gameData.allClearAchievementKey);
+    }
+
+    #endregion
+    #endif
 }

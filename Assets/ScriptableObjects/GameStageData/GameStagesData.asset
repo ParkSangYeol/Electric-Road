@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f30fdec72218964189df8c2c5428aef, type: 3}
+  m_Name: GameStagesData
+  m_EditorClassIdentifier: 
+  gameStageList:
+  - {fileID: 11400000, guid: a8206d6789118994abae16b71cc31d66, type: 2}
+  - {fileID: 11400000, guid: 8879ba42099d85a409e6f6faec85f645, type: 2}
+  - {fileID: 11400000, guid: 9693ddfec596fc642a1fb6fc8b4426b7, type: 2}
+  allClearAchievementKey: ACHIEVEMENT_CLEAR_ALL_PERFECT

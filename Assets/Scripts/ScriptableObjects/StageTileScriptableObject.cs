@@ -55,6 +55,20 @@ namespace ScriptableObjects.Stage
         
         [LabelText("스타별 한계 비용")]
         public List<int> thresholds = new List<int>() {260, 270, 280};
+
+        [LabelText("도전과제 여부")]
+        public bool isAchievement;
+        
+        [BoxGroup("Achievement")]
+        [ShowIf("isAchievement")]
+        public string achievementKey;
+        [BoxGroup("Achievement")]
+        [ShowIf("isAchievement")] 
+        public bool isCheapestClearType;
+
+        [BoxGroup("Achievement/ClearCondition")] 
+        [ShowIf("isCheapestClearType")]
+        public int cheapestCost;
         
         public void MakeMapByStageTiles(TileStruct[,] map, TileStruct[,] ansMap)
         {

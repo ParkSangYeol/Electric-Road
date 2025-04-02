@@ -1988,3 +1988,7 @@ MonoBehaviour:
   ans: 265
   numOfPalate: 4
   thresholds: 0e0100001801000022010000
+  isAchievement: 1
+  achievementKey: 'ACHIEVEMENT_CLEAR_TOWN9_LESS '
+  isCheapestClearType: 1
+  cheapestCost: 265

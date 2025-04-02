@@ -1116,3 +1116,7 @@ MonoBehaviour:
   ans: 60
   numOfPalate: 4
   thresholds: 3c0000005000000064000000
+  isAchievement: 1
+  achievementKey: ACHIEVEMENT_CLEAR-1-0
+  isCheapestClearType: 0
+  cheapestCost: 0

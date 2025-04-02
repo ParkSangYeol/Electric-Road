@@ -38,3 +38,5 @@ MonoBehaviour:
   bgm: {fileID: 8300000, guid: 46dc1f90ce089a74bb55c0fb84253879, type: 3}
   hasTutorial: 1
   tutorial: {fileID: 11400000, guid: 274726258051b4040b839500807d7310, type: 2}
+  ClearAchievementKey: ACHIEVEMENT_CLEAR_CITY
+  PerfectClearAchievementKey: ACHIEVEMENT_CLEAR_CITY_PERFECT
