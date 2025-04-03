@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using com.kleberswf.lib.core;
 using UnityEngine;
+#if !DISABLESTEAMWORKS
 using Steamworks;
+#endif
+
 public class SteamAchievement : Singleton<SteamAchievement>
 {
     #if !DISABLESTEAMWORKS

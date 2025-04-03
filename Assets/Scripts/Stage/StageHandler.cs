@@ -259,7 +259,27 @@ namespace Stage
                 }
             }
             
-            GameManager.Instance.CheckStageClearAchievement();
+            GameManager.Instance.CheckSteamStageClearAchievement();
+#endif
+#if !DISABLESTOVE
+            if (stageData.isAchievement)
+            {
+                if (stageData.isCheapestClearType)
+                {
+                    if (cost <= stageData.cheapestCost)
+                    {
+                        // 달성
+                        StoveAchievementHandler.UnlockAchievement(stageData.achievementKey);
+                    }
+                }
+                else
+                {
+                    // 달성
+                    StoveAchievementHandler.UnlockAchievement(stageData.achievementKey);
+                }
+            }
+
+            GameManager.Instance.CheckStoveStageClearAchievement();
 #endif
         }
 

@@ -19,8 +19,6 @@ public class GameStageScriptableObject : SerializedScriptableObject
     [ShowIf("hasTutorial")] 
     public TutorialScriptableObject tutorial;
     
-#if !DISABLESTEAMWORKS
     public string ClearAchievementKey;
     public string PerfectClearAchievementKey;
-#endif
 }

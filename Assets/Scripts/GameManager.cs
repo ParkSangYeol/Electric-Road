@@ -5,6 +5,7 @@ using GameStage;
 using ScriptableObjects.Stage;
 using Sirenix.OdinInspector;
 using Stage;
+using Stove.PCSDK.NET;
 using Tutorial;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -193,7 +194,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     /// <summary>
     /// 스테이지 클리어에 대한 스팀 Achievement를 확인 후 갱신
     /// </summary>
-    public void CheckStageClearAchievement()
+    public void CheckSteamStageClearAchievement()
     {
         if (currentStageData == null)
         {
@@ -241,4 +242,62 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
 
     #endregion
     #endif
+    
+    
+#if !DISABLESTOVE
+
+    #region Stove Achievement
+
+    /// <summary>
+    /// 스테이지 클리어에 대한 Stove Achievement를 확인 후 갱신
+    /// </summary>
+    public void CheckStoveStageClearAchievement()
+    {
+        if (currentStageData == null)
+        {
+            return;
+        }
+
+        // 스테이지 전체를 클리어했는지 검사
+        bool isPerfectClear = true;
+        foreach (var puzzleData in currentStageData.stageData)
+        {
+            int stars = PlayerPrefs.GetInt(puzzleData.name, 0);
+            if (stars == 0)
+            {
+                return;
+            }
+
+            if (stars != 3)
+            {
+                isPerfectClear = false;
+            }
+        }
+        
+        StoveAchievementHandler.UnlockAchievement(currentStageData.ClearAchievementKey);
+        if (isPerfectClear)
+        {
+            
+            StoveAchievementHandler.UnlockAchievement(currentStageData.PerfectClearAchievementKey);
+        }
+        
+        // 다른 모든 스테이지도 클리어했는지 확인.
+        foreach (var stageData in gameData.gameStageList)
+        {
+            foreach (var puzzleData in stageData.stageData)
+            {
+                if (PlayerPrefs.GetInt(puzzleData.name, 0) != 3)
+                {
+                    return;
+                }
+            }
+        }
+        
+        StoveAchievementHandler.UnlockAchievement(gameData.allClearAchievementKey);
+    }
+
+
+    #endregion
+    
+#endif
 }
