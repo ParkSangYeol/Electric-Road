@@ -4,8 +4,9 @@ using System.IO;
 using System.Text;
 using com.kleberswf.lib.core;
 using Newtonsoft.Json;
-using Sirenix.Utilities.Editor;
+#if !DISABLESTEAMWORKS
 using Steamworks;
+#endif
 using UnityEngine;
 
 public class PlayerDataHandler : Singleton<PlayerDataHandler>
@@ -47,7 +48,12 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
         savePathBuilder.Append(saveFileFormat);
         
 #elif !DISABLESTOVE
-                
+        string userId = StoveManager.Instance.User.GameUserId;
+        savePathBuilder.Append(userId);
+        
+        savePathBuilder.Append(saveFileName);
+        savePathBuilder.Append('.');
+        savePathBuilder.Append(saveFileFormat);
 #endif
 
         return savePathBuilder.ToString();
