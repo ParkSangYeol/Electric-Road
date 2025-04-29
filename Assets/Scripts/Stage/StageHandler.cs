@@ -349,6 +349,12 @@ namespace Stage
                             {
                                 continue;
                             }
+                            
+                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
+                            {
+                                continue;
+                            }
+                            
                             stack.Push(new Vector2Int(nX, nY));
                             visit[nX, nY] = true;
                         }
@@ -372,6 +378,12 @@ namespace Stage
                         {
                             break;
                         }
+                        
+                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
+                        {
+                            continue;
+                        }
+                        
                         stack.Push(new Vector2Int(nX, nY));
                         visit[nX, nY] = true;
                         break;
@@ -446,6 +458,12 @@ namespace Stage
                             {
                                 continue;
                             }
+                            
+                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
+                            {
+                                continue;
+                            }
+                            
                             stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                             visit[nX, nY] = true;
                         }
@@ -473,6 +491,11 @@ namespace Stage
                         {
                             break;
                         }
+                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
+                        {
+                            continue;
+                        }
+                        
                         stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                         visit[nX, nY] = true;
                         break;
@@ -545,6 +568,11 @@ namespace Stage
                             {
                                 continue;
                             }
+                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
+                            {
+                                continue;
+                            }
+                            
                             stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
                             visit[nX, nY] = true;
                         }
@@ -572,6 +600,11 @@ namespace Stage
                         {
                             break;
                         }
+                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
+                        {
+                            continue;
+                        }
+                        
                         stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
                         visit[nX, nY] = true;
                         break;
@@ -644,6 +677,10 @@ namespace Stage
                             {
                                 continue;
                             }
+                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
+                            {
+                                continue;
+                            }
                             queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                             visit[nX, nY] = true;
                         }
@@ -675,6 +712,11 @@ namespace Stage
                         {
                             break;
                         }
+                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
+                        {
+                            continue;
+                        }
+                        
                         queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
                         visit[nX, nY] = true;
                         break;
@@ -745,6 +787,28 @@ namespace Stage
             return map;
         }
 
+        private bool IsAvailableDirection(StageTile tile, int dir)
+        {
+            switch (tile.tile.tileType)
+            {
+                case ScriptableObjects.Stage.Tile.FACTORY:
+                case ScriptableObjects.Stage.Tile.AMPLIFIER:
+                case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
+                case ScriptableObjects.Stage.Tile.MODULATOR:
+                    return true;
+                case ScriptableObjects.Stage.Tile.LINE:
+                    return GetDirToInt(tile.direction) == dir;
+                case ScriptableObjects.Stage.Tile.CORNER_RIGHT:
+                    return (GetDirToInt(tile.direction) + 1) % 4 == dir;
+                case ScriptableObjects.Stage.Tile.CORNER_LEFT:
+                    return (GetDirToInt(tile.direction) + 3) % 4 == dir;
+                default:
+                    Debug.LogError("Unexpected tile type. tile type is " + tile.tile.tileType);
+                    break;
+            }
+
+            return false;
+        }
 #endregion
     }
 
