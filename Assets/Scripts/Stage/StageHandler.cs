@@ -230,15 +230,15 @@ namespace Stage
             StartCoroutine(resultPopup.Activate(numOfStar, (int)cost));
             
             // 데이터 갱신
-            if (PlayerPrefs.HasKey(stageData.name))
+            if (PlayerDataHandler.Instance.HasKey(stageData.name))
             {
-                PlayerPrefs.SetInt(stageData.name, Mathf.Max(PlayerPrefs.GetInt(stageData.name), numOfStar));
+                PlayerDataHandler.Instance.SetInt(stageData.name, Mathf.Max(PlayerDataHandler.Instance.GetInt(stageData.name), numOfStar));
             }
             else
             {
-                PlayerPrefs.SetInt(stageData.name, numOfStar);
+                PlayerDataHandler.Instance.SetInt(stageData.name, numOfStar);
             }
-            PlayerPrefs.Save();
+            PlayerDataHandler.Instance.SaveData();
             
             // 도전과제 갱신
 #if !DISABLESTEAMWORKS

@@ -50,13 +50,13 @@ namespace GameStage
                 else
                 {
                     var buttonComponent = component.GetComponent<Button>();
-                    if (PlayerPrefs.HasKey(gameStageData.stageData[stageIdx].name))
+                    if (PlayerDataHandler.Instance.HasKey(gameStageData.stageData[stageIdx].name))
                     {
                         // 클리어 기록 있음
 #if UNITY_EDITOR
-                        Debug.Log(i + " component has Key! value: " + PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
+                        Debug.Log(i + " component has Key! value: " + PlayerDataHandler.Instance.GetInt(gameStageData.stageData[stageIdx].name));
 #endif
-                        component.SetStar(PlayerPrefs.GetInt(gameStageData.stageData[stageIdx].name));
+                        component.SetStar(PlayerDataHandler.Instance.GetInt(gameStageData.stageData[stageIdx].name));
                         isUnLocklastComponent = true;
                     }
                     else if (isUnLocklastComponent)

@@ -30,7 +30,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
     
     [SerializeField] 
     private AudioClip mainBGM;
-    
+
     private void Start()
     {
 #if UNITY_STANDALONE_WIN
@@ -201,7 +201,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
             return;
         }
 
-        if (!SteamAchievement.Instance.IsAchieved(currentStageData.ClearAchievementKey))
+        if (SteamAchievement.Instance.IsAchieved(currentStageData.ClearAchievementKey))
         {
             return;
         }
@@ -210,7 +210,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         bool isPerfectClear = true;
         foreach (var puzzleData in currentStageData.stageData)
         {
-            int stars = PlayerPrefs.GetInt(puzzleData.name, 0);
+            int stars = PlayerDataHandler.Instance.GetInt(puzzleData.name, 0);
             if (stars == 0)
             {
                 return;
@@ -262,7 +262,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         bool isPerfectClear = true;
         foreach (var puzzleData in currentStageData.stageData)
         {
-            int stars = PlayerPrefs.GetInt(puzzleData.name, 0);
+            int stars = PlayerDataHandler.Instance.GetInt(puzzleData.name, 0);
             if (stars == 0)
             {
                 return;
@@ -286,7 +286,7 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
         {
             foreach (var puzzleData in stageData.stageData)
             {
-                if (PlayerPrefs.GetInt(puzzleData.name, 0) != 3)
+                if (PlayerDataHandler.Instance.GetInt(puzzleData.name, 0) != 3)
                 {
                     return;
                 }
