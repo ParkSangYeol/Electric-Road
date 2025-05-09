@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 09a92ebc8b7a2744995155c56ff2504d
   m_currentHash:
     serializedVersion: 2
-    Hash: ffdbb344eab790bb8c82f2bde86f9d14
+    Hash: 164c8674940748b2ac61eca1d16223b3
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -61,8 +61,11 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 23ec0aefb13cc89449a08feb598cdf53, type: 2}
   - {fileID: 11400000, guid: 6794063bfe6eaf24db38a96faecd13ba, type: 2}
+  - {fileID: 11400000, guid: 22b93ed46658443468ba3b0916323674, type: 2}
   - {fileID: 11400000, guid: 72605e38af4fec242929a8428d06d308, type: 2}
+  - {fileID: 11400000, guid: 151477f2461412f458830034f6c10238, type: 2}
   - {fileID: 11400000, guid: 263f289132c0ec040b65ef0ab25c9779, type: 2}
+  - {fileID: 11400000, guid: 40b8afbd41682d840807ec6d12f812ea, type: 2}
   - {fileID: 11400000, guid: 7e810aaa2f0c5e0469ce2c3062929a72, type: 2}
   - {fileID: 11400000, guid: c5351495bc335d143ac08c5c6f694961, type: 2}
   m_BuildSettings:
@@ -107,6 +110,9 @@ MonoBehaviour:
     - Locale
     - Locale-en
     - Locale-ko-KR
+    - Locale-zh-CN
+    - Locale-zh-TW
+    - Locale-ja-JP
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 53c08cfdeb7d10e42a527ec566296036, type: 2}
@@ -114,10 +120,9 @@ MonoBehaviour:
   m_CertificateHandlerType:
     m_AssemblyName: 
     m_ClassName: 
-  m_ActivePlayerDataBuilderIndex: 3
+  m_ActivePlayerDataBuilderIndex: 2
   m_DataBuilders:
   - {fileID: 11400000, guid: 9f46ee1ba9b5c2a4bbd19fcb311e1603, type: 2}
-  - {fileID: 11400000, guid: 052a401341730f044a8f29cf8de87a08, type: 2}
   - {fileID: 11400000, guid: 0a6dec034272cad4dbb42e30cc0d35b5, type: 2}
   - {fileID: 11400000, guid: 63459d667c7f34a4ea0dd56fe76ac926, type: 2}
   m_ActiveProfileId: 763f6bea1a5b7214db0ab1048c570a63
