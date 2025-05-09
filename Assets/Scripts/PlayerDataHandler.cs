@@ -33,6 +33,7 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
     private string InitSavePath()
     {
         StringBuilder savePathBuilder = new StringBuilder(Application.persistentDataPath);
+        savePathBuilder.Append('\\');
         
 #if !DISABLESTEAMWORKS
         if (SteamManager.Initialized)
@@ -40,7 +41,9 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
             CSteamID steamID = SteamUser.GetSteamID();
             if (steamID != CSteamID.Nil)
             {
+                savePathBuilder.Append("STEAM");
                 savePathBuilder.Append(steamID.ToString());
+                savePathBuilder.Append('\\');
             }
         }
         savePathBuilder.Append(saveFileName);
@@ -48,6 +51,7 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
         savePathBuilder.Append(saveFileFormat);
         
 #elif !DISABLESTOVE
+        savePathBuilder.Append("STOVE");
         string userId = StoveManager.Instance.User.GameUserId;
         savePathBuilder.Append(userId);
         
@@ -72,6 +76,11 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
                 // JSON 문자열을 SaveData 객체로 변환
                 playerData = JsonConvert.DeserializeObject<Dictionary<string,string>>(jsonData);
             }
+            else if (File.Exists(LoadOldSavePath()))
+            {
+                string jsonData = File.ReadAllText(LoadOldSavePath());
+                playerData = JsonConvert.DeserializeObject<Dictionary<string,string>>(jsonData);
+            }
             else
             {
                 playerData = new Dictionary<string, string>();
@@ -83,6 +92,39 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
             Debug.LogError($"로드 중 에러 발생: {e.Message}");
             playerData = new Dictionary<string, string>();
         }
+    }
+
+    /// <summary>
+    /// 저장 경로의 변경으로 이전 버전 호환을 위해 사용.
+    /// </summary>
+    /// <returns></returns>
+    private string LoadOldSavePath()
+    {
+        StringBuilder savePathBuilder = new StringBuilder(Application.persistentDataPath);
+        
+#if !DISABLESTEAMWORKS
+        if (SteamManager.Initialized)
+        {
+            CSteamID steamID = SteamUser.GetSteamID();
+            if (steamID != CSteamID.Nil)
+            {
+                savePathBuilder.Append(steamID.ToString());
+            }
+        }
+        savePathBuilder.Append(saveFileName);
+        savePathBuilder.Append('.');
+        savePathBuilder.Append(saveFileFormat);
+        
+#elif !DISABLESTOVE
+        string userId = StoveManager.Instance.User.GameUserId;
+        savePathBuilder.Append(userId);
+        
+        savePathBuilder.Append(saveFileName);
+        savePathBuilder.Append('.');
+        savePathBuilder.Append(saveFileFormat);
+#endif
+
+        return savePathBuilder.ToString();
     }
 
     public void SaveData()
