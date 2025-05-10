@@ -201,11 +201,6 @@ public class GameManager : com.kleberswf.lib.core.Singleton<GameManager>
             return;
         }
 
-        if (SteamAchievement.Instance.IsAchieved(currentStageData.ClearAchievementKey))
-        {
-            return;
-        }
-
         // 스테이지 전체를 클리어했는지 검사
         bool isPerfectClear = true;
         foreach (var puzzleData in currentStageData.stageData)

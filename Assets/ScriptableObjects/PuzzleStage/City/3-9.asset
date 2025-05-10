@@ -1989,6 +1989,6 @@ MonoBehaviour:
   numOfPalate: 5
   thresholds: e1000000e6000000eb000000
   isAchievement: 1
-  achievementKey: 'ACHIEVEMENT_CLEAR_CITY9_LESS '
+  achievementKey: ACHIEVEMENT_CLEAR_CITY9_LESS
   isCheapestClearType: 1
   cheapestCost: 220

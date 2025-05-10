@@ -1987,4 +1987,8 @@ MonoBehaviour:
   numOfFactories: 3
   ans: 210
   numOfPalate: 5
-  thresholds: ff0000000e0100001d010000
+  thresholds: 090100001801000022010000
+  isAchievement: 0
+  achievementKey: 
+  isCheapestClearType: 0
+  cheapestCost: 0
