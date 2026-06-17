@@ -4,10 +4,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
+using System;
 using System.Text;
 using Sirenix.OdinInspector.Modules.Localization.Editor.Configs;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+using Sirenix.Utilities;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization.SmartFormat;
 using UnityEngine.Localization.SmartFormat.Core.Parsing;
@@ -36,7 +37,16 @@ namespace Sirenix.OdinInspector.Modules.Localization.Editor.Internal
 
 		public static string HighlightAsRichText(string source)
 		{
-			Format format = Formatter.Parser.ParseFormat(source, Formatter.GetNotEmptyFormatterExtensionNames());
+			Format format;
+
+			try
+			{
+				format = Formatter.Parser.ParseFormat(source, Formatter.GetNotEmptyFormatterExtensionNames());
+			}
+			catch (Exception)
+			{
+				return source;
+			}
 
 			Buffer.Clear();
 
@@ -47,24 +57,35 @@ namespace Sirenix.OdinInspector.Modules.Localization.Editor.Internal
 			return Buffer.Length != expectedSize ? source : Buffer.ToString();
 		}
 
-		public static string GetErrorMessage(string source, out bool foundError)
+		public static string GetErrorMessage(string source, out bool foundError, out Exception exception)
 		{
 			Formatter.Settings.ParseErrorAction = ErrorAction.OutputErrorInResult;
 			Formatter.Settings.FormatErrorAction = ErrorAction.OutputErrorInResult;
 
-			Format format = Formatter.Parser.ParseFormat(source, Formatter.GetNotEmptyFormatterExtensionNames());
+			try
+			{
+				Format format = Formatter.Parser.ParseFormat(source, Formatter.GetNotEmptyFormatterExtensionNames());
 
-			Buffer.Clear();
+				exception = null;
+				foundError = !string.Equals(format.baseString, source, StringComparison.Ordinal);
 
-			int expectedSize = source.Length;
-			AppendToBuffer(format, source, ref expectedSize);
+				return foundError ? format.baseString : string.Empty;
+			}
+			catch (Exception e)
+			{
+				foundError = true;
 
-			foundError = expectedSize != Buffer.Length;
+				exception = e;
 
-			Formatter.Settings.ParseErrorAction = ErrorAction.MaintainTokens;
-			Formatter.Settings.FormatErrorAction = ErrorAction.MaintainTokens;
+				Debug.LogException(e);
 
-			return Buffer.ToString();
+				return $"Unity Formatter threw {ObjectNames.NicifyVariableName(e.GetType().GetNiceName())}: '{e.Message}'\nCheck the console for more information.";
+			}
+			finally
+			{
+				Formatter.Settings.ParseErrorAction = ErrorAction.MaintainTokens;
+				Formatter.Settings.FormatErrorAction = ErrorAction.MaintainTokens;
+			}
 		}
 
 		private static void AppendColorAsRichTag(Color color, ref int expectedSize)
@@ -101,11 +122,6 @@ namespace Sirenix.OdinInspector.Modules.Localization.Editor.Internal
 		{
 			for (var i = 0; i < format.Items.Count; i++)
 			{
-				if (Buffer.Length == source.Length)
-				{
-					break;
-				}
-				
 				FormatItem item = format.Items[i];
 
 				if (!(item is Placeholder placeholder))

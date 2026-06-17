@@ -88,7 +88,7 @@ namespace Sirenix.OdinInspector.Modules.Localization.Editor
 		public OdinMenuItem MenuItem;
 
 		protected OdinMenuEditorWindow RelatedWindow;
-		protected int RelatedWindowId;
+		protected OdinEntityId RelatedWindowId;
 		protected OdinLocalizationEditorWindow.WindowState WindowState;
 
 		protected float PinnedWidth;
@@ -176,7 +176,7 @@ namespace Sirenix.OdinInspector.Modules.Localization.Editor
 			this.EntryScrollView = new OdinGUIScrollView(this.SharedEntries.Length + 64, adjustViewForVerticalScrollBar: false);
 
 			this.RelatedWindow = relatedWindow;
-			this.RelatedWindowId = this.RelatedWindow.GetInstanceID();
+			this.RelatedWindowId = OdinEntityId.FromObject(this.RelatedWindow);
 			this.keyToRemove = null;
 			this.isForceDeleteKey = false;
 
