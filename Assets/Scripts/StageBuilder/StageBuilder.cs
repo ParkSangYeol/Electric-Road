@@ -412,6 +412,9 @@ namespace StageBuilder
                 for (int y = 0; y < height; y++)
                 {
                     map[x, y] = new TileStruct(stageMatrix[x, y]);
+#if UNITY_EDITOR
+                    Debug.Log("x : " + x + " y : " + y + " type : " + map[x, y].electricType);
+#endif
                     map[x, y].electricType = stageMatrix[x, y].electricType;
                 }
             }
@@ -436,6 +439,9 @@ namespace StageBuilder
                 {
                     StageTile stageInstance = stageArea.transform.GetChild(i * width + j).GetComponent<StageTile>();
                     stageMat[j, i] = stageInstance;
+#if UNITY_EDITOR
+                    Debug.Log("x : " + i + " y : " + j + " type : " + stageInstance.electricType);
+#endif
                 }
             }
 

@@ -83,8 +83,16 @@ namespace Tutorial
         private void SetTutorialUnit(int idx)
         {
             // 텍스트 교체
-            var titleLocalizedString = new LocalizedString("TutorialTitleTable", tutorialData.tutorialData[idx].tutorialKey);
-            var descriptionLocalizedString = new LocalizedString("TutorialDescriptionTable", tutorialData.tutorialData[idx].tutorialKey);
+            var titleLocalizedString = 
+                new LocalizedString(
+                    "TutorialTitleTable",
+                    tutorialData.tutorialData[idx].tutorialKey
+                );
+            var descriptionLocalizedString = 
+                new LocalizedString(
+                    "TutorialDescriptionTable",
+                    tutorialData.tutorialData[idx].tutorialKey
+                );
 
             titleLocalizedString.StringChanged += value =>
             {

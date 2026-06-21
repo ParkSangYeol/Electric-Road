@@ -291,9 +291,9 @@ namespace Stage
             }
         }
 
-        private void SetActiveTileColor(in StageTile stageTile)
+        private void SetActiveTileColor(in StageTile stageTile, int targetElectricType = 0 )
         {
-            stageTile.SetActiveTile(true);
+            stageTile.SetActiveTile(true, targetElectricType );
             SoundManager.Instance.PlaySFX(answerCheckSFX);
         }
         
@@ -534,7 +534,7 @@ namespace Stage
             }
 
             Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
-            stack.Push(new TileSearchNode(startPoint, 0, 0));
+            stack.Push(new TileSearchNode(startPoint, 0,stageMatrix[startPoint.x, startPoint.y].electricType ));
             visit[startPoint.x, startPoint.y] = true;
             
             while (stack.Count > 0)
@@ -548,7 +548,7 @@ namespace Stage
                     case ScriptableObjects.Stage.Tile.FACTORY:
                         if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
                         {
-                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
                             numOfFactories--;
                         }
                         break;
@@ -576,12 +576,12 @@ namespace Stage
                             stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
                             visit[nX, nY] = true;
                         }
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
                         break;
                     case ScriptableObjects.Stage.Tile.OBSTACLE:
                         break;
                     default:
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                        SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
                         if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
                         {
                             curr.electricType = stageMatrix[curr.x, curr.y].electricType;

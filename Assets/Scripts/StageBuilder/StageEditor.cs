@@ -106,6 +106,9 @@ namespace StageBuilder
                     tileComponent.direction = tileMatrix[x, y].dir;
                     tileComponent.defaultTile = editableAll? defaultTile : tileComponent.tile;
                     tileComponent.electricType = tileMatrix[x, y].electricType;
+#if UNITY_EDITOR
+                    Debug.Log("x : " + x + " y : " + y + " type : " + tileComponent.electricType );
+ #endif
                     if (tileComponent.tile.tileType == Tile.NONE)
                     {
                         tileComponent.isEditAble = true;

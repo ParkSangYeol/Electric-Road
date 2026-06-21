@@ -175,7 +175,7 @@ namespace Stage
                 return;
             }
 
-            if (currentSelectTile.tile.tileType is not (ScriptableObjects.Stage.Tile.MODULATOR or ScriptableObjects.Stage.Tile.FACTORY))
+            if (currentSelectTile.tile.tileType is not (ScriptableObjects.Stage.Tile.MODULATOR or ScriptableObjects.Stage.Tile.FACTORY or ScriptableObjects.Stage.Tile.GENERATOR ))
             {
                 return;
             }
@@ -205,7 +205,7 @@ namespace Stage
 
             currentSelectTile = tile;
             if (tile.tile.tileType == palateTileData.tileType 
-                && tile.tile.tileType is ScriptableObjects.Stage.Tile.FACTORY or ScriptableObjects.Stage.Tile.MODULATOR)
+                && tile.tile.tileType is ScriptableObjects.Stage.Tile.FACTORY or ScriptableObjects.Stage.Tile.MODULATOR or ScriptableObjects.Stage.Tile.GENERATOR)
             {
                 // 만약 선택한 타일과 타일 팔레트의 타일이 모두 변환기인 경우
                 modulatorGameObject.transform.position = tile.transform.position;

@@ -104,10 +104,21 @@ namespace Stage
                     return;
                 }
                 
-                if (stageTile.tile.tileType == ScriptableObjects.Stage.Tile.FACTORY)
+                if ( trackTiles.Contains(stageTile.transform.position))
+                {
+                    // 이미 지난 경로에 부딪침. 실패 처리 후 조기 종료.
+#if UNITY_EDITOR
+                    Debug.Log("Tile Dup, Fail.");
+#endif
+                    state = PlaceState.IDLE;
+                    ResetHighlight();
+                    return;
+                }
+                
+                if (stageTile.tile.tileType == ScriptableObjects.Stage.Tile.FACTORY || ( stageTile.isEditAble == false) && ( stageTile.tile.tileType == ScriptableObjects.Stage.Tile.LINE || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_LEFT || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_RIGHT || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)  )
                 {
 #if UNITY_EDITOR
-                    Debug.Log("Find Factory, End Track.");
+                    Debug.Log("Find Factory Or Find unEditableTile, End Track.");
 #endif
                     // 공장 타일에 도착. 조기 종료
                     trackTiles.Add(stageTile.transform.position, stageTile);
@@ -115,8 +126,7 @@ namespace Stage
                     return;
                 }
                 
-                if (stageTile.tile.tileType != ScriptableObjects.Stage.Tile.NONE 
-                    || trackTiles.Contains(stageTile.transform.position))
+                if ( stageTile.tile.tileType != ScriptableObjects.Stage.Tile.NONE )
                 {
                     // 다른 타일에 부딪힘. 실패 처리 후 조기 종료.
 #if UNITY_EDITOR
@@ -177,6 +187,9 @@ namespace Stage
                     Debug.LogError("잘못된 값이 저장되었습니다. currentIdx: " + idx + ", 저장된 값: " + trackTiles[idx]);
                 }
 
+                if (currentTile.isEditAble == false)
+                    continue;
+                
                 if (idx == trackTiles.Count - 1 && currentTile.tile.tileType.Equals(ScriptableObjects.Stage.Tile.FACTORY))
                 {
                     // 마지막 타일이 공장인 경우

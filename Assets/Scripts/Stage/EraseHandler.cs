@@ -27,7 +27,7 @@ namespace Stage
             if (!Input.GetMouseButton(0)) return;
             
             var stageTile = GetStageTile(Input.mousePosition);
-            if (stageTile != null && stageTile.tile != stageTile.defaultTile)
+            if (stageTile != null && stageTile.tile != stageTile.defaultTile && stageTile.isEditAble )
             {
                 SetDefaultStageTile(stageTile);
             }

@@ -75,10 +75,10 @@ namespace Stage {
         }
 
         [Button]
-        public void SetActiveTile(bool isActive)
+        public void SetActiveTile(bool isActive, int targetElectricType = 0)
         {
             backgroundImage.color = isActive
-                ? colorByElectricType[electricType] : Color.white;
+                ? colorByElectricType[targetElectricType] : Color.white;
         }
 
         public void SetHighlight(bool highlight)
