@@ -59,7 +59,7 @@ namespace Stage
             if (state.Equals(PlaceState.IDLE) && Input.GetMouseButtonDown(0))
             {
                 var stageTile = GetStageTile(Input.mousePosition);
-                if (stageTile == null or stageTile.isEditAble == false )
+                if (stageTile is null )
                 {
                     return;
                 }

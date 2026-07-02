@@ -133,7 +133,13 @@ public class PlayerDataHandler : Singleton<PlayerDataHandler>
         {
             // Dictionary를 포함한 데이터를 JSON 문자열로 변환
             string jsonData = JsonConvert.SerializeObject(playerData);
-            
+
+            string saveDirectory = Path.GetDirectoryName(savePath);
+            if (!string.IsNullOrEmpty(saveDirectory))
+            {
+                Directory.CreateDirectory(saveDirectory);
+            }
+
             // 파일에 JSON 데이터 쓰기
             File.WriteAllText(savePath, jsonData);
             Debug.Log($"게임 저장 완료: {savePath}");

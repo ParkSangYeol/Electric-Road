@@ -33,6 +33,9 @@ namespace ScriptableObjects.Stage
         [VerticalGroup("Split/Meta")]
         // [ReadOnly, LabelText("발전소 위치")] 
         public Vector2Int generatorPos;
+        [VerticalGroup("Split/Meta")]
+        [ReadOnly, LabelText("발전소 위치 목록")]
+        public List<Vector2Int> generatorPositions = new List<Vector2Int>();
 
         [VerticalGroup("Split/Meta")] 
         // [ReadOnly, LabelText("공장 수")]
@@ -78,6 +81,8 @@ namespace ScriptableObjects.Stage
             this.map = map;
             this.answerMap = ansMap;
             this.numOfFactories = 0;
+            generatorPositions ??= new List<Vector2Int>();
+            generatorPositions.Clear();
 
             ans = 0;
             for (int x = 0; x < width; x++)
@@ -85,16 +90,36 @@ namespace ScriptableObjects.Stage
                 for (int y = 0; y < height; y++)
                 {
                     ans += (int)ansMap[x, y].tile.cost == 9999? 0 : (int)ansMap[x, y].tile.cost;
-                    if (ansMap[x, y].tile.tileType == Tile.GENERATOR)
+                    if (map[x, y].tile.tileType == Tile.GENERATOR)
                     {
-                        generatorPos = new Vector2Int(x, y);
+                        generatorPositions.Add(new Vector2Int(x, y));
                     }
-                    else if (ansMap[x, y].tile.tileType == Tile.FACTORY)
+                    else if (map[x, y].tile.tileType == Tile.FACTORY)
                     {
                         numOfFactories++;
                     }
                 }
             }
+
+            generatorPos = generatorPositions.Count > 0
+                ? generatorPositions[0]
+                : new Vector2Int(-1, -1);
+        }
+
+        public List<Vector2Int> GetGeneratorPositions()
+        {
+            if (generatorPositions != null && generatorPositions.Count > 0)
+            {
+                return new List<Vector2Int>(generatorPositions);
+            }
+
+            List<Vector2Int> positions = new List<Vector2Int>();
+            if (generatorPos.x >= 0 && generatorPos.y >= 0)
+            {
+                positions.Add(generatorPos);
+            }
+
+            return positions;
         }
     }
     

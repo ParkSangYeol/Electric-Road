@@ -47,85 +47,128 @@ namespace StageBuilder
         public void FindAnswer()
         {
             List<Vector2> factories = new List<Vector2>();
-            Vector2 generator = Vector2.zero;
-            PathStruct[,,,] minPaths = null;
+            List<Vector2> generators = new List<Vector2>();
             StageTile[,] stageMatrix = MakeStageMatrix();
             beginStage = MakeStageToTileStruct(ref stageMatrix);
-            
-            InitMinPathMatrix(ref minPaths);
-            FindGenAndFactories(ref factories, ref generator, ref stageMatrix);
-            GetMinPaths(ref stageMatrix, ref minPaths);
-            
-            //PrintPaths(ref minPaths);
-            PathStruct minPath = GetMinPath(generator, Tile.GENERATOR, factories, ref minPaths);
-            minPath = FindMinPath(generator, Tile.GENERATOR, factories, ref stageMatrix, ref minPaths, (int)minPath.cost);
-            if (minPath != null)
+
+            FindGenAndFactories(ref factories, ref generators, ref stageMatrix);
+            if (generators.Count == 0)
             {
-                Debug.Log(minPath);
+                Debug.LogError("발전기가 존재하지 않습니다.");
+                costText.text = "Cost: Error";
+                return;
             }
 
+            if (factories.Count == 0)
+            {
+                Debug.LogError("공장이 존재하지 않습니다.");
+                costText.text = "Cost: Error";
+                return;
+            }
+
+            if (factories.Count > 1)
+            {
+                Debug.LogWarning(
+                    "공장이 여러 개인 스테이지는 자동 최단 경로 계산을 생략합니다. " +
+                    "초기 맵은 저장되었으므로 정답을 수동 편집한 뒤 스테이지 파일을 생성하세요.");
+                costText.text = "Cost: Manual";
+                return;
+            }
+
+            PathStruct[,,,] minPaths = null;
+            InitMinPathMatrix(ref minPaths);
+
+            PathStruct minPath = null;
+            foreach (Vector2 generator in generators)
+            {
+                GetMinPaths(generator, ref stageMatrix, ref minPaths);
+                PathStruct candidate = GetMinPath(generator, Tile.GENERATOR, factories, ref minPaths);
+                if (candidate.cost >= float.MaxValue)
+                {
+                    continue;
+                }
+
+                if (minPath == null || candidate.cost < minPath.cost)
+                {
+                    minPath = candidate;
+                }
+            }
+
+            if (minPath == null)
+            {
+                Debug.LogError("공장에 도달할 수 있는 발전기 경로가 없습니다.");
+                costText.text = "Cost: Unreachable";
+                return;
+            }
+
+            Debug.Log(minPath);
             costText.text = "Cost: " + minPath.cost;
             ApplyStage(minPath.path, ref stageMatrix);
         }
         
 
-        private void GetMinPaths(ref StageTile[,] stageMatrix, ref PathStruct[,,,] minPath)
+        private void GetMinPaths(
+            Vector2 startPoint,
+            ref StageTile[,] stageMatrix,
+            ref PathStruct[,,,] minPath)
         {
             int width = stageArea.width;
             int height = stageArea.height;
+            int startX = (int)startPoint.x;
+            int startY = (int)startPoint.y;
 
-            for (int y = 0; y < height; y++)
+            FastPriorityQueue<Node> priorityQueue = new FastPriorityQueue<Node>(width * height * 10);
+            priorityQueue.Enqueue(new Node(startX, startY, Direction.NONE), 0);
+
+            while (priorityQueue.Count != 0)
             {
-                for (int x = 0; x < width; x++)
+                Node current = priorityQueue.Dequeue();
+                for (int i = 0; i < 4; i++)
                 {
-                    if (stageMatrix[x, y].tile.tileType == Tile.FACTORY)
+                    int nX = current.x + dX[i];
+                    int nY = current.y + dY[i];
+
+                    if (nX < 0 || nX >= width || nY < 0 || nY >= height)
                     {
                         continue;
                     }
-                    FastPriorityQueue<Node> priorityQueue = new FastPriorityQueue<Node>(width * height * 10);
-                    priorityQueue.Enqueue(new Node(x, y, Direction.NONE), 0);
 
-                    while (priorityQueue.Count != 0)
+                    Tile targetTile = stageMatrix[nX, nY].tile.tileType;
+                    if (targetTile is Tile.OBSTACLE or Tile.GENERATOR)
                     {
-                        Node current = priorityQueue.Dequeue();
-                        for (int i = 0; i < 4; i++)
+                        continue;
+                    }
+
+                    Direction nDir = IntToDirection(i);
+                    Tile nTile = GetNextTile(current.dir, nDir);
+                    float nCost = -current.Priority + tileDict[nTile].cost;
+
+                    if (minPath[startX, startY, nX, nY].cost >= nCost)
+                    {
+                        Node nNode = new Node(nX, nY, current.root);
+                        if (current.dir != Direction.NONE && nTile != Tile.NONE)
                         {
-                            int nX = current.x + dX[i];
-                            int nY = current.y + dY[i];
+                            TileNode node = new TileNode(current.x, current.y, nDir, nTile);
+                            nNode.AddLast(node);
+                        }
+                        nNode.dir = nDir;
 
-                            if (nX >= 0 && nX < width && nY >= 0 && nY < height 
-                                && stageMatrix[nX, nY].tile.tileType != Tile.OBSTACLE)
-                            {
-                                Direction nDir = IntToDirection(i);
-                                Tile nTile = GetNextTile(current.dir, nDir);
-                                float nCost = -current.Priority + tileDict[nTile].cost;
-                                
-                                if (minPath[x, y, nX, nY].cost >= nCost)
-                                {
-                                    Node nNode = new Node(nX, nY, current.root);
-                                    if (current.dir != Direction.NONE && nTile != Tile.NONE)
-                                    {
-                                        TileNode node = new TileNode(current.x, current.y, nDir, nTile);
-                                        nNode.AddLast(node);
-                                    }
-                                    nNode.dir = nDir;
-                                    
-                                    minPath[x, y, nX, nY].cost = nCost;
-                                    minPath[x, y, nX, nY].path = nNode.root;
+                        minPath[startX, startY, nX, nY].cost = nCost;
+                        minPath[startX, startY, nX, nY].path = nNode.root;
 
-                                    if (stageMatrix[nX, nY].tile.tileType != Tile.FACTORY)
-                                    {
-                                        priorityQueue.Enqueue(nNode, -nCost);
-                                    }
-                                }
-                            }
+                        if (targetTile != Tile.FACTORY)
+                        {
+                            priorityQueue.Enqueue(nNode, -nCost);
                         }
                     }
                 }
             }
         }
 
-        private void FindGenAndFactories(ref List<Vector2> factories, ref Vector2 generator, ref StageTile[,] stageMatrix)
+        private void FindGenAndFactories(
+            ref List<Vector2> factories,
+            ref List<Vector2> generators,
+            ref StageTile[,] stageMatrix)
         {
             int width = stageArea.width;
             int height = stageArea.height;
@@ -141,7 +184,7 @@ namespace StageBuilder
 
                     if (stageMatrix[i, j].tile.tileType == Tile.GENERATOR)
                     {
-                        generator = new Vector2(i, j);
+                        generators.Add(new Vector2(i, j));
                     }
                 }
             }
@@ -364,6 +407,14 @@ namespace StageBuilder
         public void MakeStageFile()
         {
 #if UNITY_EDITOR
+            if (beginStage == null)
+            {
+                Debug.LogError(
+                    "초기 맵 정보가 없습니다. FindAnswer를 실행해 초기 맵을 캡처한 뒤 " +
+                    "자동 또는 수동으로 정답 맵을 작성하세요.");
+                return;
+            }
+
             var path = StandaloneFileBrowser.SaveFilePanel("Save Stage File", basePath, "sample", "asset");
             if (path != "")
             {

@@ -301,7 +301,6 @@ namespace Stage
         {
             StageTile[,] stageMatrix = MakeStageMatrix();
 
-            Vector2Int startPoint = stageData.generatorPos;
             int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
@@ -309,87 +308,82 @@ namespace Stage
             bool[,] visit = new bool[width, height];
             int[] dX = { 0, 1, 0, -1 };
             int[] dY = { 1, 0, -1, 0 };
-            if (startPoint is { x: -1, y: -1 })
+            if (!TryGetGeneratorPositions(stageMatrix, out List<Vector2Int> generatorPositions))
             {
-                // 발전기를 찾지 못함.
-                Debug.LogError("발전기를 찾을 수 없습니다.");
                 return false;
             }
 
-            Stack<Vector2Int> stack = new Stack<Vector2Int>();
-            stack.Push(startPoint);
-            visit[startPoint.x, startPoint.y] = true;
-            
-            // DFS
-            while (stack.Count > 0)
+            foreach (Vector2Int startPoint in generatorPositions)
             {
-                Vector2Int curr = stack.Pop();
-                int nX, nY;
-                
-                // Debug.Log("Checking Answer. current position is: " + curr);
-                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
+                if (visit[startPoint.x, startPoint.y])
                 {
-                    case ScriptableObjects.Stage.Tile.FACTORY:
-                        numOfFactories--;
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        break;
-                    case ScriptableObjects.Stage.Tile.GENERATOR:
-                    case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
-                        for (int i = 0; i < 4; i++)
-                        {
-                            nX = curr.x + dX[i];
-                            nY = curr.y + dY[i];
-                            if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                            {
-                                continue;
-                            }
-                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                                or ScriptableObjects.Stage.Tile.OBSTACLE
-                                or ScriptableObjects.Stage.Tile.GENERATOR)
-                            {
-                                continue;
-                            }
-                            
-                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
-                            {
-                                continue;
-                            }
-                            
-                            stack.Push(new Vector2Int(nX, nY));
-                            visit[nX, nY] = true;
-                        }
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        break;    
-                    case ScriptableObjects.Stage.Tile.OBSTACLE:
-                        break;
-                    default:
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
-                        nX = curr.x + dX[dir];
-                        nY = curr.y + dY[dir];
-                        if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                        {
-                            Debug.Log("범위 밖 " + width + ", " + height);
-                            break;
-                        }
-                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                            or ScriptableObjects.Stage.Tile.OBSTACLE
-                            or ScriptableObjects.Stage.Tile.GENERATOR)
-                        {
-                            break;
-                        }
-                        
-                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
-                        {
-                            continue;
-                        }
-                        
-                        stack.Push(new Vector2Int(nX, nY));
-                        visit[nX, nY] = true;
-                        break;
+                    Debug.LogError("발전소 시작 위치가 중복되었습니다: " + startPoint);
+                    return false;
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                Stack<Vector2Int> stack = new Stack<Vector2Int>();
+                stack.Push(startPoint);
+                visit[startPoint.x, startPoint.y] = true;
+                
+                // 발전소별 DFS
+                while (stack.Count > 0)
+                {
+                    Vector2Int curr = stack.Pop();
+                    int nX, nY;
+
+                    switch (stageMatrix[curr.x, curr.y].tile.tileType)
+                    {
+                        case ScriptableObjects.Stage.Tile.FACTORY:
+                            numOfFactories--;
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            break;
+                        case ScriptableObjects.Stage.Tile.GENERATOR:
+                        case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                nX = curr.x + dX[i];
+                                nY = curr.y + dY[i];
+                                NextTileState branchState = GetNextTileState(stageMatrix, visit, nX, nY, i);
+                                if (branchState == NextTileState.AlreadyVisited)
+                                {
+                                    Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                    return false;
+                                }
+                                if (branchState is NextTileState.OutOfBounds
+                                    or NextTileState.Unavailable
+                                    or NextTileState.InvalidDirection)
+                                {
+                                    continue;
+                                }
+
+                                stack.Push(new Vector2Int(nX, nY));
+                                visit[nX, nY] = true;
+                            }
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            break;
+                        case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        default:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            nX = curr.x + dX[dir];
+                            nY = curr.y + dY[dir];
+                            NextTileState nextState = GetNextTileState(stageMatrix, visit, nX, nY, dir);
+                            if (nextState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (nextState == NextTileState.Available)
+                            {
+                                stack.Push(new Vector2Int(nX, nY));
+                                visit[nX, nY] = true;
+                            }
+                            break;
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                }
             }
             
             if (numOfFactories == 0)
@@ -406,7 +400,6 @@ namespace Stage
         {
             StageTile[,] stageMatrix = MakeStageMatrix();
             
-            Vector2Int startPoint = stageData.generatorPos;
             int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
@@ -414,93 +407,89 @@ namespace Stage
             bool[,] visit = new bool[width, height];
             int[] dX = { 0, 1, 0, -1 };
             int[] dY = { 1, 0, -1, 0 };
-            if (startPoint is { x: -1, y: -1 })
+            if (!TryGetGeneratorPositions(stageMatrix, out List<Vector2Int> generatorPositions))
             {
-                // 발전기를 찾지 못함.
-                Debug.LogError("발전기를 찾을 수 없습니다.");
                 return false;
             }
 
-            Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
-            stack.Push(new TileSearchNode(startPoint, maxElectric, 0));
-            visit[startPoint.x, startPoint.y] = true;
-            
-            // DFS
-            while (stack.Count > 0)
+            foreach (Vector2Int startPoint in generatorPositions)
             {
-                TileSearchNode curr = stack.Pop();
-                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 남은 전기량: " + curr.remainElectric);
-                if (curr.remainElectric < 0)
+                if (visit[startPoint.x, startPoint.y])
                 {
-                    continue;
+                    Debug.LogError("발전소 시작 위치가 중복되었습니다: " + startPoint);
+                    return false;
                 }
 
-                int nX, nY;
-                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
+                Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+                stack.Push(new TileSearchNode(startPoint, maxElectric, 0));
+                visit[startPoint.x, startPoint.y] = true;
+
+                // 발전소별 DFS
+                while (stack.Count > 0)
                 {
-                    case ScriptableObjects.Stage.Tile.FACTORY:
-                        numOfFactories--;
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        break;
-                    case ScriptableObjects.Stage.Tile.GENERATOR:
-                    case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
-                        for (int i = 0; i < 4; i++)
-                        {
-                            nX = curr.x + dX[i];
-                            nY = curr.y + dY[i];
-                            if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                            {
-                                continue;
-                            }
-                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                                or ScriptableObjects.Stage.Tile.OBSTACLE
-                                or ScriptableObjects.Stage.Tile.GENERATOR)
-                            {
-                                continue;
-                            }
-                            
-                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
-                            {
-                                continue;
-                            }
-                            
-                            stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
-                            visit[nX, nY] = true;
-                        }
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        break;    
-                    case ScriptableObjects.Stage.Tile.OBSTACLE:
-                        break;
-                    default:
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
-                        {
-                            curr.remainElectric = maxElectric;
-                        }
-                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
-                        nX = curr.x + dX[dir];
-                        nY = curr.y + dY[dir];
-                        if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                        {
-                            Debug.Log("범위 밖 " + width + ", " + height);
+                    TileSearchNode curr = stack.Pop();
+                    if (curr.remainElectric < 0)
+                    {
+                        continue;
+                    }
+
+                    int nX, nY;
+                    switch (stageMatrix[curr.x, curr.y].tile.tileType)
+                    {
+                        case ScriptableObjects.Stage.Tile.FACTORY:
+                            numOfFactories--;
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                             break;
-                        }
-                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                            or ScriptableObjects.Stage.Tile.OBSTACLE
-                            or ScriptableObjects.Stage.Tile.GENERATOR)
-                        {
+                        case ScriptableObjects.Stage.Tile.GENERATOR:
+                        case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                nX = curr.x + dX[i];
+                                nY = curr.y + dY[i];
+                                NextTileState branchState = GetNextTileState(stageMatrix, visit, nX, nY, i);
+                                if (branchState == NextTileState.AlreadyVisited)
+                                {
+                                    Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                    return false;
+                                }
+                                if (branchState is NextTileState.OutOfBounds
+                                    or NextTileState.Unavailable
+                                    or NextTileState.InvalidDirection)
+                                {
+                                    continue;
+                                }
+
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                             break;
-                        }
-                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
-                        {
-                            continue;
-                        }
-                        
-                        stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
-                        visit[nX, nY] = true;
-                        break;
+                        case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        default:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
+                            {
+                                curr.remainElectric = maxElectric;
+                            }
+                            int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            nX = curr.x + dX[dir];
+                            nY = curr.y + dY[dir];
+                            NextTileState nextState = GetNextTileState(stageMatrix, visit, nX, nY, dir);
+                            if (nextState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (nextState == NextTileState.Available)
+                            {
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            break;
+                    }
+                    await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
                 }
-                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
             }
             
             if (numOfFactories == 0)
@@ -518,7 +507,6 @@ namespace Stage
             // Debug.Log("변환기 문제 풀이여부 확인 시작!");
             StageTile[,] stageMatrix = MakeStageMatrix();
 
-            Vector2Int startPoint = stageData.generatorPos;
             int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
@@ -526,91 +514,92 @@ namespace Stage
             bool[,] visit = new bool[width, height];
             int[] dX = { 0, 1, 0, -1 };
             int[] dY = { 1, 0, -1, 0 };
-            if (startPoint is { x: -1, y: -1 })
+            if (!TryGetGeneratorPositions(stageMatrix, out List<Vector2Int> generatorPositions))
             {
-                // 발전기를 찾지 못함.
-                Debug.LogError("발전기를 찾을 수 없습니다.");
                 return false;
             }
 
-            Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
-            stack.Push(new TileSearchNode(startPoint, 0,stageMatrix[startPoint.x, startPoint.y].electricType ));
-            visit[startPoint.x, startPoint.y] = true;
-            
-            while (stack.Count > 0)
+            foreach (Vector2Int startPoint in generatorPositions)
             {
-                TileSearchNode curr = stack.Pop();
-                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 현재 전기 종류: " + curr.electricType);
-
-                int nX, nY;
-                switch (stageMatrix[curr.x, curr.y].tile.tileType) 
+                if (visit[startPoint.x, startPoint.y])
                 {
-                    case ScriptableObjects.Stage.Tile.FACTORY:
-                        if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
-                        {
-                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
-                            numOfFactories--;
-                        }
-                        break;
-                    case ScriptableObjects.Stage.Tile.GENERATOR:
-                    case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
-                        for (int i = 0; i < 4; i++)
-                        {
-                            nX = curr.x + dX[i];
-                            nY = curr.y + dY[i];
-                            if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                            {
-                                continue;
-                            }
-                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                                or ScriptableObjects.Stage.Tile.OBSTACLE
-                                or ScriptableObjects.Stage.Tile.GENERATOR)
-                            {
-                                continue;
-                            }
-                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
-                            {
-                                continue;
-                            }
-                            
-                            stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
-                            visit[nX, nY] = true;
-                        }
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
-                        break;
-                    case ScriptableObjects.Stage.Tile.OBSTACLE:
-                        break;
-                    default:
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
-                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
-                        {
-                            curr.electricType = stageMatrix[curr.x, curr.y].electricType;
-                        }
-                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
-                        nX = curr.x + dX[dir];
-                        nY = curr.y + dY[dir];
-                        if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                        {
-                            Debug.Log("범위 밖 " + width + ", " + height);
-                            break;
-                        }
-                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                            or ScriptableObjects.Stage.Tile.OBSTACLE
-                            or ScriptableObjects.Stage.Tile.GENERATOR)
-                        {
-                            break;
-                        }
-                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
-                        {
-                            continue;
-                        }
-                        
-                        stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
-                        visit[nX, nY] = true;
-                        break;
+                    Debug.LogError("발전소 시작 위치가 중복되었습니다: " + startPoint);
+                    return false;
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+                stack.Push(new TileSearchNode(
+                    startPoint,
+                    0,
+                    stageMatrix[startPoint.x, startPoint.y].electricType));
+                visit[startPoint.x, startPoint.y] = true;
+
+                // 발전소별 DFS
+                while (stack.Count > 0)
+                {
+                    TileSearchNode curr = stack.Pop();
+
+                    int nX, nY;
+                    switch (stageMatrix[curr.x, curr.y].tile.tileType)
+                    {
+                        case ScriptableObjects.Stage.Tile.FACTORY:
+                            if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
+                            {
+                                SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                                numOfFactories--;
+                            }
+                            break;
+                        case ScriptableObjects.Stage.Tile.GENERATOR:
+                        case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                nX = curr.x + dX[i];
+                                nY = curr.y + dY[i];
+                                NextTileState branchState = GetNextTileState(stageMatrix, visit, nX, nY, i);
+                                if (branchState == NextTileState.AlreadyVisited)
+                                {
+                                    Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                    return false;
+                                }
+                                if (branchState is NextTileState.OutOfBounds
+                                    or NextTileState.Unavailable
+                                    or NextTileState.InvalidDirection)
+                                {
+                                    continue;
+                                }
+
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            break;
+                        case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        default:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
+                            {
+                                curr.electricType = stageMatrix[curr.x, curr.y].electricType;
+                            }
+                            int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            nX = curr.x + dX[dir];
+                            nY = curr.y + dY[dir];
+                            NextTileState nextState = GetNextTileState(stageMatrix, visit, nX, nY, dir);
+                            if (nextState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (nextState == NextTileState.Available)
+                            {
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            break;
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                }
             }
             
             if (numOfFactories == 0)
@@ -628,7 +617,6 @@ namespace Stage
             Debug.Log("증폭기, 변환기 문제 풀이여부 확인 시작!");
             StageTile[,] stageMatrix = MakeStageMatrix();
 
-            Vector2Int startPoint = stageData.generatorPos;
             int numOfFactories = stageData.numOfFactories;
             int width = stageArea.width;
             int height = stageArea.height;
@@ -636,96 +624,100 @@ namespace Stage
             bool[,] visit = new bool[width, height];
             int[] dX = { 0, 1, 0, -1 };
             int[] dY = { 1, 0, -1, 0 };
-            if (startPoint is { x: -1, y: -1 })
+            if (!TryGetGeneratorPositions(stageMatrix, out List<Vector2Int> generatorPositions))
             {
-                // 발전기를 찾지 못함.
-                Debug.LogError("발전기를 찾을 수 없습니다.");
                 return false;
             }
 
-            Queue<TileSearchNode> queue = new Queue<TileSearchNode>();
-            queue.Enqueue(new TileSearchNode(
-                startPoint,
-                maxElectric,
-                stageMatrix[startPoint.x, startPoint.y].electricType));
-            visit[startPoint.x, startPoint.y] = true;
-            
-            while (queue.Count > 0)
+            foreach (Vector2Int startPoint in generatorPositions)
             {
-                TileSearchNode curr = queue.Dequeue();
-                // Debug.Log("현재 위치: " + curr + ", 타일 종류: " + stageMatrix[curr.x,curr.y].tile.tileType + ", 타일 방향: " + stageMatrix[curr.x, curr.y].direction + " 현재 전기 종류: " + curr.electricType);
-                int nX, nY;
-                switch (stageMatrix[curr.x, curr.y].tile.tileType)
+                if (visit[startPoint.x, startPoint.y])
                 {
-                    case ScriptableObjects.Stage.Tile.FACTORY:
-                        if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
-                        {
-                            numOfFactories--;
-                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        }
-                        break;
-                    case ScriptableObjects.Stage.Tile.GENERATOR:
-                    case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
-                        for (int i = 0; i < 4; i++)
-                        {
-                            nX = curr.x + dX[i];
-                            nY = curr.y + dY[i];
-                            if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                            {
-                                continue;
-                            }
-                            if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                                or ScriptableObjects.Stage.Tile.OBSTACLE
-                                or ScriptableObjects.Stage.Tile.GENERATOR)
-                            {
-                                continue;
-                            }
-                            if (!IsAvailableDirection(stageMatrix[nX, nY], i))
-                            {
-                                continue;
-                            }
-                            queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
-                            visit[nX, nY] = true;
-                        }
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        break;    
-                    case ScriptableObjects.Stage.Tile.OBSTACLE:
-                        break;
-                    default:
-                        SetActiveTileColor(stageMatrix[curr.x, curr.y]);
-                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
-                        {
-                            curr.remainElectric = maxElectric;
-                        }
-                        if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
-                        {
-                            curr.electricType = stageMatrix[curr.x, curr.y].electricType;
-                        }
-                        int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
-                        nX = curr.x + dX[dir];
-                        nY = curr.y + dY[dir];
-                        if (nX < 0 || nX >= width || nY < 0 || nY >= height || visit[nX, nY])
-                        {
-                            Debug.Log("범위 밖 " + width + ", " + height);
-                            break;
-                        }
-                        if (stageMatrix[nX, nY].tile.tileType is ScriptableObjects.Stage.Tile.NONE
-                            or ScriptableObjects.Stage.Tile.OBSTACLE
-                            or ScriptableObjects.Stage.Tile.GENERATOR)
-                        {
-                            break;
-                        }
-                        if (!IsAvailableDirection(stageMatrix[nX, nY], dir))
-                        {
-                            continue;
-                        }
-                        
-                        queue.Enqueue(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
-                        visit[nX, nY] = true;
-                        break;
+                    Debug.LogError("발전소 시작 위치가 중복되었습니다: " + startPoint);
+                    return false;
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+                stack.Push(new TileSearchNode(
+                    startPoint,
+                    maxElectric,
+                    stageMatrix[startPoint.x, startPoint.y].electricType));
+                visit[startPoint.x, startPoint.y] = true;
+
+                // 발전소별 DFS
+                while (stack.Count > 0)
+                {
+                    TileSearchNode curr = stack.Pop();
+                    if (curr.remainElectric < 0)
+                    {
+                        continue;
+                    }
+
+                    int nX, nY;
+                    switch (stageMatrix[curr.x, curr.y].tile.tileType)
+                    {
+                        case ScriptableObjects.Stage.Tile.FACTORY:
+                            if (stageMatrix[curr.x, curr.y].electricType == curr.electricType)
+                            {
+                                numOfFactories--;
+                                SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            }
+                            break;
+                        case ScriptableObjects.Stage.Tile.GENERATOR:
+                        case ScriptableObjects.Stage.Tile.DISTRIBUTOR:
+                            for (int i = 0; i < 4; i++)
+                            {
+                                nX = curr.x + dX[i];
+                                nY = curr.y + dY[i];
+                                NextTileState branchState = GetNextTileState(stageMatrix, visit, nX, nY, i);
+                                if (branchState == NextTileState.AlreadyVisited)
+                                {
+                                    Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                    return false;
+                                }
+                                if (branchState is NextTileState.OutOfBounds
+                                    or NextTileState.Unavailable
+                                    or NextTileState.InvalidDirection)
+                                {
+                                    continue;
+                                }
+
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            break;
+                        case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        default:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)
+                            {
+                                curr.remainElectric = maxElectric;
+                            }
+                            if (stageMatrix[curr.x, curr.y].tile.tileType == ScriptableObjects.Stage.Tile.MODULATOR)
+                            {
+                                curr.electricType = stageMatrix[curr.x, curr.y].electricType;
+                            }
+                            int dir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            nX = curr.x + dX[dir];
+                            nY = curr.y + dY[dir];
+                            NextTileState nextState = GetNextTileState(stageMatrix, visit, nX, nY, dir);
+                            if (nextState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (nextState == NextTileState.Available)
+                            {
+                                stack.Push(new TileSearchNode(nX, nY, curr.remainElectric - 1, curr.electricType));
+                                visit[nX, nY] = true;
+                            }
+                            break;
+                    }
+
+                    await Task.Delay(TimeSpan.FromSeconds(trackTileDelay));
+                }
             }
             
             if (numOfFactories == 0)
@@ -771,6 +763,74 @@ namespace Stage
 
             return stageMat;
         }
+
+        private bool TryGetGeneratorPositions(
+            StageTile[,] stageMatrix,
+            out List<Vector2Int> generatorPositions)
+        {
+            generatorPositions = stageData.GetGeneratorPositions();
+            if (generatorPositions == null || generatorPositions.Count == 0)
+            {
+                Debug.LogError("발전기를 찾을 수 없습니다.");
+                return false;
+            }
+
+            HashSet<Vector2Int> uniquePositions = new HashSet<Vector2Int>();
+            int width = stageMatrix.GetLength(0);
+            int height = stageMatrix.GetLength(1);
+            foreach (Vector2Int position in generatorPositions)
+            {
+                if (position.x < 0 || position.x >= width || position.y < 0 || position.y >= height)
+                {
+                    Debug.LogError("발전기 위치가 스테이지 범위를 벗어났습니다: " + position);
+                    return false;
+                }
+
+                if (!uniquePositions.Add(position))
+                {
+                    Debug.LogError("발전기 위치가 중복되었습니다: " + position);
+                    return false;
+                }
+
+                if (stageMatrix[position.x, position.y].tile.tileType != ScriptableObjects.Stage.Tile.GENERATOR)
+                {
+                    Debug.LogError("발전기 위치에 발전기 타일이 없습니다: " + position);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private NextTileState GetNextTileState(
+            StageTile[,] stageMatrix,
+            bool[,] visit,
+            int x,
+            int y,
+            int direction)
+        {
+            if (x < 0 || x >= stageMatrix.GetLength(0) || y < 0 || y >= stageMatrix.GetLength(1))
+            {
+                return NextTileState.OutOfBounds;
+            }
+
+            StageTile nextTile = stageMatrix[x, y];
+            if (nextTile.tile.tileType is ScriptableObjects.Stage.Tile.NONE
+                or ScriptableObjects.Stage.Tile.OBSTACLE
+                or ScriptableObjects.Stage.Tile.GENERATOR)
+            {
+                return NextTileState.Unavailable;
+            }
+
+            if (!IsAvailableDirection(nextTile, direction))
+            {
+                return NextTileState.InvalidDirection;
+            }
+
+            return visit[x, y]
+                ? NextTileState.AlreadyVisited
+                : NextTileState.Available;
+        }
         
         private TileStruct[,] MakeStageToTileStruct(ref StageTile[,] stageMatrix)
         {
@@ -811,6 +871,15 @@ namespace Stage
             }
 
             return false;
+        }
+
+        private enum NextTileState
+        {
+            OutOfBounds,
+            Unavailable,
+            InvalidDirection,
+            Available,
+            AlreadyVisited
         }
 #endregion
     }
