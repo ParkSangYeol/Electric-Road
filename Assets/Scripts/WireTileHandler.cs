@@ -59,7 +59,7 @@ namespace Stage
             if (state.Equals(PlaceState.IDLE) && Input.GetMouseButtonDown(0))
             {
                 var stageTile = GetStageTile(Input.mousePosition);
-                if (stageTile == null)
+                if (stageTile == null or stageTile.isEditAble == false )
                 {
                     return;
                 }
@@ -162,8 +162,9 @@ namespace Stage
                 yield break;
             }
             
-            if (firstElement.tile.tileType is ScriptableObjects.Stage.Tile.LINE
-                or ScriptableObjects.Stage.Tile.CORNER_LEFT or ScriptableObjects.Stage.Tile.CORNER_RIGHT)
+            bool isWireTile = firstElement.tile.tileType is ScriptableObjects.Stage.Tile.LINE
+                or ScriptableObjects.Stage.Tile.CORNER_LEFT or ScriptableObjects.Stage.Tile.CORNER_RIGHT;
+            if (firstElement.isEditAble && isWireTile)
             {
                 // 분배기로 변경
                 ICommand command = new TilePlaceCommand(firstElement, tileDict[ScriptableObjects.Stage.Tile.DISTRIBUTOR], Direction.NONE, firstElement.electricType);
