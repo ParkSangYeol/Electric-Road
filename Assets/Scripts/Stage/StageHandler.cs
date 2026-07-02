@@ -644,7 +644,10 @@ namespace Stage
             }
 
             Queue<TileSearchNode> queue = new Queue<TileSearchNode>();
-            queue.Enqueue(new TileSearchNode(startPoint, maxElectric, 0));
+            queue.Enqueue(new TileSearchNode(
+                startPoint,
+                maxElectric,
+                stageMatrix[startPoint.x, startPoint.y].electricType));
             visit[startPoint.x, startPoint.y] = true;
             
             while (queue.Count > 0)
