@@ -1984,7 +1984,7 @@ MonoBehaviour:
   - {x: 0, y: 4}
   numOfFactories: 2
   ans: 0
-  numOfPalate: 0
+  numOfPalate: 6
   thresholds: 040100000e01000018010000
   isAchievement: 0
   achievementKey: 

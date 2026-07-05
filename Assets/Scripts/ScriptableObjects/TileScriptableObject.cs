@@ -37,6 +37,7 @@ namespace ScriptableObjects.Stage
                 Tile.OBSTACLE => "장애물 타일",
                 Tile.FACTORY => "공장 타일",
                 Tile.GENERATOR => "발전기 타일",
+                Tile.TRANSMISSION_TOWER => "송전탑 타일",
             };
         }
     }

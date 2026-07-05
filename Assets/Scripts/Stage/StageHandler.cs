@@ -17,6 +17,9 @@ namespace Stage
 {
     public class StageHandler : MonoBehaviour
     {
+        private const int TransmissionTowerDistance = 2;
+        private const int AdjacentTileDistance = 1;
+
         [SerializeField] private StageEditor stageEditor;
 
         public StageScriptableObject stageData;
@@ -322,14 +325,14 @@ namespace Stage
                     return false;
                 }
 
-                Stack<Vector2Int> stack = new Stack<Vector2Int>();
-                stack.Push(startPoint);
+                Stack<TileSearchNode> stack = new Stack<TileSearchNode>();
+                stack.Push(new TileSearchNode(startPoint, 0, 0));
                 visit[startPoint.x, startPoint.y] = true;
                 
                 // 발전소별 DFS
                 while (stack.Count > 0)
                 {
-                    Vector2Int curr = stack.Pop();
+                    TileSearchNode curr = stack.Pop();
                     int nX, nY;
 
                     switch (stageMatrix[curr.x, curr.y].tile.tileType)
@@ -357,12 +360,40 @@ namespace Stage
                                     continue;
                                 }
 
-                                stack.Push(new Vector2Int(nX, nY));
+                                stack.Push(new TileSearchNode(nX, nY, 0, 0));
                                 visit[nX, nY] = true;
                             }
                             SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                             break;
                         case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        case ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            int towerDir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            NextTileState towerState = GetTransmissionTowerNextTileState(
+                                stageMatrix,
+                                visit,
+                                curr,
+                                towerDir,
+                                dX,
+                                dY,
+                                out nX,
+                                out nY,
+                                out _);
+                            if (towerState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (towerState == NextTileState.Available)
+                            {
+                                stack.Push(new TileSearchNode(
+                                    nX,
+                                    nY,
+                                    0,
+                                    0));
+                                visit[nX, nY] = true;
+                            }
                             break;
                         default:
                             SetActiveTileColor(stageMatrix[curr.x, curr.y]);
@@ -377,7 +408,7 @@ namespace Stage
                             }
                             if (nextState == NextTileState.Available)
                             {
-                                stack.Push(new Vector2Int(nX, nY));
+                                stack.Push(new TileSearchNode(nX, nY, 0, 0));
                                 visit[nX, nY] = true;
                             }
                             break;
@@ -466,6 +497,36 @@ namespace Stage
                             SetActiveTileColor(stageMatrix[curr.x, curr.y]);
                             break;
                         case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        case ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y]);
+                            int towerDir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            NextTileState towerState = GetTransmissionTowerNextTileState(
+                                stageMatrix,
+                                visit,
+                                curr,
+                                towerDir,
+                                dX,
+                                dY,
+                                out nX,
+                                out nY,
+                                out bool transmittedToTower);
+                            if (towerState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (towerState == NextTileState.Available)
+                            {
+                                int nextRemainElectric = curr.remainElectric -
+                                                         (transmittedToTower ? 0 : 1);
+                                stack.Push(new TileSearchNode(
+                                    nX,
+                                    nY,
+                                    nextRemainElectric,
+                                    curr.electricType));
+                                visit[nX, nY] = true;
+                            }
                             break;
                         default:
                             SetActiveTileColor(stageMatrix[curr.x, curr.y]);
@@ -575,6 +636,34 @@ namespace Stage
                             SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
                             break;
                         case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        case ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            int towerDir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            NextTileState towerState = GetTransmissionTowerNextTileState(
+                                stageMatrix,
+                                visit,
+                                curr,
+                                towerDir,
+                                dX,
+                                dY,
+                                out nX,
+                                out nY,
+                                out _);
+                            if (towerState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (towerState == NextTileState.Available)
+                            {
+                                stack.Push(new TileSearchNode(
+                                    nX,
+                                    nY,
+                                    curr.remainElectric,
+                                    curr.electricType));
+                                visit[nX, nY] = true;
+                            }
                             break;
                         default:
                             SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
@@ -689,6 +778,36 @@ namespace Stage
                             SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
                             break;
                         case ScriptableObjects.Stage.Tile.OBSTACLE:
+                            break;
+                        case ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER:
+                            SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
+                            int towerDir = GetDirToInt(stageMatrix[curr.x, curr.y].direction);
+                            NextTileState towerState = GetTransmissionTowerNextTileState(
+                                stageMatrix,
+                                visit,
+                                curr,
+                                towerDir,
+                                dX,
+                                dY,
+                                out nX,
+                                out nY,
+                                out bool transmittedToTower);
+                            if (towerState == NextTileState.AlreadyVisited)
+                            {
+                                Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
+                                return false;
+                            }
+                            if (towerState == NextTileState.Available)
+                            {
+                                int nextRemainElectric = curr.remainElectric -
+                                                         (transmittedToTower ? 0 : 1);
+                                stack.Push(new TileSearchNode(
+                                    nX,
+                                    nY,
+                                    nextRemainElectric,
+                                    curr.electricType));
+                                visit[nX, nY] = true;
+                            }
                             break;
                         default:
                             SetActiveTileColor(stageMatrix[curr.x, curr.y], curr.electricType);
@@ -832,6 +951,47 @@ namespace Stage
                 ? NextTileState.AlreadyVisited
                 : NextTileState.Available;
         }
+
+        private NextTileState GetTransmissionTowerNextTileState(
+            StageTile[,] stageMatrix,
+            bool[,] visit,
+            TileSearchNode current,
+            int direction,
+            int[] dX,
+            int[] dY,
+            out int nextX,
+            out int nextY,
+            out bool transmittedToTower)
+        {
+            int towerX = current.x + dX[direction] * TransmissionTowerDistance;
+            int towerY = current.y + dY[direction] * TransmissionTowerDistance;
+            if (towerX >= 0 && towerX < stageMatrix.GetLength(0) &&
+                towerY >= 0 && towerY < stageMatrix.GetLength(1) &&
+                stageMatrix[towerX, towerY].tile.tileType ==
+                ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER)
+            {
+                // 원거리 송전은 중간 칸과 목적 송전탑의 진입 방향을 검사하지 않는다.
+                // 목적 좌표의 중복 방문 여부만 전체 전력망 규칙에 따라 검사한다.
+                nextX = towerX;
+                nextY = towerY;
+                transmittedToTower = true;
+                return visit[nextX, nextY]
+                    ? NextTileState.AlreadyVisited
+                    : NextTileState.Available;
+            }
+
+            nextX = current.x + dX[direction] * AdjacentTileDistance;
+            nextY = current.y + dY[direction] * AdjacentTileDistance;
+            transmittedToTower = false;
+
+            // 인접 진행은 기존 방향·장애물·중복 방문 판정을 그대로 사용한다.
+            return GetNextTileState(
+                stageMatrix,
+                visit,
+                nextX,
+                nextY,
+                direction);
+        }
         
         private TileStruct[,] MakeStageToTileStruct(ref StageTile[,] stageMatrix)
         {
@@ -861,6 +1021,8 @@ namespace Stage
                 case ScriptableObjects.Stage.Tile.MODULATOR:
                     return true;
                 case ScriptableObjects.Stage.Tile.LINE:
+                case ScriptableObjects.Stage.Tile.TRANSMISSION_TOWER:
+                    // 인접 경로로 진입할 때는 타일의 진행 방향과 일치해야 한다.
                     return GetDirToInt(tile.direction) == dir;
                 case ScriptableObjects.Stage.Tile.CORNER_RIGHT:
                     return (GetDirToInt(tile.direction) + 1) % 4 == dir;
@@ -891,7 +1053,11 @@ namespace Stage
         public int remainElectric;
         public int electricType;
 
-        public TileSearchNode(int x, int y, int remainElectric, int electricType)
+        public TileSearchNode(
+            int x,
+            int y,
+            int remainElectric,
+            int electricType)
         {
             this.x = x;
             this.y = y;
@@ -899,7 +1065,10 @@ namespace Stage
             this.electricType = electricType;
         }
 
-        public TileSearchNode(Vector2Int pos, int remainElectric, int electricType)
+        public TileSearchNode(
+            Vector2Int pos,
+            int remainElectric,
+            int electricType)
         {
             this.x = pos.x;
             this.y = pos.y;

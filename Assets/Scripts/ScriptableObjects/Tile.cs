@@ -15,6 +15,7 @@ namespace ScriptableObjects.Stage
         MODULATOR,
         OBSTACLE,
         FACTORY,
-        GENERATOR
+        GENERATOR,
+        TRANSMISSION_TOWER
     }
 }

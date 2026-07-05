@@ -49,5 +49,5 @@ namespace Command
             targetTile.electricType = beforeElectricType;
         }
     }
-    
+
 }

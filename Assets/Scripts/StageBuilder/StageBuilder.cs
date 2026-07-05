@@ -75,6 +75,15 @@ namespace StageBuilder
                 return;
             }
 
+            if (ContainsTransmissionTower(ref stageMatrix))
+            {
+                Debug.LogWarning(
+                    "송전탑이 포함된 스테이지는 송전 경로를 수동으로 작성해야 합니다. " +
+                    "초기 맵은 저장되었으므로 정답을 수동 편집한 뒤 스테이지 파일을 생성하세요.");
+                costText.text = "Cost: Manual";
+                return;
+            }
+
             PathStruct[,,,] minPaths = null;
             InitMinPathMatrix(ref minPaths);
 
@@ -419,8 +428,15 @@ namespace StageBuilder
             if (path != "")
             {
                 StageTile[,] map = MakeStageMatrix();
+                TileStruct[,] answerMap = MakeStageToTileStruct(ref map);
+                if (!ValidateTransmissionTowers(beginStage, "초기 맵") ||
+                    !ValidateTransmissionTowers(answerMap, "정답 맵"))
+                {
+                    return;
+                }
+
                 StageScriptableObject stage = ScriptableObject.CreateInstance<StageScriptableObject>();
-                stage.MakeMapByStageTiles(beginStage, MakeStageToTileStruct(ref map));
+                stage.MakeMapByStageTiles(beginStage, answerMap);
                 stage.stageName = Path.GetFileNameWithoutExtension(path);
                 
                 string relativePath = "Assets" + path.Substring(Application.dataPath.Length);
@@ -472,6 +488,127 @@ namespace StageBuilder
             }
 
             return map;
+        }
+
+        private bool ContainsTransmissionTower(ref StageTile[,] stageMatrix)
+        {
+            for (int x = 0; x < stageMatrix.GetLength(0); x++)
+            {
+                for (int y = 0; y < stageMatrix.GetLength(1); y++)
+                {
+                    if (stageMatrix[x, y].tile.tileType == Tile.TRANSMISSION_TOWER)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool ValidateTransmissionTowers(TileStruct[,] map, string mapName)
+        {
+            for (int x = 0; x < map.GetLength(0); x++)
+            {
+                for (int y = 0; y < map.GetLength(1); y++)
+                {
+                    TileStruct tile = map[x, y];
+                    if (tile.tile.tileType != Tile.TRANSMISSION_TOWER)
+                    {
+                        continue;
+                    }
+
+                    Vector2Int direction = tile.dir switch
+                    {
+                        Direction.UP => Vector2Int.up,
+                        Direction.DOWN => Vector2Int.down,
+                        Direction.RIGHT => Vector2Int.right,
+                        Direction.LEFT => Vector2Int.left,
+                        _ => Vector2Int.zero
+                    };
+                    if (direction == Vector2Int.zero)
+                    {
+                        Debug.LogError(
+                            $"{mapName}의 송전탑 방향이 없습니다: ({x}, {y})");
+                        return false;
+                    }
+
+                    int towerX = x + direction.x * 2;
+                    int towerY = y + direction.y * 2;
+                    if (IsTileType(map, towerX, towerY, Tile.TRANSMISSION_TOWER))
+                    {
+                        continue;
+                    }
+
+                    int adjacentX = x + direction.x;
+                    int adjacentY = y + direction.y;
+                    if (!IsAvailableTransmissionTowerExit(
+                            map,
+                            adjacentX,
+                            adjacentY,
+                            DirectionToInt(tile.dir)))
+                    {
+                        Debug.LogError(
+                            $"{mapName}의 송전탑 출력 경로가 유효하지 않습니다: " +
+                            $"({x}, {y}), 방향: {tile.dir}");
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsAvailableTransmissionTowerExit(
+            TileStruct[,] map,
+            int x,
+            int y,
+            int incomingDirection)
+        {
+            if (x < 0 || x >= map.GetLength(0) ||
+                y < 0 || y >= map.GetLength(1))
+            {
+                return false;
+            }
+
+            TileStruct target = map[x, y];
+            if (target?.tile == null ||
+                target.tile.tileType is Tile.NONE or Tile.OBSTACLE or Tile.GENERATOR)
+            {
+                return false;
+            }
+
+            return target.tile.tileType switch
+            {
+                Tile.FACTORY or Tile.AMPLIFIER or Tile.DISTRIBUTOR or Tile.MODULATOR => true,
+                Tile.LINE or Tile.TRANSMISSION_TOWER =>
+                    DirectionToInt(target.dir) == incomingDirection,
+                Tile.CORNER_RIGHT =>
+                    (DirectionToInt(target.dir) + 1) % 4 == incomingDirection,
+                Tile.CORNER_LEFT =>
+                    (DirectionToInt(target.dir) + 3) % 4 == incomingDirection,
+                _ => false
+            };
+        }
+
+        private bool IsTileType(TileStruct[,] map, int x, int y, Tile tileType)
+        {
+            return x >= 0 && x < map.GetLength(0) &&
+                   y >= 0 && y < map.GetLength(1) &&
+                   map[x, y]?.tile != null &&
+                   map[x, y].tile.tileType == tileType;
+        }
+
+        private int DirectionToInt(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.UP => 0,
+                Direction.RIGHT => 1,
+                Direction.DOWN => 2,
+                Direction.LEFT => 3,
+                _ => -1
+            };
         }
         
         #endregion
