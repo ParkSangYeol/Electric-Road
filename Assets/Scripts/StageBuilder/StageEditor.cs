@@ -68,7 +68,8 @@ namespace StageBuilder
             CreateStageInScene(tileMat);
         }
 
-        public void CreateStageInScene(TileStruct[,] tileMatrix, bool editableAll = false)
+        public void CreateStageInScene(TileStruct[,] tileMatrix, bool editableAll = false,
+            bool showElectricType = false)
         {
             ClearStage();
             StageArea areaComponent = stageArea.GetComponent<StageArea>();
@@ -119,6 +120,7 @@ namespace StageBuilder
                     }
 
                     tileComponent.SetFixedTileBackground(!tileComponent.isEditAble);
+                    tileComponent.SetElectricTypeIndicatorVisible(showElectricType);
                     
                     tiles.Add(instantiateObject);
                 }

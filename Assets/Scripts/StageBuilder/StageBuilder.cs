@@ -444,7 +444,8 @@ namespace StageBuilder
                 StageScriptableObject stage = AssetDatabase.LoadAssetAtPath<StageScriptableObject>(relativePath);
                 if (stage != null)
                 {
-                    stageEditor.CreateStageInScene(stage.map, true);
+                    bool showElectricType = stage.stageType is StageType.MODULATOR or StageType.AMP_MOD;
+                    stageEditor.CreateStageInScene(stage.map, true, showElectricType);
                     beginStage = stage.map;
                 }
             }

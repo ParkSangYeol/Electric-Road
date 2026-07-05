@@ -11,6 +11,14 @@ using UnityEngine.UI;
 namespace Stage {
     public class StageTile : Stage.Tile
     {
+        private static readonly Color[] ElectricTypeColors =
+        {
+            new Color(1f, 0.89f, 0.29f),
+            Color.cyan,
+            Color.magenta,
+            Color.green
+        };
+
         private Direction _direction;
         private Image backgroundImage;
         [ShowInInspector] 
@@ -31,26 +39,36 @@ namespace Stage {
         }
         public UnityEvent<Direction> onChangeDirection;
         public TileScriptableObject defaultTile;
-        public int electricType;
-        private Color[] colorByElectricType;
+        private int _electricType;
+        public int electricType
+        {
+            get => _electricType;
+            set
+            {
+                _electricType = value;
+                RefreshElectricTypeIndicator();
+            }
+        }
+
         private FixedTileBackground fixedTileBackground;
+        private ElectricTypeIndicator electricTypeIndicator;
+        private Image electricTypeIndicatorImage;
+        private bool showElectricTypeIndicator;
         
         private void Awake()
         {
             base.Awake();
             backgroundImage = gameObject.GetComponentInParent<Image>();
             fixedTileBackground = GetComponentInChildren<FixedTileBackground>(true);
+            electricTypeIndicator = GetComponentInChildren<ElectricTypeIndicator>(true);
+            if (electricTypeIndicator != null)
+            {
+                electricTypeIndicator.TryGetComponent(out electricTypeIndicatorImage);
+            }
             
             onChangeDirection = new UnityEvent<Direction>();
             onChangeDirection.AddListener(ChangeTileDirection);
-
-            colorByElectricType = new[]
-            {
-                new Color(1f, 0.89f, 0.29f),
-                Color.cyan,
-                Color.magenta,
-                Color.green
-            };
+            onTileChange.AddListener(OnTileChanged);
         }
 
         private void Start()
@@ -84,11 +102,58 @@ namespace Stage {
             }
         }
 
+        public void SetElectricTypeIndicatorVisible(bool isVisible)
+        {
+            showElectricTypeIndicator = isVisible;
+            RefreshElectricTypeIndicator();
+        }
+
+        private void OnTileChanged(TileScriptableObject _)
+        {
+            RefreshElectricTypeIndicator();
+        }
+
+        private void RefreshElectricTypeIndicator()
+        {
+            if (electricTypeIndicator == null)
+            {
+                return;
+            }
+
+            bool supportsElectricType = tile != null &&
+                                        tile.tileType is ScriptableObjects.Stage.Tile.FACTORY
+                                            or ScriptableObjects.Stage.Tile.GENERATOR;
+            bool hasColor = TryGetElectricTypeColor(electricType, out Color color);
+            bool shouldShow = showElectricTypeIndicator && supportsElectricType &&
+                              electricTypeIndicatorImage != null && hasColor;
+
+            if (shouldShow)
+            {
+                electricTypeIndicatorImage.color = color;
+            }
+
+            electricTypeIndicator.gameObject.SetActive(shouldShow);
+        }
+
+        private static bool TryGetElectricTypeColor(int targetElectricType, out Color color)
+        {
+            if ((uint)targetElectricType < (uint)ElectricTypeColors.Length)
+            {
+                color = ElectricTypeColors[targetElectricType];
+                return true;
+            }
+
+            color = Color.white;
+            return false;
+        }
+
         [Button]
         public void SetActiveTile(bool isActive, int targetElectricType = 0)
         {
-            backgroundImage.color = isActive
-                ? colorByElectricType[targetElectricType] : Color.white;
+            backgroundImage.color = isActive &&
+                                    TryGetElectricTypeColor(targetElectricType, out Color color)
+                ? color
+                : Color.white;
         }
 
         public void SetHighlight(bool highlight)

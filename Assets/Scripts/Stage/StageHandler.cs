@@ -116,7 +116,8 @@ namespace Stage
             }
 
             stageEditor.ClearStage();
-            stageEditor.CreateStageInScene(stageData.map);
+            bool showElectricType = stageData.stageType is StageType.MODULATOR or StageType.AMP_MOD;
+            stageEditor.CreateStageInScene(stageData.map, showElectricType: showElectricType);
 
             modeHandler.TileHandler.numActivePalate = stageData.numOfPalate;
             onResetStage.Invoke();
