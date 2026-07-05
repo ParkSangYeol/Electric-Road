@@ -117,6 +117,8 @@ namespace StageBuilder
                     {
                         tileComponent.isEditAble = editableAll;
                     }
+
+                    tileComponent.SetFixedTileBackground(!tileComponent.isEditAble);
                     
                     tiles.Add(instantiateObject);
                 }

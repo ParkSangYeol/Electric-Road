@@ -33,11 +33,13 @@ namespace Stage {
         public TileScriptableObject defaultTile;
         public int electricType;
         private Color[] colorByElectricType;
+        private FixedTileBackground fixedTileBackground;
         
         private void Awake()
         {
             base.Awake();
             backgroundImage = gameObject.GetComponentInParent<Image>();
+            fixedTileBackground = GetComponentInChildren<FixedTileBackground>(true);
             
             onChangeDirection = new UnityEvent<Direction>();
             onChangeDirection.AddListener(ChangeTileDirection);
@@ -72,6 +74,14 @@ namespace Stage {
         {
             tile = defaultTile;
             image.color = Color.white;
+        }
+
+        public void SetFixedTileBackground(bool isFixed)
+        {
+            if (fixedTileBackground != null)
+            {
+                fixedTileBackground.gameObject.SetActive(isFixed);
+            }
         }
 
         [Button]
