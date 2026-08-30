@@ -42,6 +42,14 @@ public class AdManager : Singleton<AdManager>
     /// </summary>
     public void CheckAd()
     {
+#if UNITY_ANDROID && GOOGLE_PLAY
+        if (RemoveAdsEntitlementStore.HasRemoveAds)
+        {
+            currentActiveSeconds = adActiveSeconds;
+            return;
+        }
+#endif
+
         if (currentActiveSeconds < 0 || ++currentCheckPuzzle == maxCheckPuzzle)
         {
             // 광고 출력

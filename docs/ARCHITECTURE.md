@@ -225,8 +225,13 @@ sequenceDiagram
 - `PlatformManager`: Steam 또는 Stove 관리자 활성화
 - `SteamAchievement`, `StoveAchievementHandler`: 업적 해금
 - `AdManager`, `AdMobHandler`: Android 전면 광고
+- `GooglePlayIapManager`, `RemoveAdsEntitlementStore`: Google Play 광고 제거 비소모성 상품 구매와 권한 캐시
 - `SoundManager`: BGM과 SFX 풀 관리
 - Unity Localization: 한국어, 영어, 일본어, 중국어 간체·번체
+
+Google Play 빌드는 `GOOGLE_PLAY` 조건부 컴파일 심볼을 사용해 광고 제거 IAP 흐름을 구분한다.
+`GooglePlayIapManager`는 앱 시작 시 Unity IAP를 초기화하고 기존 구매를 조회한다.
+`electric_road_ad_remove` 구매 또는 복원이 확인되면 `RemoveAdsEntitlementStore`에 권한을 저장하며, `AdManager.CheckAd`는 이 권한이 있을 때 전면 광고 호출을 건너뛴다.
 
 ## 알려진 구조적 제약
 
