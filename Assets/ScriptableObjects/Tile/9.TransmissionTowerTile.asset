@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: 9.TransmissionTowerTile
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.Stage.TileScriptableObject
   tileTypeName: "\uC1A1\uC804\uD0D1 \uD0C0\uC77C"
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 9b35f3b460de5144ca760c5d4e746375, type: 3}
   tileType: 10
-  cost: 30
+  cost: 25

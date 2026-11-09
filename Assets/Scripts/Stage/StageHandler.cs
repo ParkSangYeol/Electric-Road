@@ -482,7 +482,7 @@ namespace Stage
                                 if (branchState == NextTileState.AlreadyVisited)
                                 {
                                     Debug.Log("전력 경로가 이미 방문한 타일과 겹칩니다: " + new Vector2Int(nX, nY));
-                                    return false;
+                                    continue;
                                 }
                                 if (branchState is NextTileState.OutOfBounds
                                     or NextTileState.Unavailable

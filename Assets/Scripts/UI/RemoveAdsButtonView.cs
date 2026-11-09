@@ -16,6 +16,9 @@ namespace UI
         private TMP_Text priceText;
 
         [SerializeField]
+        private Image buttomImage;
+        
+        [SerializeField]
         private string readyText = "Remove Ads";
 
         [SerializeField]
@@ -101,6 +104,11 @@ namespace UI
             if (priceText != null)
             {
                 priceText.text = GetPriceText(manager, hasRemoveAds);
+            }
+
+            if (buttomImage)
+            {
+                buttomImage.color = manager.IsPurchasing ? Color.green : Color.white;
             }
         }
 

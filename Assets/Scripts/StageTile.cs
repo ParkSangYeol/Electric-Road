@@ -14,9 +14,9 @@ namespace Stage {
         private static readonly Color[] ElectricTypeColors =
         {
             new Color(1f, 0.89f, 0.29f),
-            Color.cyan,
-            Color.magenta,
-            Color.green
+            Color.orangeRed,
+            Color.greenYellow,
+            Color.cyan
         };
 
         private Direction _direction;

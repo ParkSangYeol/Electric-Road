@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 771ae47bffcf9ed44b7d1842f82a661d, type: 3}
+  m_Name: PylonGameStage
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  thumbnail: {fileID: 21300000, guid: 8b2cd4a5186b2a944b1dfb5fcd22a47b, type: 3}
+  stageName: Pylon
+  stageData:
+  - {fileID: 11400000, guid: b6c09242849f9be458f6b84f11db9f87, type: 2}
+  - {fileID: 11400000, guid: 8218c373205b1c1428cdc2d5fcaf563c, type: 2}
+  - {fileID: 11400000, guid: dc5967c3249ea404d8262c16eb0e45c2, type: 2}
+  - {fileID: 11400000, guid: ef62424fccc49514dac94953247aeebd, type: 2}
+  - {fileID: 11400000, guid: e86b0bfc64de4e04199010f27fff1481, type: 2}
+  - {fileID: 11400000, guid: 76588193b454aa0458c30d6e33249406, type: 2}
+  - {fileID: 11400000, guid: 5081b9e311be3bf4ea11d3560f0ee551, type: 2}
+  - {fileID: 11400000, guid: 6b7913e3c3dfb0442b2d1ac46ad4ca0f, type: 2}
+  - {fileID: 11400000, guid: 43f0bbc11ad62884f90348287dff86a0, type: 2}
+  puzzleComponentsPrefab: {fileID: 6694558333187350908, guid: e46a5dd6ac5de8a44a3387674455cff2, type: 3}
+  bgm: {fileID: 8300000, guid: 46dc1f90ce089a74bb55c0fb84253879, type: 3}
+  hasTutorial: 0
+  tutorial: {fileID: 11400000, guid: 274726258051b4040b839500807d7310, type: 2}
+  ClearAchievementKey: ACHIEVEMENT_CLEAR_PYLON
+  PerfectClearAchievementKey: ACHIEVEMENT_CLEAR_PYLON_PERFECT

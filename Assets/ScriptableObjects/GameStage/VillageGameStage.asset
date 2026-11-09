@@ -24,9 +24,9 @@ MonoBehaviour:
   thumbnail: {fileID: 21300000, guid: b271f0d544d60ff409f8bb1872baf2e8, type: 3}
   stageName: Village
   stageData:
-  - {fileID: 11400000, guid: 94ef5837f99a6a343aaeefe5ecd59dd1, type: 2}
-  - {fileID: 11400000, guid: b87525ad112c695478a8e5fc315c3f51, type: 2}
-  - {fileID: 11400000, guid: 3cd3491d516ba2e4c8bd075e527c1a48, type: 2}
+  - {fileID: 11400000, guid: b7f183dee6c9d95498203741963dcce5, type: 2}
+  - {fileID: 11400000, guid: 413bd8e56b908584b9fc3e3e2f7694d9, type: 2}
+  - {fileID: 11400000, guid: 49a4f840ef93fe944bcce739ef3ab398, type: 2}
   - {fileID: 11400000, guid: 23380b77953b69247bdbf1c45ae184b0, type: 2}
   - {fileID: 11400000, guid: 548f3b4c6ddb1fe4e9476a3bdec38a2e, type: 2}
   - {fileID: 11400000, guid: 5649eabbdf26d67449cbc2324e94fe61, type: 2}

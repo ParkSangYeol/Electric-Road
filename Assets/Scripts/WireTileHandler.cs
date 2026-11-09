@@ -115,7 +115,14 @@ namespace Stage
                     return;
                 }
                 
-                if (stageTile.tile.tileType == ScriptableObjects.Stage.Tile.FACTORY || ( stageTile.isEditAble == false) && ( stageTile.tile.tileType == ScriptableObjects.Stage.Tile.LINE || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_LEFT || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_RIGHT || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER)  )
+                if (stageTile.tile.tileType == ScriptableObjects.Stage.Tile.FACTORY 
+                    || ( stageTile.isEditAble == false) && 
+                    ( stageTile.tile.tileType == ScriptableObjects.Stage.Tile.LINE 
+                     || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_LEFT 
+                     || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.CORNER_RIGHT 
+                     || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.AMPLIFIER 
+                     || stageTile.tile.tileType == ScriptableObjects.Stage.Tile.DISTRIBUTOR ) 
+                    )
                 {
 #if UNITY_EDITOR
                     Debug.Log("Find Factory Or Find unEditableTile, End Track.");

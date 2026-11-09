@@ -150,6 +150,7 @@ MonoBehaviour:
   purchaseButton: {fileID: 3625487943128497460}
   titleText: {fileID: 5241113106057633379}
   priceText: {fileID: 8693166782010010461}
+  buttomImage: {fileID: 8232909565134993630}
   readyText: Remove Ads
   loadingText: Loading...
   purchasedText: Purchased
